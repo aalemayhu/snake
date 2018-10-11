@@ -16,10 +16,3 @@ Goals
 
 - Player ranking
 - Team ranking
-
-## Possible implementation
-
-- [ ] Server API 
-- - [ ] Upload handler
-- - [ ] Script validation
-- [ ] 2D game
