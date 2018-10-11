@@ -17,7 +17,7 @@ Goals
 - Player ranking
 - Team ranking
 
-Tasks
+## Tasks
 
 - [ ] Define a API for the users  https://gist.github.com/Nyasaki/29e9219abd3a54f3ce3718f1a1167ec0
 - - [ ] Input validation
@@ -25,7 +25,7 @@ Tasks
 - [ ] Twitch API stuff.
 - [ ] Write API documentation
 
-Possible implementations
+## Possible implementation
 
 - [ ] Server API 
 - - [ ] Upload handler
