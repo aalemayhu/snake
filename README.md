@@ -17,14 +17,6 @@ Goals
 - Player ranking
 - Team ranking
 
-## Tasks
-
-- [ ] Define a API for the users  https://gist.github.com/Nyasaki/29e9219abd3a54f3ce3718f1a1167ec0
-- - [ ] Input validation
-- [ ] Design the map, players, treats, leaderbord etc.
-- [ ] Twitch API stuff.
-- [ ] Write API documentation
-
 ## Possible implementation
 
 - [ ] Server API 
