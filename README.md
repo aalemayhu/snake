@@ -1,4 +1,4 @@
-# no
+# [S]uper [N]ot [A]wesome [K]nockout [E]agle - SNAKE
 >Work in progress
 
 Write your own script to control a snake and compete for fruit.
