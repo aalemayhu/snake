@@ -11,7 +11,7 @@ export class Preload extends Phaser.State {
         this.game.load.bitmapFont('font', 'assets/fonts/font.png', 'assets/fonts/font.xml');
 
         // Load sprite
-        this.game.load.image('mushroom', 'assets/sprites/mushroom.png');
+        this.game.load.image('Snake', 'assets/sprites/Snake.png');
 
         // Initialize Howler
         Sound.load();

@@ -1,8 +1,8 @@
 import Phaser from 'phaser-ce';
 
-export class Mushroom extends Phaser.Sprite {
+export class Snake extends Phaser.Sprite {
     constructor(game: Phaser.Game, x: number, y: number) {
-        super(game, x, y, 'mushroom');
+        super(game, x, y, 'snake');
 
         this.anchor.setTo(0.5);
         this.game.physics.arcade.enableBody(this);
