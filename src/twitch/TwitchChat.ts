@@ -13,7 +13,7 @@ export class TwitchChat {
       if (message.content.startsWith('!upload')) {
         let linkToSource = message.content.replace('!upload' , '');
         if (linkToSource.indexOf('gist') !== -1) {
-          scraper.GetPageContent('https://' + linkToSource.trim(), (result) => {
+          scraper.GetPageContent('https://' + linkToSource.trim(), message.displayName, (result) => {
             if (result) {
               twitch.send('@' + message.displayName + ' file checked and loaded', message.channel);
             } else {
