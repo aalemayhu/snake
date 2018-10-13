@@ -6,7 +6,7 @@
 ### [K]nockout
 ### [E]agle
 
-> Work in progress
+> Work in progresses
 
 Write your own script to control a snake and compete for fruit.
 Survive and collect the most treats to get higher in the leaderboard.
