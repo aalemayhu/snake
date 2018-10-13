@@ -1,4 +1,10 @@
-# [S]uper [N]ot [A]wesome [K]nockout [E]agle - SNAKE
+# SNAKE
+
+## [S]uper
+## [N]ot
+## [A]wesome
+## [K]nockout
+## [E]agle
 
 > Work in progress
 
