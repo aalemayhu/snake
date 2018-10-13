@@ -16,11 +16,15 @@ export class Game extends Phaser.State {
   private loopTick = 1000;
   private actions = ['attack', 'heal', 'collect', 'right', 'left', 'up', 'down'];
 
+  private cellSize = 32;
+
   public create(): void {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.text = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 100, 'font', 'Press Arrows / Space', 15);
     this.text.x = this.text.x - ~~(this.text.width * 0.5);
+
+    this.createGrid()
 
     // TODO: movement as grid units
     // TODO: figure out how big a snake is supposed be, for now make it tuneable
@@ -31,13 +35,6 @@ export class Game extends Phaser.State {
       this.players.push(snake);
       this.game.add.existing(snake);
     }
-
-    this.grid = [];
-    this.grid.push(new Phaser.Line(0, 0, this.game.width * 0.8, 0));
-    this.grid.push(new Phaser.Line(0, 0, 0, this.game.height * 0.8));
-    this.grid.push(new Phaser.Line(0, this.game.height * 0.8, this.game.width * 0.8, this.game.height * 0.8));
-    this.grid.push(new Phaser.Line(this.game.width * 0.8, 0, this.game.width * 0.8, this.game.height * 0.8));
-
 
     // this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -75,6 +72,28 @@ export class Game extends Phaser.State {
       let action = this.actions[index];
       this.text.setText(`${snake.id} - ${action}`);
       snake.run(action);
+    }
+  }
+
+  createGrid() {
+
+    var graphics = this.game.add.graphics(0, 0);
+
+    // set a fill and line style
+    graphics.beginFill(0xFF3300);
+    graphics.lineStyle(10, 0xffd900, 1);
+
+    // set a fill and line style again
+    graphics.lineStyle(10, 0xFF0000, 0.8);
+    graphics.beginFill(0xFF700B, 1);
+
+    // draw a rectangle
+    graphics.lineStyle(2, 0x0000FF, 1);
+
+    for (let i = 0; i < this.game.width / this.cellSize; i++) {
+      for (let j = 0; j < this.game.height / this.cellSize; j++) {
+        graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
+      }
     }
   }
 
