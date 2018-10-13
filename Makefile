@@ -5,6 +5,6 @@ start:
 build:
 	npm run build
 lint:
-	npm lint
+	npm run lint
 lint-fix:
-	npm lint:fix
+	npm run lint:fix
