@@ -6,9 +6,9 @@ __[N]__ ot
 
 __[A]__ wesome
 
-__[K]__nockout
+__[K]__ nockout
 
-__[E]__agle
+__[E]__ agle
 
 > Work in progress
 
