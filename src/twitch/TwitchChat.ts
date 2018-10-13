@@ -13,8 +13,12 @@ constructor(username, channel, token) {
         if(message.content.startsWith('!upload')){
             var linkToSource = message.content.replace('!upload' , '');
             if(linkToSource.indexOf('gist') != -1){
-                twitch.send('@' + message.displayName + ' we are checking your file now', message.channel);
-                scraper.GetPageContent(linkToSource.trim());
+                var result = scraper.GetPageContent('https://' + linkToSource.trim());
+                if(result){
+                    twitch.send('@' + message.displayName + ' file checked and loaded', message.channel);
+                }else{
+                    twitch.send('@' + message.displayName + ' could not download file', message.channel);
+                }
             }else{
                 twitch.send('@' + message.displayName + ' please use Gist to upload your file', message.channel)
             }

@@ -1,22 +1,20 @@
 import rp from 'request-promise';
 import cheerio from 'cheerio';
+import request from 'request';
 
 export class Scraper {
     constructor() {}
 
-    GetPageContent(url) {
-        const options = {
-            uri: url,
-            transform: function (body) {
-              return cheerio.load(body);
+    GetPageContent(url) : boolean {
+        var requestResult = false;
+        request(url, function (error, response, body) {
+            console.log('Errors: ' + '\n' + 'Response: ' + response.statusCode + '\n');
+            if(error === null && response.statusCode === 200){
+                requestResult = true;
+                console.log(requestResult);
             }
-        };
-        rp(options)
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        });
+        console.log(requestResult);
+        return requestResult;
     }      
 }
