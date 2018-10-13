@@ -21,7 +21,7 @@ export class Game extends Phaser.State {
   public create(): void {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createGrid();
-
+    this.game.load.image('snake', 'assets/sprites/snake.png');
     this.text = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 100, 'font', 'Press Arrows / Space', 15);
     this.text.x = this.text.x - ~~(this.text.width * 0.5);
 
