@@ -3,7 +3,7 @@ install_deps:
 start:
 	npm start
 build:
-	npm build
+	npm run build
 lint:
 	npm lint
 lint-fix:
