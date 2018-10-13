@@ -2,7 +2,7 @@ import Phaser from 'phaser-ce';
 
 export class Snake extends Phaser.Sprite {
   private direction: string;
-  private id: string;
+  readonly id: string;
 
   constructor(id: string, game: Phaser.Game, x: number, y: number) {
     super(game, x, y, 'snake');
