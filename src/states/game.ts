@@ -20,11 +20,10 @@ export class Game extends Phaser.State {
 
   public create(): void {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.createGrid();
 
     this.text = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 100, 'font', 'Press Arrows / Space', 15);
     this.text.x = this.text.x - ~~(this.text.width * 0.5);
-
-    this.createGrid()
 
     // TODO: movement as grid units
     // TODO: figure out how big a snake is supposed be, for now make it tuneable
@@ -55,7 +54,8 @@ export class Game extends Phaser.State {
     let x = this.getRandomInt(this.game.world.centerX);
     let y = this.getRandomInt(this.game.world.centerY);
     // TODO: check if spawn point is already taken by another user
-    let s = new Snake(id, this.game, x, y);
+    let s = new Snake(id, this.game, x, y, this.cellSize);
+    s.tint = Phaser.Color.WHITE;
     return s;
   }
 
@@ -76,9 +76,7 @@ export class Game extends Phaser.State {
   }
 
   createGrid() {
-
-    var graphics = this.game.add.graphics(0, 0);
-
+    let graphics = this.game.add.graphics(0, 0);
     // set a fill and line style
     graphics.beginFill(0xFF3300);
     graphics.lineStyle(10, 0xffd900, 1);
@@ -97,9 +95,6 @@ export class Game extends Phaser.State {
     }
   }
 
-  render() {
-    for (let i = 0; i < this.grid.length; i++) {
-      this.game.debug.geom(this.grid[i]);
-    }
+  render() {    
   }
 }
