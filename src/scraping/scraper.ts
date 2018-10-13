@@ -2,19 +2,21 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 
 export class Scraper{
-    constructor(url){
+    constructor(){}
+
+    GetPageContent(url){
         const options = {
             uri: url,
             transform: function (body) {
               return cheerio.load(body);
             }
-          };
+        };
         rp(options)
-            .then(($) => {
-                console.log($);
+            .then((data) => {
+                console.log(data);
             })
             .catch((err) => {
                 console.log(err);
             });
-    }
+    }      
 }

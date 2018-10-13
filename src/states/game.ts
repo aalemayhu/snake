@@ -21,7 +21,7 @@ export class Game extends Phaser.State {
     this.text.x = this.text.x - ~~(this.text.width * 0.5);
 
     // TODO: Add more snakes
-    this.Snake = new Snake("snake-1", this.game, this.game.world.centerX, this.game.world.centerY);
+    this.Snake = new Snake('snake-1', this.game, this.game.world.centerX, this.game.world.centerY);
     this.game.add.existing(this.Snake);
 
     // this.cursors = this.game.input.keyboard.createCursorKeys();
