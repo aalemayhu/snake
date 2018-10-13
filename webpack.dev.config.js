@@ -55,5 +55,10 @@ module.exports = {
             'p2': p2,
             'howler': howler
         }
-    }
+    },
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+      },
 };
