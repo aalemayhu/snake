@@ -3,18 +3,19 @@ import cheerio from 'cheerio';
 import request from 'request';
 
 export class Scraper {
-    constructor() {}
+  constructor() {}
 
-    GetPageContent(url) : boolean {
-        var requestResult = false;
-        request(url, function (error, response, body) {
-            console.log('Errors: ' + '\n' + 'Response: ' + response.statusCode + '\n');
-            if(error === null && response.statusCode === 200){
-                requestResult = true;
-                console.log(requestResult);
-            }
-        });
+  GetPageContent(url, callback) : boolean {
+    var requestResult = false;
+    request(url, function (error, response, body) {
+      console.log('Errors: ' + '\n' + 'Response: ' + response.statusCode + '\n');
+      if(error === null && response.statusCode === 200){
+        requestResult = true;
+        callback(requestResult);
         console.log(requestResult);
-        return requestResult;
-    }      
+      }
+    });
+    console.log(requestResult);
+    return requestResult;
+  }
 }
