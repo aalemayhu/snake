@@ -8,6 +8,9 @@ import {Boot} from './states/boot';
 import {Preload} from './states/preload';
 import {Game} from './states/game';
 
+import { Actions } from './api/actions';
+import { Items } from './api/items';
+
 class Template extends Phaser.Game {
 
     constructor() {

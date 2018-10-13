@@ -1,5 +1,5 @@
 install_deps:
-	npm install .
+	npm install
 start:
 	npm start
 build:
