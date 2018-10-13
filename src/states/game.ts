@@ -51,8 +51,8 @@ export class Game extends Phaser.State {
   }
 
   newSnake(id: string): Snake {
-    let x = this.getRandomInt(this.game.world.centerX);
-    let y = this.getRandomInt(this.game.world.centerY);
+    let x = this.getRandomInt(this.cellSize) * this.cellSize;
+    let y = this.getRandomInt(this.cellSize) * this.cellSize;
     // TODO: check if spawn point is already taken by another user
     let s = new Snake(id, this.game, x, y, this.cellSize);
     s.tint = Phaser.Color.WHITE;
@@ -95,6 +95,6 @@ export class Game extends Phaser.State {
     }
   }
 
-  render() {    
+  render() {
   }
 }
