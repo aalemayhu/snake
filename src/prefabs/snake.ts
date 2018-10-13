@@ -1,7 +1,6 @@
 import Phaser from 'phaser-ce';
 
 export class Snake extends Phaser.Sprite {
-  private direction: string;
   readonly id: string;
 
   constructor(id: string, game: Phaser.Game, x: number, y: number) {
@@ -12,24 +11,28 @@ export class Snake extends Phaser.Sprite {
     this.game.physics.arcade.enableBody(this);
     this.checkWorldBounds = true;
     this.body.collideWorldBounds = true;
+    this.tint = Math.random() * 0xffffff;
   }
 
   update() {
-    switch (this.direction) {
+  }
+
+  move(direction) {
+    switch (direction) {
       case 'right': {
-        this.position.x++;
+        this.position.x += this.width;
         break;
       }
       case 'left': {
-        this.position.x--;
+        this.position.x -= this.width;
         break;
       }
       case 'up': {
-        this.position.y--;
+        this.position.y -= this.width;
         break;
       }
       case 'down': {
-        this.position.y++;
+        this.position.y -= this.width;
         break;
       }
     }
@@ -47,7 +50,7 @@ export class Snake extends Phaser.Sprite {
       }
       // Move
       default: {
-      this.direction = action;
+      this.move(action);
       break;
     }
   }
