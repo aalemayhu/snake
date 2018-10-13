@@ -1,10 +1,10 @@
-const rp = require('request-promise');
-const cheerio = require('cheerio');
+import rp from 'request-promise';
+import cheerio from 'cheerio';
 
-export class Scraper{
-    constructor(){}
+export class Scraper {
+    constructor() {}
 
-    GetPageContent(url){
+    GetPageContent(url) {
         const options = {
             uri: url,
             transform: function (body) {
