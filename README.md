@@ -1,10 +1,14 @@
 # SNAKE
 
-[S]uper
-[N]ot
-[A]wesome
-[K]nockout
-[E]agle
+__[S]__ uper
+
+__[N]__ ot
+
+__[A]__ wesome
+
+__[K]__nockout
+
+__[E]__agle
 
 > Work in progress
 
