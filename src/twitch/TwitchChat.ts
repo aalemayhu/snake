@@ -10,18 +10,18 @@ export class TwitchChat {
     twitch.connect();
     twitch.on('connected', () => twitch.send('Waiting for commands now!', channel));
     twitch.on('message', (message: Message, channelState: ChannelUserState) => {
-      if(message.content.startsWith('!upload')){
-        var linkToSource = message.content.replace('!upload' , '');
-        if(linkToSource.indexOf('gist') != -1){
+      if (message.content.startsWith('!upload')) {
+        let linkToSource = message.content.replace('!upload' , '');
+        if (linkToSource.indexOf('gist') !== -1) {
           scraper.GetPageContent('https://' + linkToSource.trim(), (result) => {
-            if(result){
+            if (result) {
               twitch.send('@' + message.displayName + ' file checked and loaded', message.channel);
-            }else{
+            } else {
               twitch.send('@' + message.displayName + ' could not download file', message.channel);
             }
           });
         } else {
-          twitch.send('@' + message.displayName + ' please use Gist to upload your file', message.channel)
+          twitch.send('@' + message.displayName + ' please use Gist to upload your file', message.channel);
         }
       }
     });

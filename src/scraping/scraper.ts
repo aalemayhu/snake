@@ -5,11 +5,11 @@ import request from 'request';
 export class Scraper {
   constructor() {}
 
-  GetPageContent(url, callback) : boolean {
-    var requestResult = false;
+  GetPageContent(url, callback): boolean {
+    let requestResult = false;
     request(url, function (error, response, body) {
       console.log('Errors: ' + '\n' + 'Response: ' + response.statusCode + '\n');
-      if(error === null && response.statusCode === 200){
+      if (error === null && response.statusCode === 200) {
         requestResult = true;
         callback(requestResult);
         console.log(requestResult);
