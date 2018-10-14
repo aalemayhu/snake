@@ -96,7 +96,7 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.game.width / this.cellSize; i++) {
       for (let j = 0; j < this.game.height / this.cellSize; j++) {
         graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
-        this.game.add.text(i * this.cellSize, j * this.cellSize, `${i*this.cellSize}x${j*this.cellSize}`, style);
+        // this.game.add.text(i * this.cellSize, j * this.cellSize, `${i*this.cellSize}x${j*this.cellSize}`, style);
       }
     }
   }

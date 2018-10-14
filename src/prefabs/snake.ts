@@ -22,19 +22,19 @@ export class Snake extends Phaser.Sprite {
   move(direction) {
     switch (direction) {
       case 'right': {
-        this.body.moveTo(this.position.x + this.movementUnits, this.position.y, Phaser.ANGLE_RIGHT);
+        this.body.moveTo(this.position.x + this.movementUnits, this.position.y);
         break;
       }
       case 'left': {
-        this.body.moveTo(this.position.x - this.movementUnits, this.position.y, Phaser.ANGLE_LEFT);
+        this.body.moveTo(this.position.x - this.movementUnits, this.position.y);
         break;
       }
       case 'up': {
-        this.body.moveTo(this.position.x, this.position.y + this.movementUnits, Phaser.ANGLE_UP);
+        this.body.moveTo(this.position.x, this.position.y + this.movementUnits);
         break;
       }
       case 'down': {
-        this.body.moveTo(this.position.x, this.position.y - this.movementUnits, Phaser.ANGLE_UP);
+        this.body.moveTo(this.position.x, this.position.y - this.movementUnits);
         break;
       }
     }
