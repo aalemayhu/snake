@@ -1,5 +1,7 @@
+import * as ts from 'typescript';
+import { readFileSync } from 'fs';
+
 import { SnakeApi } from './SnakeApi';
-import { DynamicLoader } from 'dynamic-modules';
 
 let scripts: string [] = new Array(1000);
 
@@ -21,8 +23,11 @@ export class ApiHandler {
 
     RunScript(path: string) {
         (async () => {
-            const someModule = await DynamicLoader.loadModuleByPath(path);
-            someModule.Run();
+            const src = readFileSync(path, 'utf-8');
+            const res = ts.transpile(src);
+            const script = eval(res);
+
+            script.Run();
           })().catch(err => {
             // error handler
           });
