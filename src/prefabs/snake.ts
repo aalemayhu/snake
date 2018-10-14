@@ -24,32 +24,32 @@ export class Snake extends Phaser.Graphics {
   }
 
   move(direction) {
-    console.log(`move(${direction})`)
+    console.log(`move(${direction})`);
     switch (direction) {
       case 'right': {
         if (this.position.x + this.movementUnits >= this.worldWidth) {
-          return
+        return;
         }
         this.position.x += this.movementUnits;
         break;
       }
       case 'left': {
         if (this.position.x - this.movementUnits <= this.movementUnits) {
-            return
+            return;
           }
         this.position.x -= this.movementUnits;
         break;
       }
       case 'up': {
         if (this.position.y + this.movementUnits >= this.worldHeight) {
-            return
+            return;
           }
         this.position.y += this.movementUnits;
         break;
       }
       case 'down': {
         if (this.position.y - this.movementUnits <= this.movementUnits) {
-            return
+            return;
           }
         this.position.y -= this.movementUnits;
         break;
