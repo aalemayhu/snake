@@ -73,8 +73,8 @@ export class Game extends Phaser.State {
       let snake = this.players[i];
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-      // this.text.setText(`${snake.id} - ${action}`);
-      // snake.run(action);
+      this.text.setText(`${snake.id} - ${action}`);
+      snake.run(action);
     }
   }
 

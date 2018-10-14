@@ -9,6 +9,9 @@ export class Snake extends Phaser.Sprite {
     super(game, x, y, 'snake');
 
     this.id = id;
+    this.game.physics.arcade.enableBody(this);
+    this.checkWorldBounds = true;
+    this.body.collideWorldBounds = true;
     this.movementUnits = cellSize;
     this.color = 0xFF0000;
   }
@@ -19,19 +22,19 @@ export class Snake extends Phaser.Sprite {
   move(direction) {
     switch (direction) {
       case 'right': {
-        this.position.x += this.movementUnits;
+        this.body.moveTo(this.position.x + this.movementUnits, this.position.y, Phaser.ANGLE_RIGHT);
         break;
       }
       case 'left': {
-        this.position.x -= this.movementUnits;
+        this.body.moveTo(this.position.x - this.movementUnits, this.position.y, Phaser.ANGLE_LEFT);
         break;
       }
       case 'up': {
-        this.position.y += this.movementUnits;
+        this.body.moveTo(this.position.x, this.position.y + this.movementUnits, Phaser.ANGLE_UP);
         break;
       }
       case 'down': {
-        this.position.y -= this.movementUnits;
+        this.body.moveTo(this.position.x, this.position.y - this.movementUnits, Phaser.ANGLE_UP);
         break;
       }
     }
