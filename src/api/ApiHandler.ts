@@ -1,17 +1,18 @@
-import { Snake } from "./SnakeApi";
+import { Snake } from './SnakeApi';
 
-var scripts:Snake[]; 
+let scripts: Snake [];
 scripts = [];
 
-export class ApiHandler{
-    constructor(){}
+export class ApiHandler {
+    constructor() {}
 
-    LoadAllScripts(){
-        //Get files in directory        
-        scripts.push() //add file to array
+    LoadAllScripts() {
+        // Get files in directory
+
+        scripts.push(); // add file to array
     }
 
-    RunAllScripts(){
+    RunAllScripts() {
         scripts.forEach(element => {
             element.Run();
         });

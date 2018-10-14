@@ -3,7 +3,7 @@ import { Scraper } from '../scraping/scraper';
 
 const scraper = new Scraper();
 
- //TwitchChat
+ // TwitchChat
 export class TwitchChat {
 
   constructor(username, channel, token) {
@@ -11,21 +11,21 @@ export class TwitchChat {
     twitch.connect();
     twitch.on('connected', () => twitch.send('Waiting for commands now!', channel));
 
-    //OnMessage function
+    // OnMessage function
     twitch.on('message', (message: Message, channelState: ChannelUserState) => {
 
-      //watching for !upload
+      // Watching for !upload
       if (message.content.startsWith('!upload')) {
 
-        let linkToSource = message.content.replace('!upload' , ''); //removing the !upload so we get the gist link
+        let linkToSource = message.content.replace('!upload' , ''); // Removing the !upload so we get the gist link
 
-        //Checks if the link is from gist
+        // Checks if the link is from gist
         if (linkToSource.indexOf('gist') !== -1) {
 
-          //Check if the link is the raw link
-          if(linkToSource.endsWith('.txt') || linkToSource.endsWith('.ts')){
+          // Check if the link is the raw link
+          if (linkToSource.endsWith('.txt') || linkToSource.endsWith('.ts')) {
 
-            //add https:// because the twitch wrapper cant handle ':' and call the GetPageContent function
+            // Add https:// because the twitch wrapper cant handle ':' and call the GetPageContent function
             scraper.GetPageContent('https://' + linkToSource.trim(), message.displayName.toString() , (result) => {
 
               if (result) {
@@ -36,11 +36,11 @@ export class TwitchChat {
 
             });
           } else {
-            //Write chat message because link isnt the raw link
+            // Write chat message because link isnt the raw link
             twitch.send('@' + message.displayName + ' please use the gist raw link', message.channel);
           }
         } else {
-          //Write chat message because the link isnt a gist link
+          // Write chat message because the link isnt a gist link
           twitch.send('@' + message.displayName + ' please use Gist to upload your file', message.channel);
         }
       }
