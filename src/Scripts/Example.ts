@@ -2,7 +2,7 @@
 import { SnakeApi } from '../api/SnakeApi';
 import { Action } from '../api/Action';
 
-class AnyThing implements SnakeApi.Snake {
+export class AnyThing implements SnakeApi.Snake {
     Run(): Action {
         let rnd = Math.floor(Math.random() * (4 - 1 + 1)) + 4;
         let action;
