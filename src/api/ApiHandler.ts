@@ -1,5 +1,5 @@
 import { SnakeApi } from './SnakeApi';
-import { Snake } from '../prefabs/Snake';
+import { DynamicLoader } from 'dynamic-modules';
 
 let scripts: string [] = new Array(1000);
 
@@ -8,7 +8,7 @@ export class ApiHandler {
 
     LoadAllScripts() {
         // Get files in directory
-        scripts.push('../Scripts/Example.ts'); // add file to array
+        scripts.push('../Scripts/Example'); // add file to array
     }
 
     RunAllScripts() {
@@ -20,8 +20,11 @@ export class ApiHandler {
     }
 
     RunScript(path: string) {
-        import(path).then(script => {
-            script.Run();
-        });
+        (async () => {
+            const someModule = await DynamicLoader.loadModuleByPath(path);
+            someModule.Run();
+          })().catch(err => {
+            // error handler
+          });
     }
 }
