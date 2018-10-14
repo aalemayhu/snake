@@ -53,14 +53,14 @@ export class TwitchChat {
       // Watching for !join
       if (messageContent.startsWith('!join')) {
         let teamToJoin = messageContent.replace('!join', '').trim();
-        GameState.AddPlayerToTeam (messageSender, teamToJoin);
-        let joinedTeam = GameState.GetTeamOfPlayer(messageSender);
+        GameState.AddPlayerToTeam (messageSender.toLowerCase(), teamToJoin.toLowerCase());
+        let joinedTeam = GameState.GetTeamOfPlayer(messageSender.toLowerCase());
         twitch.send('@' + messageSender + ' has joined the team: ' + joinedTeam, messageChannel);
       }
 
       // For debugging?
       if (messageContent.startsWith('!team')) {
-        let joinedTeam = GameState.GetTeamOfPlayer(messageSender);
+        let joinedTeam = GameState.GetTeamOfPlayer(messageSender.toLowerCase());
         twitch.send('@' + messageSender + ' is in the team: ' + joinedTeam, messageChannel);
       }
     });
