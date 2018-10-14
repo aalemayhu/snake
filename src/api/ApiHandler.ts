@@ -1,20 +1,21 @@
 import { Snake } from './SnakeApi';
 
-let scripts: Snake [];
-scripts = [];
 
 export class ApiHandler {
-    constructor() {}
+  scripts: Snake [];
 
-    LoadAllScripts() {
-        // Get files in directory
+  constructor() {
+    this.scripts = [];
+  }
 
-        scripts.push(); // add file to array
-    }
+  LoadAllScripts() {
+    // Get files in directory
+    this.scripts.push(); // add file to array
+  }
 
-    RunAllScripts() {
-        scripts.forEach(element => {
-            element.Run();
-        });
-    }
+  RunAllScripts() {
+    this.scripts.forEach(element => {
+      element.Run();
+    });
+  }
 }
