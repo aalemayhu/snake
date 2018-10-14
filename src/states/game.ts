@@ -10,26 +10,23 @@ export class Game extends Phaser.State {
   private grid: Phaser.Line[];
   private Snake: Snake;
   // private cursors: Phaser.CursorKeys;
-  private text: Phaser.BitmapText;
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
-  private actions = ['attack', 'heal', 'collect', 'right', 'left', 'up', 'down'];
+  // 'attack', 'heal', 'collect',
+  private actions = ['right', 'left', 'up', 'down'];
 
   private cellSize = 32;
 
   public create(): void {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    console.log(`width=${this.game.width},height=${this.game.height}`);
     this.createGrid();
-    this.game.load.image('snake', 'assets/sprites/snake.png');
-    this.text = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 100, 'font', 'Press Arrows / Space', 15);
-    this.text.x = this.text.x - ~~(this.text.width * 0.5);
-
     // TODO: movement as grid units
     // TODO: figure out how big a snake is supposed be, for now make it tuneable
     // TODO: add collision detection for snakes, world boundary, fruits
     this.players = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       this.game.add.existing(snake);
@@ -47,15 +44,16 @@ export class Game extends Phaser.State {
   }
 
   getRandomInt(max): number {
-    return Math.floor(Math.random() * Math.floor(max));
+    let n = Math.floor(Math.random() * Math.floor(max));
+    console.log(`getRandomInt -> ${n}`);
+    return n;
   }
 
   newSnake(id: string): Snake {
-    let x = this.getRandomInt(this.cellSize) * this.cellSize;
-    let y = this.getRandomInt(this.cellSize) * this.cellSize;
+    let x = this.getRandomInt(this.game.width / this.cellSize) * this.cellSize;
+    let y = this.getRandomInt(this.game.height / this.cellSize) * this.cellSize;
     // TODO: check if spawn point is already taken by another user
     let s = new Snake(id, this.game, x, y, this.cellSize);
-    s.tint = Phaser.Color.WHITE;
     return s;
   }
 
@@ -70,7 +68,7 @@ export class Game extends Phaser.State {
       let snake = this.players[i];
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-      this.text.setText(`${snake.id} - ${action}`);
+      console.log(`${snake.id} - ${action} - ${snake.position.x}x${snake.position.y}`);
       snake.run(action);
     }
   }
@@ -93,8 +91,5 @@ export class Game extends Phaser.State {
         graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
       }
     }
-  }
-
-  render() {
   }
 }
