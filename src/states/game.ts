@@ -67,6 +67,7 @@ export class Game extends Phaser.State {
     let tock = this.game.time.now - this.tick;
     // Limit the run loop to every x
     if (tock < this.loopTick) { return; }
+    console.log('update()');
     this.tick = this.game.time.now;
 
     for (let i = 0; i < this.players.length; i++) {

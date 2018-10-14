@@ -1,21 +1,27 @@
-import { Snake } from './SnakeApi';
+import { SnakeApi } from './SnakeApi';
+import { Snake } from '../prefabs/Snake';
 
+let scripts: string [] = new Array(1000);
 
 export class ApiHandler {
-  scripts: Snake [];
+    constructor() {}
 
-  constructor() {
-    this.scripts = [];
-  }
+    LoadAllScripts() {
+        // Get files in directory
+        scripts.push('../Scripts/Example.ts'); // add file to array
+    }
 
-  LoadAllScripts() {
-    // Get files in directory
-    this.scripts.push(); // add file to array
-  }
+    RunAllScripts() {
+        scripts.forEach(element => {
+            if (element !== undefined) {
+                this.RunScript(element);
+            }
+        });
+    }
 
-  RunAllScripts() {
-    this.scripts.forEach(element => {
-      element.Run();
-    });
-  }
+    RunScript(path: string) {
+        import(path).then(script => {
+            script.Run();
+        });
+    }
 }

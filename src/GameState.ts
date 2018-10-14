@@ -1,6 +1,6 @@
 export namespace GameState {
-    let teams: String [] = new Array(100);
-    let players: String [] = new Array(100);
+    let teams: String [] = new Array(1000);
+    let players: String [] = new Array(1000);
 
     // Function to add player to a team
     // saved in the players array inf the following format 'player~team'
