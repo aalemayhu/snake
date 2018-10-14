@@ -10,6 +10,7 @@ export class Game extends Phaser.State {
   private grid: Phaser.Line[];
   private Snake: Snake;
   // private cursors: Phaser.CursorKeys;
+  private text: Phaser.BitmapText;
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
@@ -20,13 +21,16 @@ export class Game extends Phaser.State {
 
   public create(): void {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    console.log(`width=${this.game.width},height=${this.game.height}`);
     this.createGrid();
+    this.game.load.image('snake', 'assets/sprites/snake.png');
+    this.text = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 100, 'font', 'Press Arrows / Space', 15);
+    this.text.x = this.text.x - ~~(this.text.width * 0.5);
+
     // TODO: movement as grid units
     // TODO: figure out how big a snake is supposed be, for now make it tuneable
     // TODO: add collision detection for snakes, world boundary, fruits
     this.players = [];
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 3; i++) {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       this.game.add.existing(snake);
@@ -44,16 +48,19 @@ export class Game extends Phaser.State {
   }
 
   getRandomInt(max): number {
-    let n = Math.floor(Math.random() * Math.floor(max));
-    console.log(`getRandomInt -> ${n}`);
-    return n;
+    return Math.floor(Math.random() * Math.floor(max));
   }
 
   newSnake(id: string): Snake {
-    let x = this.getRandomInt(this.game.width / this.cellSize) * this.cellSize;
-    let y = this.getRandomInt(this.game.height / this.cellSize) * this.cellSize;
+    let cellX = this.getRandomInt(this.game.width / this.cellSize);
+    let cellY = this.getRandomInt(this.game.height / this.cellSize);
+    let x = cellX * this.cellSize;
+    let y = cellY * this.cellSize;
+    console.log(`cellX=${cellX},cellY=${cellY}`)
     // TODO: check if spawn point is already taken by another user
     let s = new Snake(id, this.game, x, y, this.cellSize);
+    s.tint = Phaser.Color.WHITE;
+    console.log(`${s.id}.position=${s.position}`);
     return s;
   }
 
@@ -62,19 +69,25 @@ export class Game extends Phaser.State {
     let tock = this.game.time.now - this.tick;
     // Limit the run loop to every x
     if (tock < this.loopTick) { return; }
+    console.log('update()');
     this.tick = this.game.time.now;
 
     for (let i = 0; i < this.players.length; i++) {
       let snake = this.players[i];
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-      console.log(`${snake.id} - ${action} - ${snake.position.x}x${snake.position.y}`);
+      this.text.setText(`${snake.id} - ${action}`);
       snake.run(action);
+      snake.clear()
+      snake.beginFill(0xd88a8a)
+      snake.drawRect(snake.position.x, snake.position.y, this.cellSize, this.cellSize)
     }
   }
 
   createGrid() {
     let graphics = this.game.add.graphics(0, 0);
+    let style = { font: '8px Arial', fill: '#ff0044', wordWrap: true,
+    wordWrapWidth: this.cellSize, align: 'center', backgroundColor: '#ffff00' };
     // set a fill and line style
     graphics.beginFill(0xFF3300);
     graphics.lineStyle(10, 0xffd900, 1);
@@ -89,7 +102,12 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.game.width / this.cellSize; i++) {
       for (let j = 0; j < this.game.height / this.cellSize; j++) {
         graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
+        // let t = `[${i}x${j}]`
+        // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
       }
     }
+  }
+
+  render() {
   }
 }

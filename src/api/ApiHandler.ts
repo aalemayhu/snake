@@ -16,20 +16,22 @@ export class ApiHandler {
     RunAllScripts() {
         scripts.forEach(element => {
             if (element !== undefined) {
+                console.log(element + 'loaded');
                 this.RunScript(element);
             }
         });
     }
 
     RunScript(path: string) {
-        (async () => {
+       // (async () => {
             const src = readFileSync(path, 'utf-8');
             const res = ts.transpile(src);
             const script = eval(res);
 
-            script.Run();
-          })().catch(err => {
+            let action = script.Run();
+            console.log(action);
+        /*  })().catch(err => {
             // error handler
-          });
+          });*/
     }
 }

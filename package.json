@@ -52,7 +52,6 @@
     "Buffer": "^0.0.0",
     "camelcase": "^5.0.0",
     "cheerio": "^1.0.0-rc.2",
-    "dynamic-modules": "^0.1.0",
     "file-saver": "^2.0.0-rc.3",
     "fs": "^0.0.1-security",
     "howler": "^2.0.7",
