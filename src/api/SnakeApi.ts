@@ -1,20 +1,39 @@
-export class Snake {
-    constructor() {}
+import {Action} from './Action';
 
-    Collect(direction) {
+export namespace Snake {
+
+    export function Collect(direction): Action {
+        let action = new Action();
+        action.ActionType = 'collect';
+        action.ActionDirection = direction;
+        return action;
     }
 
-    Attack(direction) {
+    export function Attack(direction): Action {
+        let action = new Action();
+        action.ActionType = 'attack';
+        action.ActionDirection = direction;
+        return action;
     }
 
-    Heal(direction) {
+    export function Heal(direction): Action {
+        let action = new Action();
+        action.ActionType = 'heal';
+        action.ActionDirection = direction;
+        return action;
     }
 
-    Move(direction) {
+    export function Move(direction): Action {
+        let action = new Action();
+        action.ActionType = 'move';
+        action.ActionDirection = direction;
+        return action;
     }
 
-    Watch(direction) {
+    export function Watch(direction): Action {
+        let action = new Action();
+        action.ActionType = 'watch';
+        action.ActionDirection = direction;
+        return action;
     }
-
-    Run() {}
 }

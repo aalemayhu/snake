@@ -7,14 +7,15 @@ export class Action {
         return this._actionType;
     }
     public set ActionType(v: string) {
-        this._actionType = v;
+        this._actionType = v.toLowerCase();
     }
 
+    // Example:  up
     private _actionDirection: string;
     public get ActionDirection(): string {
         return this._actionDirection;
     }
     public set ActionDirection(v: string) {
-        this._actionDirection = v;
+        this._actionDirection = v.toLowerCase();
     }
 }
