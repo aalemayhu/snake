@@ -14,7 +14,8 @@ export class Game extends Phaser.State {
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
-  private actions = ['attack', 'heal', 'collect', 'right', 'left', 'up', 'down'];
+  // 'attack', 'heal', 'collect',
+  private actions = ['right', 'left', 'up', 'down'];
 
   private cellSize = 32;
 
@@ -55,10 +56,11 @@ export class Game extends Phaser.State {
     let cellY = this.getRandomInt(this.game.height / this.cellSize);
     let x = cellX * this.cellSize;
     let y = cellY * this.cellSize;
+    console.log(`cellX=${cellX},cellY=${cellY}`)
     // TODO: check if spawn point is already taken by another user
     let s = new Snake(id, this.game, x, y, this.cellSize);
     s.tint = Phaser.Color.WHITE;
-    console.log(`${s.id}.position=${s.position}`)
+    console.log(`${s.id}.position=${s.position}`);
     return s;
   }
 
@@ -76,6 +78,9 @@ export class Game extends Phaser.State {
       let action = this.actions[index];
       this.text.setText(`${snake.id} - ${action}`);
       snake.run(action);
+      snake.clear()
+      snake.beginFill(0xd88a8a)
+      snake.drawRect(snake.position.x, snake.position.y, this.cellSize, this.cellSize)
     }
   }
 
@@ -97,7 +102,8 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.game.width / this.cellSize; i++) {
       for (let j = 0; j < this.game.height / this.cellSize; j++) {
         graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
-        // this.game.add.text(i * this.cellSize, j * this.cellSize, `${i*this.cellSize}x${j*this.cellSize}`, style);
+        // let t = `[${i}x${j}]`
+        // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
       }
     }
   }

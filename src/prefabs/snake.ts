@@ -1,40 +1,57 @@
 import Phaser from 'phaser-ce';
 
-export class Snake extends Phaser.Sprite {
+export class Snake extends Phaser.Graphics {
   readonly id: string;
   private movementUnits: number;
   private color: number;
+  private worldHeight: number;
+  private worldWidth: number;
 
   constructor(id: string, game: Phaser.Game, x: number, y: number, cellSize: number) {
-    super(game, x, y, 'snake');
+    super(game, x, y);
+
+    this.worldWidth = this.game.width;
+    this.worldHeight = this.game.height;
 
     this.id = id;
-    this.game.physics.arcade.enableBody(this);
-    this.checkWorldBounds = true;
-    this.body.collideWorldBounds = true;
     this.movementUnits = cellSize;
     this.color = 0xFF0000;
+    this.position.x = x;
+    this.position.y = y;
   }
 
   update() {
   }
 
   move(direction) {
+    console.log(`move(${direction})`)
     switch (direction) {
       case 'right': {
-        this.body.moveTo(this.position.x + this.movementUnits, this.position.y);
+        if (this.position.x + this.movementUnits >= this.worldWidth) {
+          return
+        }
+        this.position.x += this.movementUnits;
         break;
       }
       case 'left': {
-        this.body.moveTo(this.position.x - this.movementUnits, this.position.y);
+        if (this.position.x - this.movementUnits <= this.movementUnits) {
+            return
+          }
+        this.position.x -= this.movementUnits;
         break;
       }
       case 'up': {
-        this.body.moveTo(this.position.x, this.position.y + this.movementUnits);
+        if (this.position.y + this.movementUnits >= this.worldHeight) {
+            return
+          }
+        this.position.y += this.movementUnits;
         break;
       }
       case 'down': {
-        this.body.moveTo(this.position.x, this.position.y - this.movementUnits);
+        if (this.position.y - this.movementUnits <= this.movementUnits) {
+            return
+          }
+        this.position.y -= this.movementUnits;
         break;
       }
     }
