@@ -1,32 +1,31 @@
-export module GameState {
+export namespace GameState {
     let teams: String [] = new Array(100);
     let players: String [] = new Array(100);
 
     export function AddPlayerToTeam(player: string, team: string) {
-        if(teams.indexOf(team) === -1) {
+        if (teams.indexOf(team) === -1) {
             teams.push(team);
         }
-        if(players.indexOf(player) !== -1)
-        console.log('Adding to players: ' + player + '~' + team);
         players.push(player + '~' + team);
     }
 
-    export function GetTeamOfPlayer(player: string) : string {
+    export function GetTeamOfPlayer(player: string): string {
         let team = '';
+        let firstFoundEntry = null;
         players.forEach(element => {
-            if(element !== undefined){
-                if(element.startsWith(player)){
-                    console.log('Found element for player: ' + element);
-                    team = element.replace(player + '~', '')
-                    console.log('Got this team for the player: ' + team);
+            if (element !== undefined) {
+                console.log(element);
+                if (element.startsWith(player)) {
+
+                    if (firstFoundEntry !== null) {
+                        players.splice(players.indexOf(firstFoundEntry), 1);
+                    }
+                    team = element.replace(player + '~', '');
+                    firstFoundEntry = element;
                 }
             }
         });
-
-        if(team === ''){
-            console.log('cannot find player')
-        }
-
+        console.log('-------------------------------------------');
         return team;
     }
 }

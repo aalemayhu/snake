@@ -15,7 +15,7 @@ export class TwitchChat {
     // OnMessage function
     twitch.on('message', (message: Message, channelState: ChannelUserState) => {
 
-      let messageContent = message.content;
+      let messageContent = message.content.toLowerCase();
       let messageChannel = message.channel;
       let messageSender = message.displayName;
 
@@ -51,14 +51,17 @@ export class TwitchChat {
       }
 
       // Watching for !join
-      if(messageContent.startsWith('!join')) {
+      if (messageContent.startsWith('!join')) {
         let teamToJoin = messageContent.replace('!join', '').trim();
         GameState.AddPlayerToTeam (messageSender, teamToJoin);
         let joinedTeam = GameState.GetTeamOfPlayer(messageSender);
+        twitch.send('@' + messageSender + ' has joined the team: ' + joinedTeam, messageChannel);
+      }
 
-        console.log('@' + messageSender + ' has joined the team: ' + joinedTeam);
-
-        twitch.send('@' + messageSender + ' has joined the team: ' + joinedTeam, messageChannel)
+      // For debugging?
+      if (messageContent.startsWith('!team')) {
+        let joinedTeam = GameState.GetTeamOfPlayer(messageSender);
+        twitch.send('@' + messageSender + ' is in the team: ' + joinedTeam, messageChannel);
       }
     });
   }
