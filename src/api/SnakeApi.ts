@@ -20,4 +20,6 @@ export class Snake {
     Watch(direction){
 
     }
+
+    Run(){}
 }
