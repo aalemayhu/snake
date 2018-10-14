@@ -51,11 +51,14 @@ export class Game extends Phaser.State {
   }
 
   newSnake(id: string): Snake {
-    let x = this.getRandomInt(this.cellSize) * this.cellSize;
-    let y = this.getRandomInt(this.cellSize) * this.cellSize;
+    let cellX = this.getRandomInt(this.game.width / this.cellSize);
+    let cellY = this.getRandomInt(this.game.height / this.cellSize);
+    let x = cellX * this.cellSize;
+    let y = cellY * this.cellSize;
     // TODO: check if spawn point is already taken by another user
     let s = new Snake(id, this.game, x, y, this.cellSize);
     s.tint = Phaser.Color.WHITE;
+    console.log(`${s.id}.position=${s.position}`)
     return s;
   }
 
@@ -70,13 +73,15 @@ export class Game extends Phaser.State {
       let snake = this.players[i];
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-      this.text.setText(`${snake.id} - ${action}`);
-      snake.run(action);
+      // this.text.setText(`${snake.id} - ${action}`);
+      // snake.run(action);
     }
   }
 
   createGrid() {
     let graphics = this.game.add.graphics(0, 0);
+    let style = { font: '8px Arial', fill: '#ff0044', wordWrap: true,
+    wordWrapWidth: this.cellSize, align: 'center', backgroundColor: '#ffff00' };
     // set a fill and line style
     graphics.beginFill(0xFF3300);
     graphics.lineStyle(10, 0xffd900, 1);
@@ -91,6 +96,7 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.game.width / this.cellSize; i++) {
       for (let j = 0; j < this.game.height / this.cellSize; j++) {
         graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
+        this.game.add.text(i * this.cellSize, j * this.cellSize, `${i*this.cellSize}x${j*this.cellSize}`, style);
       }
     }
   }
