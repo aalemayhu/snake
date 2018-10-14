@@ -9,7 +9,7 @@
       "es2015",
       "es2016"
     ],
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": false,
     "target": "es5",
