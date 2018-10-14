@@ -3,6 +3,7 @@ import { Scraper } from '../scraping/scraper';
 
 const scraper = new Scraper();
 
+ //TwitchChat
 export class TwitchChat {
 
   constructor(username, channel, token) {
