@@ -1,27 +1,29 @@
 // Basic script skeleton
-import { Snake } from '../api/SnakeApi';
+import { SnakeApi } from '../api/SnakeApi';
 import { Action } from '../api/Action';
 
-export function run(): Action {
-    let rnd = Math.floor(Math.random() * (4 - 1 + 1)) + 4;
-    let action;
+class AnyThing implements SnakeApi.Snake {
+    Run(): Action {
+        let rnd = Math.floor(Math.random() * (4 - 1 + 1)) + 4;
+        let action;
 
-  switch (rnd) {
-    case 1:
-        action = Snake.Move('up');
-        break;
-    case 2:
-        action = Snake.Move('right');
-        break;
-    case 3:
-        action = Snake.Move('right');
-        break;
-    case 4:
-        action = Snake.Move('right');
-        break;
-    default:
-        break;
-  }
+      switch (rnd) {
+        case 1:
+            action = SnakeApi.Move('up');
+            break;
+        case 2:
+            action = SnakeApi.Move('right');
+            break;
+        case 3:
+            action = SnakeApi.Move('right');
+            break;
+        case 4:
+            action = SnakeApi.Move('right');
+            break;
+        default:
+            break;
+      }
 
-  return action;
+      return action;
+    }
 }

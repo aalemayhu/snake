@@ -1,6 +1,6 @@
-import { Snake } from './SnakeApi';
+import { SnakeApi } from './SnakeApi';
 
-let scripts: Snake [];
+let scripts: SnakeApi.Snake [];
 scripts = [];
 
 export class ApiHandler {

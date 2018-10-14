@@ -1,6 +1,6 @@
 import {Action} from './Action';
 
-export namespace Snake {
+export namespace SnakeApi {
 
     export function Collect(direction): Action {
         let action = new Action();
@@ -35,5 +35,9 @@ export namespace Snake {
         action.ActionType = 'watch';
         action.ActionDirection = direction;
         return action;
+    }
+
+    export interface Snake {
+        Run(): Action;
     }
 }
