@@ -1,22 +1,19 @@
 import Phaser from 'phaser-ce';
 
-export class Snake extends Phaser.Graphics {
+export class Snake extends Phaser.Sprite {
   readonly id: string;
-  // TODO rename movementUnits to cellSize
   private movementUnits: number;
   private color: number;
 
   constructor(id: string, game: Phaser.Game, x: number, y: number, cellSize: number) {
-    super(game, x, y);
+    super(game, x, y, 'snake');
+
     this.id = id;
     this.movementUnits = cellSize;
     this.color = 0xFF0000;
   }
 
   update() {
-    this.clear();
-    this.beginFill(this.color, 1);
-    this.drawRect(this.position.x, this.position.y, this.movementUnits, this.movementUnits);
   }
 
   move(direction) {
