@@ -137,27 +137,6 @@ export class Game extends Phaser.State {
     this.tick = this.game.time.now;
 
     this.grid.clear();
-
-    // Draw the players
-    for (let i = 0; i < this.players.length; i++) {
-      let snake = this.players[i];
-      let index = Math.floor((Math.random() * this.actions.length) | 0);
-      let action = this.actions[index];
-
-      switch (action) {
-        case 'attack':
-        // TODO: implement this
-        break;
-        case 'collect':
-        let pos = this.collect(snake);
-        if (pos.x !== -1) { snake.addBody(pos) }
-        break;
-        default:
-        snake.move(action);
-      }
-      snake.draw(this.grid);
-    }
-
     // Make sure we have enough treats on screen
     for (;this.treats.length < this.expectedTreatCount;) {
       this.spawnTreat()
@@ -167,6 +146,26 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.treats.length; i++) {
       let treat = this.treats[i];
       treat.draw(this.grid);
+    }
+
+    // Draw the players
+    for (let i = 0; i < this.players.length; i++) {
+      let snake = this.players[i];
+      let index = Math.floor((Math.random() * this.actions.length) | 0);
+      let action = this.actions[index];
+
+      switch (action) {
+      case 'attack':
+        // TODO: implement this
+        break;
+      case 'collect':
+        let pos = this.collect(snake);
+        if (pos.x !== -1) { snake.addBody(pos) }
+        break;
+      default:
+        snake.move(action);
+      }
+      snake.draw(this.grid);
     }
   }
 
