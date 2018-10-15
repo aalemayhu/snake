@@ -39,7 +39,7 @@ export class Game extends Phaser.State {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       this.game.add.existing(snake);
-      snake.draw()
+      snake.draw();
     }
 
     // this.cursors = this.game.input.keyboard.createCursorKeys();

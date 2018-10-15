@@ -17,7 +17,7 @@ export class Scraper {
             axios.get(url)
                 .then((d) => {
                     resolve(
-                        'https://gist.github.com/' + 
+                        'https://gist.github.com/' +
                         require('cheerio').load(d.data)('.file-actions .btn').attr('href')
                     );
                 });
