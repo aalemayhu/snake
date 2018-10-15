@@ -24,7 +24,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 32;
+  private expectedTreatCount = 5;
 
   public create(): void {
     // Testing ApiHandler
@@ -87,7 +87,7 @@ export class Game extends Phaser.State {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-  newTreat(): Treat {
+  spawnTreat() {
     // TODO: check if spawn point is already taken
     let x = this.getRandomInt(this.cellX);
     let y = this.getRandomInt(this.cellY);
@@ -96,7 +96,7 @@ export class Game extends Phaser.State {
       y = this.getRandomInt(this.cellY);
       // TODO: give up after trying x times
     }
-    return new Treat(Phaser.Color.GRAY, this.game, x, y, this.cellSize)
+    this.treats.push(new Treat(Phaser.Color.GRAY, this.game, x, y, this.cellSize))
   }
 
   newSnake(id: string): Snake {
@@ -107,6 +107,29 @@ export class Game extends Phaser.State {
     return s;
   }
 
+  collect(snake: Snake): boolean {
+    let snakeRect = new Phaser.Rectangle(
+      snake.position.x * this.cellX,
+      snake.position.y * this.cellY,
+      this.cellSize, this.cellSize
+    )
+    for (let i = 0; i < this.treats.length; i++) {
+      let treat = this.treats[i];
+      let treatRect = new Phaser.Rectangle(
+        treat.position.x * this.cellX,
+        treat.position.y * this.cellY,
+        this.cellSize, this.cellSize
+      )
+      let intersects = Phaser.Rectangle.intersection(treatRect, snakeRect);
+      console.log(`intersects==${intersects}`);
+      if (!intersects.empty) {
+        this.treats.splice(i, 1);
+        return true;
+      }
+    }
+    return false
+  }
+
   public update(): void {
     this.game.input.update();
     let tock = this.game.time.now - this.tick;
@@ -115,6 +138,7 @@ export class Game extends Phaser.State {
     this.tick = this.game.time.now;
 
     this.grid.clear();
+
     // Draw the players
     for (let i = 0; i < this.players.length; i++) {
       let snake = this.players[i];
@@ -122,12 +146,16 @@ export class Game extends Phaser.State {
       let action = this.actions[index];
       snake.run(action);
       snake.draw(this.grid);
+      if (this.collect(snake)) {
+        // TODO: update body
+      }
     }
 
     // Make sure we have enough treats on screen
     for (;this.treats.length < this.expectedTreatCount;) {
-      this.treats.push(this.newTreat())
+      this.spawnTreat()
     }
+
     // Draw the treats
     for (let i = 0; i < this.treats.length; i++) {
       let treat = this.treats[i];
