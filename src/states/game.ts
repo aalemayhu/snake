@@ -23,7 +23,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 25;
+  private expectedTreatCount = 50;
 
   public create(): void {
     // Testing ApiHandler
