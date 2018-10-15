@@ -41,7 +41,7 @@ export class Game extends Phaser.State {
     // Add debugging colors
     if (i === 0) { snake.color = Phaser.Color.RED; }
     if (i === 1) { snake.color = Phaser.Color.GREEN; }
-    if (i === 2) { snake.color = Phaser.Color.BLUE; }
+    if (i === 2) { snake.color = Phaser.Color.AQUA; }
 
     snake.draw(this.grid)
   }
@@ -78,7 +78,8 @@ public update(): void {
     let snake = this.players[i];
     let index = Math.floor((Math.random() * this.actions.length) | 0);
     let action = this.actions[index];
-    // snake.run(action);
+    snake.run(action);
+    snake.draw(this.grid)
   }
 }
 
