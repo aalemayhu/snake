@@ -4,6 +4,7 @@ import Phaser from 'phaser-ce';
 
 import {Sound} from '../helpers/sound';
 import {Snake} from '../prefabs/Snake';
+import { ApiHandler } from '../api/ApiHandler';
 
 export class Game extends Phaser.State {
   private players: Snake[];
@@ -16,10 +17,17 @@ export class Game extends Phaser.State {
   private loopTick = 1000;
   // 'attack', 'heal', 'collect',
   private actions = ['right', 'left', 'up', 'down'];
+  private h: ApiHandler;
 
   private cellSize = 32;
 
   public create(): void {
+    // Testing ApiHandler
+    this.h = new ApiHandler();
+    this.h.AddScripts();
+    this.h.GetAllScripts();
+    // ------------------
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createGrid();
     this.game.load.image('snake', 'assets/sprites/snake.png');
@@ -65,6 +73,10 @@ export class Game extends Phaser.State {
   }
 
   public update(): void {
+    // Testing ApiHandler
+    this.h.RunScript();
+    // ------------------
+
     this.game.input.update();
     let tock = this.game.time.now - this.tick;
     // Limit the run loop to every x
