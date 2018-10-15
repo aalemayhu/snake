@@ -22,9 +22,9 @@ export class Game extends Phaser.State {
 
   public create(): void {
     // Testing ApiHandler
-    this.h = new ApiHandler();
-    this.h.AddScripts();
-    this.h.GetAllScripts();
+    //this.h = new ApiHandler();
+    //this.h.AddScripts();
+    //this.h.GetAllScripts();
     // ------------------
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -72,7 +72,7 @@ export class Game extends Phaser.State {
 
   public update(): void {
     // Testing ApiHandler
-    this.h.RunScript();
+    //this.h.RunScript();
     // ------------------
 
     this.game.input.update();
