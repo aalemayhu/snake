@@ -74,6 +74,7 @@ public update(): void {
   if (tock < this.loopTick) { return; }
   this.tick = this.game.time.now;
 
+  this.grid.clear();
   for (let i = 0; i < this.players.length; i++) {
     let snake = this.players[i];
     let index = Math.floor((Math.random() * this.actions.length) | 0);
