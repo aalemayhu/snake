@@ -29,7 +29,6 @@ export class Game extends Phaser.State {
     this.cellX = this.game.width / this.cellSize;
     this.cellY = this.game.height / this.cellSize;
 
-    // TODO: movement as grid units
     // TODO: figure out how big a snake is supposed be, for now make it tuneable
     // TODO: add collision detection for snakes, world boundary, fruits
     this.players = [];
@@ -45,8 +44,6 @@ export class Game extends Phaser.State {
 
     snake.draw(this.grid)
   }
-
-  // this.cursors = this.game.input.keyboard.createCursorKeys();
 
   this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   this.spaceKey.onDown.add(() => {
