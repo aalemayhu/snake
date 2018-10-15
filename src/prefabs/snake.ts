@@ -23,6 +23,19 @@ export class Snake extends Phaser.Graphics {
   update() {
   }
 
+  draw() {
+    this.lineStyle(1, 0x0000FF, 1);
+    this.beginFill(0xd88a8a);
+    this.drawRect(
+      this.position.x,
+      this.position.y,
+      this.movementUnits,
+      this.movementUnits
+    );
+
+    console.log(`${this.id}.drawRect(${this.position}, ${this.movementUnits})`);
+  }
+
   move(direction) {
     console.log(`move(${direction})`);
     switch (direction) {

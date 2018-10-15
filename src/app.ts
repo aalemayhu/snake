@@ -25,4 +25,3 @@ class Template extends Phaser.Game {
 window.onload = () => {
     new Template();
 };
-
