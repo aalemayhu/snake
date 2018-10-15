@@ -10,7 +10,6 @@ export class Game extends Phaser.State {
   private grid: Phaser.Line[];
   private Snake: Snake;
   // private cursors: Phaser.CursorKeys;
-  private text: Phaser.BitmapText;
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
@@ -23,8 +22,6 @@ export class Game extends Phaser.State {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createGrid();
     this.game.load.image('snake', 'assets/sprites/snake.png');
-    this.text = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 100, 'font', 'Press Arrows / Space', 15);
-    this.text.x = this.text.x - ~~(this.text.width * 0.5);
 
     // TODO: movement as grid units
     // TODO: figure out how big a snake is supposed be, for now make it tuneable
@@ -34,6 +31,7 @@ export class Game extends Phaser.State {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       this.game.add.existing(snake);
+      snake.draw()
     }
 
     // this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -56,7 +54,7 @@ export class Game extends Phaser.State {
     let cellY = this.getRandomInt(this.game.height / this.cellSize);
     let x = cellX * this.cellSize;
     let y = cellY * this.cellSize;
-    console.log(`cellX=${cellX},cellY=${cellY}`)
+    console.log(`cellX=${cellX},cellY=${cellY}`);
     // TODO: check if spawn point is already taken by another user
     let s = new Snake(id, this.game, x, y, this.cellSize);
     s.tint = Phaser.Color.WHITE;
@@ -69,18 +67,13 @@ export class Game extends Phaser.State {
     let tock = this.game.time.now - this.tick;
     // Limit the run loop to every x
     if (tock < this.loopTick) { return; }
-    console.log('update()');
     this.tick = this.game.time.now;
 
     for (let i = 0; i < this.players.length; i++) {
       let snake = this.players[i];
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-      this.text.setText(`${snake.id} - ${action}`);
-      snake.run(action);
-      snake.clear()
-      snake.beginFill(0xd88a8a)
-      snake.drawRect(snake.position.x, snake.position.y, this.cellSize, this.cellSize)
+      // snake.run(action);
     }
   }
 
@@ -102,12 +95,9 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.game.width / this.cellSize; i++) {
       for (let j = 0; j < this.game.height / this.cellSize; j++) {
         graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
-        // let t = `[${i}x${j}]`
+        // let t = `[${i * this.cellSize}x${j * this.cellSize}]`
         // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
       }
     }
-  }
-
-  render() {
   }
 }

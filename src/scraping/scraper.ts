@@ -1,6 +1,7 @@
 import rp from 'request-promise';
 import cheerio from 'cheerio';
 import request from 'request';
+import axios from 'axios';
 import fs from 'fs';
 import filesaver from 'file-saver';
 
@@ -13,13 +14,13 @@ export class Scraper {
                 resolve(url);
             }
 
-            request(url, (err, res, body) => {
-                if (err) {
-                    reject(err);
-                }
-
-                resolve('https://gist.github.com/' + cheerio.load(body)('.file-actions .btn').href());
-            });
+            axios.get(url)
+                .then((d) => {
+                    resolve(
+                        'https://gist.github.com/' + 
+                        require('cheerio').load(d.data)('.file-actions .btn').attr('href')
+                    );
+                });
         });
     }
 
