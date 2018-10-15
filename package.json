@@ -66,7 +66,7 @@
     "stream": "^0.0.2",
     "ts-node": "^7.0.1",
     "ts-node-dev": "^1.0.0-pre.30",
-    "twitch-wrapper-ts": "github:scanf/twitch-wrapper-ts",
+    "twitch-wrapper-ts": "^1.0.1",
     "web-request": "^1.0.7",
     "ws": "^6.1.0"
   }
