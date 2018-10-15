@@ -14,8 +14,7 @@ export class Game extends Phaser.State {
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
-  // 'attack', 'heal', 'collect',
-  private actions = ['right', 'left', 'up', 'down'];
+  private actions = ['attack', 'heal', 'collect', 'right', 'left', 'up', 'down'];
   private h: ApiHandler;
 
   private grid: Phaser.Graphics;
@@ -24,7 +23,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 5;
+  private expectedTreatCount = 25;
 
   public create(): void {
     // Testing ApiHandler
@@ -107,7 +106,7 @@ export class Game extends Phaser.State {
     return s;
   }
 
-  collect(snake: Snake): boolean {
+  collect(snake: Snake): Phaser.Point {
     let snakeRect = new Phaser.Rectangle(
       snake.position.x * this.cellX,
       snake.position.y * this.cellY,
@@ -124,10 +123,10 @@ export class Game extends Phaser.State {
       console.log(`intersects==${intersects}`);
       if (!intersects.empty) {
         this.treats.splice(i, 1);
-        return true;
+        return treat.position;
       }
     }
-    return false
+    return new Phaser.Point(-1, -1);
   }
 
   public update(): void {
@@ -144,11 +143,19 @@ export class Game extends Phaser.State {
       let snake = this.players[i];
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-      snake.run(action);
-      snake.draw(this.grid);
-      if (this.collect(snake)) {
-        // TODO: update body
+
+      switch (action) {
+        case 'attack':
+        // TODO: implement this
+        break;
+        case 'collect':
+        let pos = this.collect(snake);
+        if (pos.x !== -1) { snake.addBody(pos) }
+        break;
+        default:
+        snake.move(action);
       }
+      snake.draw(this.grid);
     }
 
     // Make sure we have enough treats on screen
