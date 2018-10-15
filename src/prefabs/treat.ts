@@ -16,7 +16,7 @@ export class Treat extends Phaser.Graphics {
   }
 
   draw(graphics) {
-    graphics.lineStyle(0.1, 0x0000FF, 1);
+    graphics.lineStyle(0.5, 0x0000FF, 1);
     // graphics.beginFill(this.color);
     graphics.drawRect(
       this.position.x * this.cellSize,
