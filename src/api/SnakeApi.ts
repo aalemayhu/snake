@@ -31,6 +31,7 @@ export namespace SnakeApi {
     }
 
     export function Watch(direction): Action {
+        // TODO Has to return something else
         let action = new Action();
         action.ActionType = 'watch';
         action.ActionDirection = direction;

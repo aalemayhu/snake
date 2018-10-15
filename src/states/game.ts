@@ -4,6 +4,7 @@ import Phaser from 'phaser-ce';
 
 import {Sound} from '../helpers/sound';
 import {Snake} from '../prefabs/Snake';
+import { ApiHandler } from '../api/ApiHandler';
 
 export class Game extends Phaser.State {
   private players: Snake[];
@@ -14,6 +15,7 @@ export class Game extends Phaser.State {
   private loopTick = 1000;
   // 'attack', 'heal', 'collect',
   private actions = ['right', 'left', 'up', 'down'];
+  private h: ApiHandler;
 
   private grid: Phaser.Graphics;
 
@@ -22,6 +24,12 @@ export class Game extends Phaser.State {
   private cellY: number;
 
   public create(): void {
+    // Testing ApiHandler
+    this.h = new ApiHandler();
+    this.h.AddScripts();
+    this.h.GetAllScripts();
+    // ------------------
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createGrid();
     this.grid = this.game.add.graphics(0, 0);
@@ -37,71 +45,73 @@ export class Game extends Phaser.State {
       this.players.push(snake);
       this.game.add.existing(snake);
 
-    // Add debugging colors
-    if (i === 0) { snake.color = Phaser.Color.RED; }
-    if (i === 1) { snake.color = Phaser.Color.GREEN; }
-    if (i === 2) { snake.color = Phaser.Color.AQUA; }
+      // Add debugging colors
+      if (i === 0) { snake.color = Phaser.Color.RED; }
+      if (i === 1) { snake.color = Phaser.Color.GREEN; }
+      if (i === 2) { snake.color = Phaser.Color.AQUA; }
 
-    snake.draw(this.grid)
+      snake.draw(this.grid)
+    }
+
+    this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    this.spaceKey.onDown.add(() => {
+      Sound.play();
+    }, this);
+    this.tick = this.game.time.now;
   }
 
-  this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.spaceKey.onDown.add(() => {
-    Sound.play();
-  }, this);
-  this.tick = this.game.time.now;
-}
-
-getRandomInt(max): number {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-newSnake(id: string): Snake {
-  let x = this.getRandomInt(this.cellX);
-  let y = this.getRandomInt(this.cellY);
-  // TODO: check if spawn point is already taken by another user
-  let s = new Snake(id, this.game, x, y, this.cellSize);
-  return s;
-}
-
-public update(): void {
-  this.game.input.update();
-  let tock = this.game.time.now - this.tick;
-  // Limit the run loop to every x
-  if (tock < this.loopTick) { return; }
-  this.tick = this.game.time.now;
-
-  this.grid.clear();
-  for (let i = 0; i < this.players.length; i++) {
-    let snake = this.players[i];
-    let index = Math.floor((Math.random() * this.actions.length) | 0);
-    let action = this.actions[index];
-    snake.run(action);
-    snake.draw(this.grid)
+  getRandomInt(max): number {
+    return Math.floor(Math.random() * Math.floor(max));
   }
-}
 
-createGrid() {
-  let graphics = this.game.add.graphics(0, 0);
-  let style = { font: '8px Arial', fill: '#ff0044', wordWrap: true,
-  wordWrapWidth: this.cellSize, align: 'center', backgroundColor: '#ffff00' };
-  // set a fill and line style
-  graphics.beginFill(0xFF3300);
-  graphics.lineStyle(10, 0xffd900, 1);
+  newSnake(id: string): Snake {
+    let x = this.getRandomInt(this.cellX);
+    let y = this.getRandomInt(this.cellY);
+    // TODO: check if spawn point is already taken by another user
+    let s = new Snake(id, this.game, x, y, this.cellSize);
+    return s;
+  }
 
-  // set a fill and line style again
-  graphics.lineStyle(10, 0xFF0000, 0.8);
-  graphics.beginFill(0xFF700B, 1);
+  public update(): void {
+    // Testing ApiHandler
+    this.h.RunScript();
+    this.game.input.update();
+    let tock = this.game.time.now - this.tick;
+    // Limit the run loop to every x
+    if (tock < this.loopTick) { return; }
+    this.tick = this.game.time.now;
 
-  // draw a rectangle
-  graphics.lineStyle(2, 0x0000FF, 1);
-
-  for (let i = 0; i < this.game.width / this.cellSize; i++) {
-    for (let j = 0; j < this.game.height / this.cellSize; j++) {
-      // graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
-      // let t = `[${i * this.cellSize}x${j * this.cellSize}]`
-      // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
+    this.grid.clear();
+    for (let i = 0; i < this.players.length; i++) {
+      let snake = this.players[i];
+      let index = Math.floor((Math.random() * this.actions.length) | 0);
+      let action = this.actions[index];
+      snake.run(action);
+      snake.draw(this.grid)
     }
   }
-}
+
+  createGrid() {
+    let graphics = this.game.add.graphics(0, 0);
+    let style = { font: '8px Arial', fill: '#ff0044', wordWrap: true,
+    wordWrapWidth: this.cellSize, align: 'center', backgroundColor: '#ffff00' };
+    // set a fill and line style
+    graphics.beginFill(0xFF3300);
+    graphics.lineStyle(10, 0xffd900, 1);
+
+    // set a fill and line style again
+    graphics.lineStyle(10, 0xFF0000, 0.8);
+    graphics.beginFill(0xFF700B, 1);
+
+    // draw a rectangle
+    graphics.lineStyle(2, 0x0000FF, 1);
+
+    for (let i = 0; i < this.game.width / this.cellSize; i++) {
+      for (let j = 0; j < this.game.height / this.cellSize; j++) {
+        // graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
+        // let t = `[${i * this.cellSize}x${j * this.cellSize}]`
+        // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
+      }
+    }
+  }
 }

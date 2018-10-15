@@ -1,13 +1,12 @@
+import test from 'ava';
+
 import { Scraper } from '../src/scraping/scraper';
-import { expect } from 'chai';
 
-import 'mocha';
+const uri = 'https://gist.github.com/Nyasaki/7ead02f517bc23fad8f58abc46fa8dab';
+const raw = '/raw/5baf3b0387e7c59204aab909ab1371752df73af7/nyasaki_de.ts';
 
-describe("scrape", () => {
-    const s = new Scraper();
+test('scrape', async (t) => {
+    const res = await Scraper.GetRawUrl(uri);
 
-    it("should return raw url", () => {
-        console.log(s);
-        expect(true).to.equal(true);
-    });
+    t.is(uri + raw, res);
 });
