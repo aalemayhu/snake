@@ -85,9 +85,13 @@ export class Snake extends Phaser.Graphics {
   public move(direction) {
     console.log(`move(${direction})`);
     this.read(direction);
+    let headPosition = new Phaser.Point(
+        this.snakeBody[this.snakeBody.length-1].x,
+        this.snakeBody[this.snakeBody.length-1].y
+    )
     let newPosition = new Phaser.Point(
-      this.moveDirection.x + this.snakeBody[0].x,
-      this.moveDirection.y + this.snakeBody[0].y
+      this.moveDirection.x + headPosition.x,
+      this.moveDirection.y + headPosition.y
     );
     if (newPosition.x >= this.cellX || newPosition.x <= 0 ||
       newPosition.y >= this.cellY || newPosition.y <= 0) {
