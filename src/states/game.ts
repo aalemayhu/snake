@@ -46,7 +46,6 @@ export class Game extends Phaser.State {
     for (let i = 0; i < 3; i++) {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
-      this.game.add.existing(snake);
       snake.draw(this.grid)
     }
 
@@ -59,8 +58,8 @@ export class Game extends Phaser.State {
 
   isCellAvailable(x, y): boolean {
     for (let i = 0; i < this.players.length; i++) {
-      let snake = this.players[i];
-      if (snake.position.x == x && snake.position.y == y) {
+      let snakePosition = this.players[i].getHeadPosition();
+      if (snakePosition.x == x && snakePosition.y == y) {
         return false;
       }
     }
@@ -103,13 +102,8 @@ export class Game extends Phaser.State {
   collect(snake: Snake): Phaser.Point {
     for (let i = 0; i < this.treats.length; i++) {
       let treat = this.treats[i];
-      let treatRect = new Phaser.Rectangle(
-        treat.position.x * this.cellX,
-        treat.position.y * this.cellY,
-        this.cellSize, this.cellSize
-      )
-      if (snake.position.x === treat.position.x &&
-        snake.position.y === treat.position.y) {
+      if (snake.collidesWith(treat.position)) {
+        console.log('found treat!');
         this.treats.splice(i, 1);
         return treat.position;
       }
@@ -141,20 +135,24 @@ export class Game extends Phaser.State {
       let snake = this.players[i];
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-
-      switch (action) {
-      case 'attack':
-        // TODO: implement this
-        break;
-      case 'collect':
-        let pos = this.collect(snake);
-        if (pos.x !== -1) { snake.addBody(pos) }
-        break;
-      default:
-        snake.move(action);
-      }
-      snake.draw(this.grid);
+      this.handle(action, snake);
     }
+  }
+
+  handle(action, snake) {
+    console.log(`handle(${action}, ${snake.id})`)
+    let pos = this.collect(snake);
+    if (pos.x !== -1) { snake.addBody(pos) }
+    switch (action) {
+    case 'attack':
+      // TODO: implement this
+      break;
+    case 'collect':
+      break;
+    default:
+      snake.move(action);
+    }
+    snake.draw(this.grid);
   }
 
   createGrid() {

@@ -1,6 +1,6 @@
 import Phaser from 'phaser-ce';
 
-export class Snake extends Phaser.Graphics {
+export class Snake {
   readonly id: string;
   private cellSize: number;
   public color: number;
@@ -18,14 +18,13 @@ export class Snake extends Phaser.Graphics {
   private canTurn = true;
 
   constructor(id: string, game: Phaser.Game, x: number, y: number, cellSize: number) {
-    super(game, x, y);
     this.snakeBody = [];
     this.id = id;
     this.cellSize = cellSize;
     this.color = Phaser.Color.BLACK;
     this.snakeBody.push(new Phaser.Point(x, y))
-    this.cellX = this.game.width / this.cellSize;
-    this.cellY = this.game.height / this.cellSize;
+    this.cellX = game.width / this.cellSize;
+    this.cellY = game.height / this.cellSize;
     this.moveDirection = this.NORTH;
   }
 
@@ -45,7 +44,6 @@ export class Snake extends Phaser.Graphics {
     }
 
     graphics.endFill()
-    console.log(`${this.id}.drawRect(${this.position}, ${this.cellSize})`);
   }
 
   read(direction) {
@@ -77,6 +75,13 @@ export class Snake extends Phaser.Graphics {
     }
   }
 
+  getHeadPosition(): Phaser.Point {
+    return new Phaser.Point(
+      this.snakeBody[this.snakeBody.length-1].x,
+      this.snakeBody[this.snakeBody.length-1].y
+    )
+  }
+
   public addBody(pos: Phaser.Point) {
     this.snakeBody.push(pos);
   }
@@ -84,10 +89,7 @@ export class Snake extends Phaser.Graphics {
   public move(direction) {
     console.log(`move(${direction})`);
     this.read(direction);
-    let headPosition = new Phaser.Point(
-      this.snakeBody[this.snakeBody.length-1].x,
-      this.snakeBody[this.snakeBody.length-1].y
-    )
+    let headPosition = this.getHeadPosition();
     let newPosition = new Phaser.Point(
       this.moveDirection.x + headPosition.x,
       this.moveDirection.y + headPosition.y
@@ -101,5 +103,11 @@ export class Snake extends Phaser.Graphics {
       this.snakeBody.splice(0, 1);
       this.snakeBody.push(newPosition);
     }
+  }
+
+  public collidesWith(position: Phaser.Point): boolean {
+    let headPosition = this.getHeadPosition();
+    return headPosition.x == position.x &&
+    headPosition.y == position.y;
   }
 }
