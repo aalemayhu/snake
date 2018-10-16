@@ -38,7 +38,7 @@ export class Snake {
       graphics.drawRect(s.x * this.cellSize, s.y * this.cellSize,
         this.cellSize, this.cellSize
       );
-    })
+    });
     graphics.endFill();
   }
 
