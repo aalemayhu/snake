@@ -21,7 +21,7 @@ export class Snake {
     this.snakeBody = [];
     this.id = id;
     this.cellSize = cellSize;
-    this.color = Phaser.Color.getRandomColor();
+    this.color = Phaser.Color.getRandomColor(40, 100);
     this.snakeBody.push(new Phaser.Point(x, y));
     this.cellX = game.width / this.cellSize;
     this.cellY = game.height / this.cellSize;
