@@ -31,6 +31,7 @@ export class Game extends Phaser.State {
     //this.h.GetAllScripts();
     // ------------------
 
+    this.game.stage.disableVisibilityChange = true;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createGrid();
     this.grid = this.game.add.graphics(0, 0);
