@@ -34,16 +34,11 @@ export class Snake {
 
   draw(graphics) {
     graphics.beginFill(this.color);
-    for (let i = 0; i < this.snakeBody.length; i++) {
-      let position = this.snakeBody[i];
-      graphics.drawRect(
-        position.x * this.cellSize,
-        position.y * this.cellSize,
-        this.cellSize,
-        this.cellSize
+    this.snakeBody.forEach(s => {
+      graphics.drawRect(s.x * this.cellSize, s.y * this.cellSize,
+        this.cellSize, this.cellSize
       );
-    }
-
+    })
     graphics.endFill();
   }
 
@@ -105,7 +100,6 @@ export class Snake {
   }
 
   public move(direction) {
-    console.log(`move(${direction})`);
     this.read(direction);
     let headPosition = this.getHeadPosition();
     let newPosition = new Phaser.Point(

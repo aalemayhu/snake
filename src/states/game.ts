@@ -12,7 +12,7 @@ export class Game extends Phaser.State {
   private Snake: Snake;
   private spaceKey: Phaser.Key;
   private tick: number;
-  private loopTick = 1000;
+  private loopTick = 500;
   private actions = ['attack', 'heal', 'collect', 'right', 'left', 'up', 'down'];
   private h: ApiHandler;
 
@@ -22,7 +22,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 50;
+  private expectedTreatCount = 150;
   private isDebugMode = true;
 
   public create(): void {
@@ -65,7 +65,7 @@ export class Game extends Phaser.State {
     }, this);
     this.createGrid();
     // For debugging add three snakes
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 3; i++) {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       snake.draw(this.grid);
@@ -102,6 +102,7 @@ export class Game extends Phaser.State {
     });
     if (index < 0) { return; }
     this.treats.splice(index, 1);
+    snake.addBody(position);
   }
 
   attack(snake: Snake, position: Phaser.Point) {
@@ -154,11 +155,12 @@ export class Game extends Phaser.State {
       // TODO: receive the action from the ApiHandler
       let index = this.game.rnd.integerInRange(0, this.actions.length - 1);
       let action = this.actions[index];
-      this.handle(action, snake, this.getRandomPosition());
+      this.handle(action, snake, snake.getHeadPosition());
     }
   }
 
   handle(action, snake, position) {
+    console.log(`handle(${action}, ${snake.id}, ...)`);
     switch (action) {
     case 'attack':
       this.attack(snake, position);
