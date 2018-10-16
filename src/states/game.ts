@@ -142,11 +142,8 @@ export class Game extends Phaser.State {
     }
 
     // Draw the treats
-    for (let i = 0; i < this.treats.length; i++) {
-      let treat = this.treats[i];
-      treat.draw(this.grid);
-    }
-
+    this.treats.forEach(t => { t.draw(this.grid); })
+    
     // Draw the players
     for (let i = 0; i < this.players.length; i++) {
       let snake = this.players[i];
