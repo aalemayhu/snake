@@ -20,7 +20,7 @@ export class Treat extends Phaser.Graphics {
     graphics.drawRoundedRect(
       this.position.x * this.cellSize,
       this.position.y * this.cellSize,
-      this.cellSize, this.cellSize
+      this.cellSize * 0.9, this.cellSize * 0.9, 6
     );
     // graphics.quadraticCurveT
     graphics.endFill();

@@ -87,8 +87,7 @@ export class Game extends Phaser.State {
 
   spawnTreat() {
     let pos = this.getRandomPosition();
-    let t = new Treat(
-      Phaser.Color.BLACK, this.game, pos.x, pos.y, this.cellSize);
+    let t = new Treat(0x3cb043, this.game, pos.x, pos.y, this.cellSize);
     this.treats.push(t);
   }
 
@@ -151,8 +150,6 @@ export class Game extends Phaser.State {
 
     // Draw the treats
     this.treats.forEach(t => {
-      let colors = [0xE3170D,0x9D1309,0xF22C1E];
-      t.color = colors[this.game.rnd.integerInRange(0, colors.length-1)];
       t.draw(this.grid);
     });
 
