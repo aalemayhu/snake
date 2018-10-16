@@ -23,6 +23,7 @@ export class Game extends Phaser.State {
   private cellY: number;
   private treats: Treat[];
   private expectedTreatCount = 50;
+  private isDebugMode = true;
 
   public create(): void {
     // Testing ApiHandler
@@ -30,30 +31,15 @@ export class Game extends Phaser.State {
     //this.h.AddScripts();
     //this.h.GetAllScripts();
     // ------------------
-
     this.game.stage.disableVisibilityChange = true;
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.createGrid();
     this.grid = this.game.add.graphics(0, 0);
+    this.cellX = this.game.width / this.cellSize;
+    this.cellY = this.game.height / this.cellSize;
+    this.tick = this.game.time.now;
     this.players = [];
     this.treats = [];
 
-    this.cellX = this.game.width / this.cellSize;
-    this.cellY = this.game.height / this.cellSize;
-
-    // TODO: figure out how big a snake is supposed be, for now make it tuneable
-    // TODO: add collision detection for snakes, world boundary, fruits
-    for (let i = 0; i < 3; i++) {
-      let snake = this.newSnake(`snake-${i}`);
-      this.players.push(snake);
-      snake.draw(this.grid)
-    }
-
-    this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.spaceKey.onDown.add(() => {
-      Sound.play();
-    }, this);
-    this.tick = this.game.time.now;
+    this.debugMode();
   }
 
   isCellAvailable(x, y): boolean {
@@ -75,12 +61,25 @@ export class Game extends Phaser.State {
     return true;
   }
 
+  debugMode() {
+    this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    this.spaceKey.onDown.add(() => {
+      Sound.play();
+    }, this);
+    this.createGrid();
+    // For debugging add three snakes
+    for (let i = 0; i < 3; i++) {
+      let snake = this.newSnake(`snake-${i}`);
+      this.players.push(snake);
+      snake.draw(this.grid)
+    }
+  }
+
   getRandomInt(max): number {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-  spawnTreat() {
-    // TODO: check if spawn point is already taken
+  getRandomPosition(): Phaser.Point {
     let x = this.getRandomInt(this.cellX);
     let y = this.getRandomInt(this.cellY);
     while (!this.isCellAvailable(x, y)) {
@@ -88,27 +87,49 @@ export class Game extends Phaser.State {
       y = this.getRandomInt(this.cellY);
       // TODO: give up after trying x times
     }
-    this.treats.push(new Treat(Phaser.Color.GREEN, this.game, x, y, this.cellSize))
+    return new Phaser.Point(x, y);
+  }
+
+  spawnTreat() {
+    let pos = this.getRandomPosition();
+    let t = new Treat(
+      Phaser.Color.GREEN, this.game, pos.x, pos.y, this.cellSize);
+    this.treats.push(t);
   }
 
   newSnake(id: string): Snake {
-    let x = this.getRandomInt(this.cellX);
-    let y = this.getRandomInt(this.cellY);
-    // TODO: check if spawn point is already taken by another user
-    let s = new Snake(id, this.game, x, y, this.cellSize);
+    let pos = this.getRandomPosition();
+    let s = new Snake(id, this.game, pos.x, pos.y, this.cellSize);
     return s;
   }
 
-  collect(snake: Snake): Phaser.Point {
-    for (let i = 0; i < this.treats.length; i++) {
-      let treat = this.treats[i];
-      if (snake.collidesWith(treat.position)) {
-        console.log('found treat!');
-        this.treats.splice(i, 1);
-        return treat.position;
+  collect(snake: Snake, position: Phaser.Point) {
+    let index = this.treats.findIndex(function (e) {
+      return e.position.equals(position);
+    });
+    if (index < 0) { return; }
+    this.treats.splice(index, 1);
+  }
+
+  attack(snake: Snake, position: Phaser.Point) {
+    // Perform sanity check
+    if (snake.getHeadPosition().equals(position)) {
+      console.log('aborting attack position is same as head');
+      return;
+    }
+    // Find the snake which matches the position
+    for (let i = 0; i < this.players.length; i++) {
+      let otherSnake = this.players[i];
+      // Find the body part
+      let parts = otherSnake.getBody();
+      for (let j = 0; j < parts.length; j++) {
+        let other = parts[j];
+        // Remove the attacked part
+        if (other.equals(position)) {
+          otherSnake.removeBody(position);
+        }
       }
     }
-    return new Phaser.Point(-1, -1);
   }
 
   public update(): void {
@@ -133,21 +154,22 @@ export class Game extends Phaser.State {
     // Draw the players
     for (let i = 0; i < this.players.length; i++) {
       let snake = this.players[i];
+
+      // TODO: receive the action from the ApiHandler
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
-      this.handle(action, snake);
+      this.handle(action, snake, this.getRandomPosition());
     }
   }
 
-  handle(action, snake) {
+  handle(action, snake, position) {
     console.log(`handle(${action}, ${snake.id})`)
     switch (action) {
     case 'attack':
-      // TODO: implement this
+      this.attack(snake, position);
       break;
     case 'collect':
-      let pos = this.collect(snake);
-      if (pos.x !== -1) { snake.addBody(pos) }
+      this.collect(snake, position);
       break;
     default:
       snake.move(action);

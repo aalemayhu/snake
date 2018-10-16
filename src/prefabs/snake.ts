@@ -21,7 +21,7 @@ export class Snake {
     this.snakeBody = [];
     this.id = id;
     this.cellSize = cellSize;
-    this.color = Phaser.Color.getRandomColor();
+    this.color = Phaser.Color.BLACK;//Phaser.Color.getRandomColor();
     this.snakeBody.push(new Phaser.Point(x, y))
     this.cellX = game.width / this.cellSize;
     this.cellY = game.height / this.cellSize;
@@ -84,6 +84,18 @@ export class Snake {
 
   public addBody(pos: Phaser.Point) {
     this.snakeBody.push(pos);
+  }
+
+  public removeBody(pos: Phaser.Point) {
+    let index = this.snakeBody.findIndex(function (e) {
+      return e.equals(pos);
+    });
+    if (index < 0) { return; }
+    this.snakeBody.splice(index, 1);
+  }
+
+  public getBody(): Phaser.Point[] {
+    return this.snakeBody;
   }
 
   public move(direction) {
