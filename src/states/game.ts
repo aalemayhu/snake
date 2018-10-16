@@ -12,7 +12,7 @@ export class Game extends Phaser.State {
   private Snake: Snake;
   private spaceKey: Phaser.Key;
   private tick: number;
-  private loopTick = 500;
+  private loopTick = 125;
   private actions = ['heal', 'right', 'left', 'up', 'down'];
   private h: ApiHandler;
 
@@ -22,7 +22,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 150;
+  private expectedTreatCount = 32;
   private isDebugMode = true;
 
   public create(): void {
