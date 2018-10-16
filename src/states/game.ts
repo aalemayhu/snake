@@ -10,7 +10,6 @@ import { ApiHandler } from '../api/ApiHandler';
 export class Game extends Phaser.State {
   private players: Snake[];
   private Snake: Snake;
-  // private cursors: Phaser.CursorKeys;
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
@@ -47,12 +46,6 @@ export class Game extends Phaser.State {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       this.game.add.existing(snake);
-
-      // Add debugging colors
-      if (i === 0) { snake.color = Phaser.Color.RED; }
-      if (i === 1) { snake.color = Phaser.Color.GREEN; }
-      if (i === 2) { snake.color = Phaser.Color.AQUA; }
-
       snake.draw(this.grid)
     }
 
@@ -95,7 +88,7 @@ export class Game extends Phaser.State {
       y = this.getRandomInt(this.cellY);
       // TODO: give up after trying x times
     }
-    this.treats.push(new Treat(Phaser.Color.GRAY, this.game, x, y, this.cellSize))
+    this.treats.push(new Treat(Phaser.Color.GREEN, this.game, x, y, this.cellSize))
   }
 
   newSnake(id: string): Snake {
@@ -107,11 +100,6 @@ export class Game extends Phaser.State {
   }
 
   collect(snake: Snake): Phaser.Point {
-    let snakeRect = new Phaser.Rectangle(
-      snake.position.x * this.cellX,
-      snake.position.y * this.cellY,
-      this.cellSize, this.cellSize
-    )
     for (let i = 0; i < this.treats.length; i++) {
       let treat = this.treats[i];
       let treatRect = new Phaser.Rectangle(
@@ -119,9 +107,8 @@ export class Game extends Phaser.State {
         treat.position.y * this.cellY,
         this.cellSize, this.cellSize
       )
-      let intersects = Phaser.Rectangle.intersection(treatRect, snakeRect);
-      console.log(`intersects==${intersects}`);
-      if (!intersects.empty) {
+      if (snake.position.x === treat.position.x &&
+        snake.position.y === treat.position.y) {
         this.treats.splice(i, 1);
         return treat.position;
       }

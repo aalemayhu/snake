@@ -22,7 +22,7 @@ export class Snake extends Phaser.Graphics {
     this.snakeBody = [];
     this.id = id;
     this.cellSize = cellSize;
-    this.color = 0xFF0000;
+    this.color = Phaser.Color.BLACK;
     this.snakeBody.push(new Phaser.Point(x, y))
     this.cellX = this.game.width / this.cellSize;
     this.cellY = this.game.height / this.cellSize;
@@ -33,7 +33,6 @@ export class Snake extends Phaser.Graphics {
   }
 
   draw(graphics) {
-    graphics.lineStyle(1, 0x0000FF, 1);
     graphics.beginFill(this.color);
     for (let i = 0; i < this.snakeBody.length; i++) {
       let position = this.snakeBody[i];
@@ -51,30 +50,30 @@ export class Snake extends Phaser.Graphics {
 
   read(direction) {
     switch (direction) {
-      case 'right': {
-        if (this.moveDirection == this.NORTH || this.moveDirection == this.SOUTH) {
-          this.moveDirection = this.EAST;
-        }
-        break;
+    case 'right': {
+      if (this.moveDirection == this.NORTH || this.moveDirection == this.SOUTH) {
+        this.moveDirection = this.EAST;
       }
-      case 'left': {
-        if (this.moveDirection == this.NORTH || this.moveDirection == this.SOUTH) {
-          this.moveDirection = this.WEST;
-        }
-        break;
+      break;
+    }
+    case 'left': {
+      if (this.moveDirection == this.NORTH || this.moveDirection == this.SOUTH) {
+        this.moveDirection = this.WEST;
       }
-      case 'up': {
-        if (this.moveDirection == this.EAST || this.moveDirection == this.WEST) {
-          this.moveDirection = this.NORTH;
-        }
-        break;
+      break;
+    }
+    case 'up': {
+      if (this.moveDirection == this.EAST || this.moveDirection == this.WEST) {
+        this.moveDirection = this.NORTH;
       }
-      case 'down': {
-        if (this.moveDirection == this.EAST || this.moveDirection == this.WEST) {
-          this.moveDirection = this.SOUTH;
-        }
-        break;
+      break;
+    }
+    case 'down': {
+      if (this.moveDirection == this.EAST || this.moveDirection == this.WEST) {
+        this.moveDirection = this.SOUTH;
       }
+      break;
+    }
     }
   }
 
@@ -86,8 +85,8 @@ export class Snake extends Phaser.Graphics {
     console.log(`move(${direction})`);
     this.read(direction);
     let headPosition = new Phaser.Point(
-        this.snakeBody[this.snakeBody.length-1].x,
-        this.snakeBody[this.snakeBody.length-1].y
+      this.snakeBody[this.snakeBody.length-1].x,
+      this.snakeBody[this.snakeBody.length-1].y
     )
     let newPosition = new Phaser.Point(
       this.moveDirection.x + headPosition.x,
@@ -95,12 +94,12 @@ export class Snake extends Phaser.Graphics {
     );
     if (newPosition.x >= this.cellX || newPosition.x <= 0 ||
       newPosition.y >= this.cellY || newPosition.y <= 0) {
-        console.log('New position is outside, aborting');
-      } else if (this.snakeBody.length == 1) {
-        this.snakeBody[0] = newPosition;
-      } else {
-        this.snakeBody.splice(0, 1);
-        this.snakeBody.push(newPosition);
-      }
+      console.log('New position is outside, aborting');
+    } else if (this.snakeBody.length == 1) {
+      this.snakeBody[0] = newPosition;
+    } else {
+      this.snakeBody.splice(0, 1);
+      this.snakeBody.push(newPosition);
     }
   }
+}
