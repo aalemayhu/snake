@@ -27,9 +27,9 @@ export class Game extends Phaser.State {
 
   public create(): void {
     // Testing ApiHandler
-    // this.h = new ApiHandler();
-    // this.h.AddScripts();
-    // this.h.GetAllScripts();
+    this.h = new ApiHandler();
+    this.h.AddScripts();
+    this.h.GetAllScripts();
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
@@ -131,6 +131,8 @@ export class Game extends Phaser.State {
   }
 
   public update(): void {
+    this.h.RunScript();
+    // ----------------
     this.game.input.update();
     let tock = this.game.time.now - this.tick;
     // Limit the run loop to every x
