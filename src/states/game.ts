@@ -27,9 +27,9 @@ export class Game extends Phaser.State {
 
   public create(): void {
     // Testing ApiHandler
-    //this.h = new ApiHandler();
-    //this.h.AddScripts();
-    //this.h.GetAllScripts();
+    // this.h = new ApiHandler();
+    // this.h.AddScripts();
+    // this.h.GetAllScripts();
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
@@ -45,7 +45,7 @@ export class Game extends Phaser.State {
   isCellAvailable(x, y): boolean {
     for (let i = 0; i < this.players.length; i++) {
       let snakePosition = this.players[i].getHeadPosition();
-      if (snakePosition.x == x && snakePosition.y == y) {
+      if (snakePosition.x === x && snakePosition.y === y) {
         return false;
       }
     }
@@ -53,7 +53,7 @@ export class Game extends Phaser.State {
     // Draw the treats
     for (let i = 0; i < this.treats.length; i++) {
       let treat = this.treats[i];
-      if (treat.position.x == x && treat.position.y == y) {
+      if (treat.position.x === x && treat.position.y === y) {
         return false;
       }
     }
@@ -71,12 +71,11 @@ export class Game extends Phaser.State {
     for (let i = 0; i < 3; i++) {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
-      snake.draw(this.grid)
+      snake.draw(this.grid);
     }
   }
 
   getRandomPosition(): Phaser.Point {
-    this.game.rnd.integerInRange
     let x = this.game.rnd.integerInRange(0, this.cellX);
     let y = this.game.rnd.integerInRange(0, this.cellY);
     while (!this.isCellAvailable(x, y)) {
@@ -138,8 +137,8 @@ export class Game extends Phaser.State {
 
     this.grid.clear();
     // Make sure we have enough treats on screen
-    for (;this.treats.length < this.expectedTreatCount;) {
-      this.spawnTreat()
+    for ( ;this.treats.length < this.expectedTreatCount; ) {
+      this.spawnTreat();
     }
 
     // Draw the treats
@@ -160,7 +159,6 @@ export class Game extends Phaser.State {
   }
 
   handle(action, snake, position) {
-    console.log(`handle(${action}, ${snake.id})`)
     switch (action) {
     case 'attack':
       this.attack(snake, position);

@@ -23,6 +23,6 @@ export class Treat extends Phaser.Graphics {
       this.cellSize,
       this.cellSize
     );
-    graphics.endFill()
+    graphics.endFill();
   }
 }
