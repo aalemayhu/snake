@@ -12,7 +12,7 @@ export class Game extends Phaser.State {
   private Snake: Snake;
   private spaceKey: Phaser.Key;
   private tick: number;
-  private loopTick = 125;
+  private loopTick = 30;
   private actions = ['heal', 'right', 'left', 'up', 'down'];
   private h: ApiHandler;
 

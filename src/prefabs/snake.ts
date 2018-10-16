@@ -31,12 +31,19 @@ export class Snake {
   }
 
   draw(graphics) {
-    graphics.beginFill(this.color);
-    this.snakeBody.forEach(s => {
-      graphics.drawRect(s.x * this.cellSize, s.y * this.cellSize,
-        this.cellSize, this.cellSize
-      );
+    graphics.lineStyle(2, this.color, 1);
+    this.snakeBody.map(e => {
+      if (!e.equals(this.getHeadPosition())) {
+        graphics.drawRect(e.x * this.cellSize, e.y * this.cellSize,
+          this.cellSize, this.cellSize
+        );
+      }
     })
+    graphics.beginFill(this.color);
+    let s = this.getHeadPosition();
+    graphics.drawRect(s.x * this.cellSize, s.y * this.cellSize,
+      this.cellSize, this.cellSize
+    );
     graphics.endFill();
   }
 
