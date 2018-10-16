@@ -168,6 +168,10 @@ export class Game extends Phaser.State {
     case 'collect':
       this.collect(snake, position);
       break;
+    case 'heal':
+      // TODO: implement this
+      console.log('heal is not implemented yet');
+      break;
     default:
       snake.move(action);
     }
