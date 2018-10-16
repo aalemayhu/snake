@@ -33,31 +33,28 @@ export class Game extends Phaser.State {
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
-    this.cellX = this.game.width / this.cellSize;
-    this.cellY = this.game.height / this.cellSize;
+    this.cellX = (this.game.width / this.cellSize) - 1;
+    this.cellY = (this.game.height / this.cellSize) - 1;
     this.tick = this.game.time.now;
     this.players = [];
     this.treats = [];
 
-    this.debugMode();
+    if (this.isDebugMode) {
+      this.debugMode();
+    }
   }
 
   isCellAvailable(x, y): boolean {
-    for (let i = 0; i < this.players.length; i++) {
-      let snakePosition = this.players[i].getHeadPosition();
-      if (snakePosition.x === x && snakePosition.y === y) {
-        return false;
-      }
-    }
+    let playerMatch = this.players.find(p => {
+      let snakePosition = p.getHeadPosition();
+      return snakePosition.x === x && snakePosition.y === y;
+    })
+    if (playerMatch) { return false; }
 
-    // Draw the treats
-    for (let i = 0; i < this.treats.length; i++) {
-      let treat = this.treats[i];
-      if (treat.position.x === x && treat.position.y === y) {
-        return false;
-      }
-    }
-
+    let treatMatch = this.treats.find(t => {
+      return t.position.x === x && t.position.y === y;
+    })
+    if (treatMatch) { return false; }
     return true;
   }
 
@@ -68,7 +65,7 @@ export class Game extends Phaser.State {
     }, this);
     this.createGrid();
     // For debugging add three snakes
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 10; i++) {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       snake.draw(this.grid);
@@ -141,12 +138,18 @@ export class Game extends Phaser.State {
       this.spawnTreat();
     }
 
+    // Respawn dead players
+    this.players.filter(e => { return !e.getVisible() }).forEach(p => {
+      p.addBody(this.getRandomPosition());
+    })
+
     // Draw the treats
     this.treats.forEach(t => { t.draw(this.grid); })
-    
-    // Draw the players
+
+    // Run actions for players and draw them
     for (let i = 0; i < this.players.length; i++) {
       let snake = this.players[i];
+      if (!snake.getVisible()) { continue; }
 
       // TODO: receive the action from the ApiHandler
       let index = this.game.rnd.integerInRange(0, this.actions.length - 1);
@@ -161,6 +164,7 @@ export class Game extends Phaser.State {
       this.attack(snake, position);
       break;
     case 'collect':
+      // TODO: update the leaderboard
       this.collect(snake, position);
       break;
     case 'heal':

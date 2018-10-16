@@ -2,12 +2,13 @@ import Phaser from 'phaser-ce';
 
 export class Snake {
   readonly id: string;
-  private cellSize: number;
   public color: number;
 
   private snakeBody: Phaser.Point[];
+  private cellSize: number;
   private cellX: number;
   private cellY: number;
+  private visible: boolean;
 
   // The four cardinal directions
   private NORTH = new Phaser.Point(0, 1);
@@ -15,17 +16,17 @@ export class Snake {
   private EAST = new Phaser.Point(1, 0);
   private WEST = new Phaser.Point(-1, 0);
   private moveDirection: Phaser.Point;
-  private canTurn = true;
 
   constructor(id: string, game: Phaser.Game, x: number, y: number, cellSize: number) {
     this.snakeBody = [];
     this.id = id;
     this.cellSize = cellSize;
-    this.color = Phaser.Color.BLACK; // Phaser.Color.getRandomColor();
+    this.color = Phaser.Color.getRandomColor();
     this.snakeBody.push(new Phaser.Point(x, y));
     this.cellX = game.width / this.cellSize;
     this.cellY = game.height / this.cellSize;
     this.moveDirection = this.NORTH;
+    this.visible = true;
   }
 
   update() {
@@ -82,8 +83,13 @@ export class Snake {
     );
   }
 
+  getVisible(): boolean {
+    return this.visible;
+  }
+
   public addBody(pos: Phaser.Point) {
     this.snakeBody.push(pos);
+    this.visible = this.snakeBody.length > 0;
   }
 
   public removeBody(pos: Phaser.Point) {
