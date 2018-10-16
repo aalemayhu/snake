@@ -55,7 +55,7 @@ export class Game extends Phaser.State {
 
     let treatMatch = this.treats.find(t => {
       return t.position.x === x && t.position.y === y;
-    })
+    });
     if (treatMatch) { return false; }
     return true;
   }
@@ -137,17 +137,17 @@ export class Game extends Phaser.State {
 
     this.grid.clear();
     // Make sure we have enough treats on screen
-    for ( ;this.treats.length < this.expectedTreatCount; ) {
+    for ( ; this.treats.length < this.expectedTreatCount; ) {
       this.spawnTreat();
     }
 
     // Respawn dead players
-    this.players.filter(e => { return !e.getVisible() }).forEach(p => {
+    this.players.filter(e => { return !e.getVisible(); }).forEach(p => {
       p.addBody(this.getRandomPosition());
-    })
+    });
 
     // Draw the treats
-    this.treats.forEach(t => { t.draw(this.grid); })
+    this.treats.forEach(t => { t.draw(this.grid); });
 
     // Run actions for players and draw them
     for (let i = 0; i < this.players.length; i++) {
