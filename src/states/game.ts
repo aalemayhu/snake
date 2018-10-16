@@ -13,7 +13,7 @@ export class Game extends Phaser.State {
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 500;
-  private actions = ['attack', 'heal', 'collect', 'right', 'left', 'up', 'down'];
+  private actions = ['heal', 'right', 'left', 'up', 'down'];
   private h: ApiHandler;
 
   private grid: Phaser.Graphics;
@@ -86,7 +86,7 @@ export class Game extends Phaser.State {
   spawnTreat() {
     let pos = this.getRandomPosition();
     let t = new Treat(
-      Phaser.Color.GREEN, this.game, pos.x, pos.y, this.cellSize);
+      Phaser.Color.BLACK, this.game, pos.x, pos.y, this.cellSize);
     this.treats.push(t);
   }
 
@@ -155,20 +155,16 @@ export class Game extends Phaser.State {
       // TODO: receive the action from the ApiHandler
       let index = this.game.rnd.integerInRange(0, this.actions.length - 1);
       let action = this.actions[index];
-      this.handle(action, snake, snake.getHeadPosition());
+      let headPosition = snake.getHeadPosition();
+      this.handle(action, snake, headPosition);
+      this.collect(snake, headPosition);
+      this.attack(snake, headPosition);
     }
   }
 
   handle(action, snake, position) {
     console.log(`handle(${action}, ${snake.id}, ...)`);
     switch (action) {
-    case 'attack':
-      this.attack(snake, position);
-      break;
-    case 'collect':
-      // TODO: update the leaderboard
-      this.collect(snake, position);
-      break;
     case 'heal':
       // TODO: implement this
       console.log('heal is not implemented yet');
