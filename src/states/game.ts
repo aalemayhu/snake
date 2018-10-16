@@ -3,8 +3,8 @@ import 'p2';
 import Phaser from 'phaser-ce';
 
 import {Sound} from '../helpers/sound';
-import {Snake} from '../prefabs/Snake';
-import {Treat} from '../prefabs/Treat';
+import {Snake} from '../prefabs/snake';
+import {Treat} from '../prefabs/treat';
 import { ApiHandler } from '../api/ApiHandler';
 
 export class Game extends Phaser.State {
