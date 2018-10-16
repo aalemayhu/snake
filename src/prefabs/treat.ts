@@ -17,12 +17,12 @@ export class Treat extends Phaser.Graphics {
 
   draw(graphics) {
     graphics.beginFill(this.color);
-    graphics.drawRect(
+    graphics.drawRoundedRect(
       this.position.x * this.cellSize,
       this.position.y * this.cellSize,
-      this.cellSize,
-      this.cellSize
+      this.cellSize, this.cellSize
     );
+    // graphics.quadraticCurveT
     graphics.endFill();
   }
 }

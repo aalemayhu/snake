@@ -22,7 +22,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 32;
+  private expectedTreatCount = 13;
   private isDebugMode = true;
 
   public create(): void {
@@ -98,13 +98,16 @@ export class Game extends Phaser.State {
     return s;
   }
 
-  collect(snake: Snake, position: Phaser.Point) {
-    let index = this.treats.findIndex(function (e) {
-      return e.position.equals(position);
+  collect(snake: Snake) {
+    snake.getBody().forEach(s => {
+      let index = this.treats.findIndex(function (e) {
+        return e.position.equals(s);
+      });
+      if (index >= 0) {
+        this.treats.splice(index, 1);
+        snake.addBody(s);
+      }
     });
-    if (index < 0) { return; }
-    this.treats.splice(index, 1);
-    snake.addBody(position);
   }
 
   attack(snake: Snake, position: Phaser.Point) {
@@ -147,7 +150,11 @@ export class Game extends Phaser.State {
     });
 
     // Draw the treats
-    this.treats.forEach(t => { t.draw(this.grid); });
+    this.treats.forEach(t => {
+      let colors = [0xE3170D,0x9D1309,0xF22C1E];
+      t.color = colors[this.game.rnd.integerInRange(0, colors.length-1)];
+      t.draw(this.grid);
+    });
 
     // Run actions for players and draw them
     for (let i = 0; i < this.players.length; i++) {
@@ -159,7 +166,7 @@ export class Game extends Phaser.State {
       let action = this.actions[index];
       let front = snake.getInFront();
       this.handle(action, snake);
-      this.collect(snake, front);
+      this.collect(snake);
       this.attack(snake, front);
     }
   }
