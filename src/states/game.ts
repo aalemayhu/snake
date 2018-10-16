@@ -75,16 +75,13 @@ export class Game extends Phaser.State {
     }
   }
 
-  getRandomInt(max): number {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-
   getRandomPosition(): Phaser.Point {
-    let x = this.getRandomInt(this.cellX);
-    let y = this.getRandomInt(this.cellY);
+    this.game.rnd.integerInRange
+    let x = this.game.rnd.integerInRange(0, this.cellX);
+    let y = this.game.rnd.integerInRange(0, this.cellY);
     while (!this.isCellAvailable(x, y)) {
-      x = this.getRandomInt(this.cellX);
-      y = this.getRandomInt(this.cellY);
+      x = this.game.rnd.integerInRange(0, this.cellX);
+      y = this.game.rnd.integerInRange(0, this.cellY);
       // TODO: give up after trying x times
     }
     return new Phaser.Point(x, y);
@@ -156,7 +153,7 @@ export class Game extends Phaser.State {
       let snake = this.players[i];
 
       // TODO: receive the action from the ApiHandler
-      let index = Math.floor((Math.random() * this.actions.length) | 0);
+      let index = this.game.rnd.integerInRange(0, this.actions.length - 1);
       let action = this.actions[index];
       this.handle(action, snake, this.getRandomPosition());
     }
