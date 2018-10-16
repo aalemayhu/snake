@@ -141,13 +141,13 @@ export class Game extends Phaser.State {
 
   handle(action, snake) {
     console.log(`handle(${action}, ${snake.id})`)
-    let pos = this.collect(snake);
-    if (pos.x !== -1) { snake.addBody(pos) }
     switch (action) {
     case 'attack':
       // TODO: implement this
       break;
     case 'collect':
+      let pos = this.collect(snake);
+      if (pos.x !== -1) { snake.addBody(pos) }
       break;
     default:
       snake.move(action);
