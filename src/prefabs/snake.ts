@@ -8,7 +8,6 @@ export class Snake {
   private cellSize: number;
   private cellX: number;
   private cellY: number;
-  private visible: boolean;
 
   // The four cardinal directions
   private NORTH = new Phaser.Point(0, 1);
@@ -26,7 +25,6 @@ export class Snake {
     this.cellX = game.width / this.cellSize;
     this.cellY = game.height / this.cellSize;
     this.moveDirection = this.NORTH;
-    this.visible = true;
   }
 
   update() {
@@ -71,20 +69,25 @@ export class Snake {
     }
   }
 
-  getHeadPosition(): Phaser.Point {
+  public getHeadPosition(): Phaser.Point {
     return new Phaser.Point(
       this.snakeBody[this.snakeBody.length - 1].x,
       this.snakeBody[this.snakeBody.length - 1].y
     );
   }
 
-  getVisible(): boolean {
-    return this.visible;
+  public getInFront(): Phaser.Point {
+    let front = this.getHeadPosition();
+    front.add(this.moveDirection.x, this.moveDirection.y);
+    return front;
+  }
+
+  public getVisible(): boolean {
+    return this.snakeBody.length > 0;
   }
 
   public addBody(pos: Phaser.Point) {
     this.snakeBody.push(pos);
-    this.visible = this.snakeBody.length > 0;
   }
 
   public removeBody(pos: Phaser.Point) {

@@ -46,8 +46,10 @@ export class Game extends Phaser.State {
 
   isCellAvailable(x, y): boolean {
     let playerMatch = this.players.find(p => {
-      let snakePosition = p.getHeadPosition();
-      return snakePosition.x === x && snakePosition.y === y;
+      if (p.getVisible()) {
+        let snakePosition = p.getHeadPosition();
+        return snakePosition.x === x && snakePosition.y === y;
+      }
     })
     if (playerMatch) { return false; }
 
@@ -155,14 +157,14 @@ export class Game extends Phaser.State {
       // TODO: receive the action from the ApiHandler
       let index = this.game.rnd.integerInRange(0, this.actions.length - 1);
       let action = this.actions[index];
-      let headPosition = snake.getHeadPosition();
-      this.handle(action, snake, headPosition);
-      this.collect(snake, headPosition);
-      this.attack(snake, headPosition);
+      let front = snake.getInFront();
+      this.handle(action, snake);
+      this.collect(snake, front);
+      this.attack(snake, front);
     }
   }
 
-  handle(action, snake, position) {
+  handle(action, snake) {
     console.log(`handle(${action}, ${snake.id}, ...)`);
     switch (action) {
     case 'heal':
