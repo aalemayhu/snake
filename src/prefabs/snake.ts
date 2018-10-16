@@ -116,10 +116,4 @@ export class Snake {
       this.snakeBody.push(newPosition);
     }
   }
-
-  public collidesWith(position: Phaser.Point): boolean {
-    let headPosition = this.getHeadPosition();
-    return headPosition.x === position.x &&
-    headPosition.y === position.y;
-  }
 }
