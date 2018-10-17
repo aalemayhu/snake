@@ -34,6 +34,7 @@ export class Game extends Phaser.State {
   public create(): void {
     this.twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
     this.setupAPI(this.twitch);
+
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
