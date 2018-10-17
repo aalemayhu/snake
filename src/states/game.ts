@@ -205,7 +205,7 @@ export class Game extends Phaser.State {
       // console.log('heal is not implemented yet');
       break;
     default:
-      snake.move(action.ActionDirection());
+      snake.move(action._actionDirection);
     }
     snake.draw(this.grid);
   }
