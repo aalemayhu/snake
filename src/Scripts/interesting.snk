@@ -14,11 +14,8 @@
       if (wallMatch !== -1) {
         possibleActions.splice(wallMatch, 1);
       }
-      // If the direction is at the border, slice it off from possibleActions.
-
       const rnd = ~~(Math.random() * possibleActions.length);
       let a = views.find(v => { return v.direction == possibleActions[rnd]; });
-      console.log('test', a, 'rnd');
       return a;
     }
   }
