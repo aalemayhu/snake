@@ -76,6 +76,16 @@ export class Snake {
     }
   }
 
+  public surroundings(): Object {
+    let h = this.getHeadPosition();
+    return {
+      'up': new Phaser.Point(h.x + this.NORTH.x, h.y + this.NORTH.y),
+      'right': new Phaser.Point(h.x + this.EAST.x, h.y + this.EAST.y),
+      'left': new Phaser.Point(h.x + this.WEST.x, h.y + this.WEST.y),
+      'down': new Phaser.Point(h.x + this.SOUTH.x, h.y + this.SOUTH.y),
+    }
+  }
+
   public getHeadPosition(): Phaser.Point {
     return new Phaser.Point(
       this.snakeBody[this.snakeBody.length - 1].x,

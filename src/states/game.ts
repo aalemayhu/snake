@@ -6,6 +6,7 @@ import {Sound} from '../helpers/sound';
 import {Snake} from '../prefabs/snake';
 import {Treat} from '../prefabs/treat';
 import { ApiHandler } from '../api/ApiHandler';
+import {View} from '../api/View';
 
 export class Game extends Phaser.State {
   private players: Snake[];
@@ -13,7 +14,7 @@ export class Game extends Phaser.State {
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
-  private actions = ['heal', 'right', 'left', 'up', 'down'];
+  private actions = ['right', 'left', 'up', 'down'];
   private h: ApiHandler;
 
   private grid: Phaser.Graphics;
@@ -103,6 +104,12 @@ export class Game extends Phaser.State {
     return s;
   }
 
+  treatAt(position: Phaser.Point): boolean {
+    return this.treats.find(function (e) {
+        return e.position.equals(position);
+      }) != undefined;
+  }
+
   collect(snake: Snake) {
     snake.getBody().forEach(s => {
       let index = this.treats.findIndex(function (e) {
@@ -165,12 +172,29 @@ export class Game extends Phaser.State {
       if (!snake.getVisible()) { continue; }
 
       // TODO: receive the action from the ApiHandler
-      const action = this.h.getNextAction(i, []);
+      const action = this.h.getNextAction(i, this.surroundings(snake));
       const front = snake.getInFront();
       this.handle(action, snake);
       this.collect(snake);
       this.attack(snake, front);
     }
+  }
+
+  surroundings(snake: Snake): View[] {
+    let views = [];
+    // Get the surroundings
+    let s = snake.surroundings();
+    this.actions.forEach(e => {
+      let pos = s[e];
+      if (this.treatAt(pos)) {
+        views.push(new View(e, "treat"));
+      } else {
+        // TODO: handle other types, obstacle, enemy, etc.
+        views.push(new View(e, "empty"));
+      }
+    })
+      // Identify
+    return views;
   }
 
   handle(action, snake) {
@@ -181,7 +205,7 @@ export class Game extends Phaser.State {
       // console.log('heal is not implemented yet');
       break;
     default:
-      snake.move(action._actionDirection);
+      snake.move(action.ActionDirection());
     }
     snake.draw(this.grid);
   }
