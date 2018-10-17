@@ -3,10 +3,11 @@ import { decode } from 'utf8';
 
 import { SnakeApi } from './SnakeApi';
 import { Action } from './Action';
+import { Player } from './Player';
 
 const path = require('path');
 
-let scriptPaths: object [] = new Array();
+let players: Player[] = [];
 let scripts: SnakeApi.Snake [] = new Array();
 
 export class ApiHandler {
@@ -15,16 +16,15 @@ export class ApiHandler {
     }
 
     addScripts() {
-        // TODO: Get files in directory
-        scriptPaths.push({ script: 'Example.snk', user: 'Mobilpadde'});
-        scriptPaths.push({ script: 'smarty-pants.snk', user: 'Mobilpadde'});
-        scriptPaths.push({ script: 'interesting.snk', user: 'ccscanf'});
-
-        return scriptPaths.map((s) => s.user);
+        // TODO: Load all users in the chat, use default script for users who have not uploaded a script
+        players.push(new Player ('Example.snk', 'Mobilpadde'));
+        players.push(new Player ('smarty-pants.snk', 'Mobilpadde'));
+        players.push(new Player('interesting.snk', 'ccscanf'));
+        return players.map((s) => s.username);
     }
 
     compileScripts() {
-        scriptPaths.forEach(element => {
+        players.forEach(element => {
             if (element !== undefined) {
                 console.log(element + ' loaded');
                 const src = decode(require(`../Scripts/${element.script}`));
