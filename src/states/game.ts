@@ -32,7 +32,8 @@ export class Game extends Phaser.State {
   public create(): void {
     // Testing ApiHandler
     this.h = new ApiHandler();
-    this.numPlayers = this.h.addScripts();
+    const players = this.h.addScripts();
+    this.numPlayers = players.length;
     this.h.compileScripts();
     // ------------------
     this.game.stage.disableVisibilityChange = true;
@@ -47,7 +48,7 @@ export class Game extends Phaser.State {
     if (this.isDebugMode) {
       this.debugMode();
     }
-    this.addPlayers();
+    this.addPlayers(players);
   }
 
   setupHUD() {
@@ -64,10 +65,10 @@ export class Game extends Phaser.State {
       0, 0, 'Player count: 0', style);
   }
 
-  addPlayers() {
+  addPlayers(players) {
     for (let i = 0; i < this.numPlayers; i++) {
       // TODO: the API has to give us an id for the player.
-      let snake = this.newSnake(`snake-${i}`, 'Mobilpadde');
+      let snake = this.newSnake(`snake-${i}`, players[i]);
       this.players.push(snake);
       snake.draw(this.grid);
     }
