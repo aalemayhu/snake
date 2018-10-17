@@ -6,7 +6,7 @@ import { Action } from './Action';
 
 const path = require('path');
 
-let scriptPaths: string [] = new Array();
+let scriptPaths: object [] = new Array();
 let scripts: SnakeApi.Snake [] = new Array();
 
 export class ApiHandler {
@@ -16,17 +16,18 @@ export class ApiHandler {
 
     addScripts() {
         // TODO: Get files in directory
-        scriptPaths.push('Example.snk');
-        scriptPaths.push('smarty-pants.snk');
-        scriptPaths.push('interesting.snk');
-        return scriptPaths.length;
+        scriptPaths.push({ script: 'Example.snk', user: 'Mobilpadde'});
+        scriptPaths.push({ script: 'smarty-pants.snk', user: 'Mobilpadde'});
+        scriptPaths.push({ script: 'interesting.snk', user: 'ccscanf'});
+
+        return scriptPaths.map((s) => s.user);
     }
 
     compileScripts() {
         scriptPaths.forEach(element => {
             if (element !== undefined) {
                 console.log(element + ' loaded');
-                const src = decode(require(`../Scripts/${element}`));
+                const src = decode(require(`../Scripts/${element.script}`));
                 const res: string = ts.transpile(src);
                 const script: any = eval(res);
                 scripts.push(script);
