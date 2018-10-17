@@ -18,6 +18,7 @@ export class Game extends Phaser.State {
   private h: ApiHandler;
 
   private grid: Phaser.Graphics;
+  private playerCountLabel: Phaser.Text;
 
   private cellSize = 32;
   private cellX: number;
@@ -36,6 +37,7 @@ export class Game extends Phaser.State {
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
+    this.setupHUD();
     this.cellX = (this.game.width / this.cellSize) - 1;
     this.cellY = (this.game.height / this.cellSize) - 1;
     this.tick = this.game.time.now;
@@ -48,6 +50,20 @@ export class Game extends Phaser.State {
     this.addPlayers();
   }
 
+  setupHUD() {
+    let style = {
+        font: '16px Arial',
+        fill: '#ff0044',
+        wordWrap: false,
+        wordWrapWidth: this.cellSize*3,
+        align: 'center',
+        backgroundColor: '#ffff00'
+    };
+
+    this.playerCountLabel = this.game.add.text(
+      0, 0, 'Player count: 0', style);
+  }
+
   addPlayers() {
     for (let i = 0; i < this.numPlayers; i++) {
       // TODO: the API has to give us an id for the player.
@@ -55,6 +71,7 @@ export class Game extends Phaser.State {
       this.players.push(snake);
       snake.draw(this.grid);
     }
+    this.playerCountLabel.text = `Player count: ${this.numPlayers}`;
   }
 
   isCellAvailable(x, y): boolean {

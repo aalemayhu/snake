@@ -18,7 +18,7 @@ export class ApiHandler {
         // TODO: Get files in directory
         scriptPaths.push('Example.snk');
         scriptPaths.push('smarty-pants.snk');
-
+        scriptPaths.push('interesting.snk');
         return scriptPaths.length;
     }
 
