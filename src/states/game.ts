@@ -12,7 +12,7 @@ export class Game extends Phaser.State {
   private Snake: Snake;
   private spaceKey: Phaser.Key;
   private tick: number;
-  private loopTick = 70;
+  private loopTick = 1000;
   private actions = ['heal', 'right', 'left', 'up', 'down'];
   private h: ApiHandler;
 
@@ -44,6 +44,16 @@ export class Game extends Phaser.State {
     if (this.isDebugMode) {
       this.debugMode();
     }
+    this.addPlayers();
+  }
+
+  addPlayers() {
+    for (let i = 0; i < this.numPlayers; i++) {
+      // TODO: the API has to give us an id for the player.
+      let snake = this.newSnake(`snake-${i}`);
+      this.players.push(snake);
+      snake.draw(this.grid);
+    }
   }
 
   isCellAvailable(x, y): boolean {
@@ -68,12 +78,6 @@ export class Game extends Phaser.State {
       Sound.play();
     }, this);
     this.createGrid();
-    // For debugging add three snakes
-    for (let i = 0; i < this.numPlayers; i++) {
-      let snake = this.newSnake(`snake-${i}`);
-      this.players.push(snake);
-      snake.draw(this.grid);
-    }
   }
 
   getRandomPosition(): Phaser.Point {
@@ -161,9 +165,8 @@ export class Game extends Phaser.State {
       if (!snake.getVisible()) { continue; }
 
       // TODO: receive the action from the ApiHandler
-      let index = this.game.rnd.integerInRange(0, this.actions.length - 1);
-      let action = this.actions[index];
-      let front = snake.getInFront();
+      const action = this.h.getNextAction(i, []);
+      const front = snake.getInFront();
       this.handle(action, snake);
       this.collect(snake);
       this.attack(snake, front);
@@ -171,14 +174,14 @@ export class Game extends Phaser.State {
   }
 
   handle(action, snake) {
-    console.log(`handle(${action}, ${snake.id}, ...)`);
+    // console.log('handle(', action, `${snake.id}, ...)`);
     switch (action) {
     case 'heal':
       // TODO: implement this
-      console.log('heal is not implemented yet');
+      // console.log('heal is not implemented yet');
       break;
     default:
-      snake.move(action);
+      snake.move(action._actionDirection);
     }
     snake.draw(this.grid);
   }
