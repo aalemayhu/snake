@@ -26,7 +26,7 @@ export class ApiHandler {
             new Player('Example.snk', u);
         });
 
-        return players.map((s) => s.username);
+        return users.map((u) => u);
     }
 
     compileScripts() {

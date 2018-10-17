@@ -9,10 +9,10 @@ const scraper = new Scraper();
  // TwitchChat
 export class TwitchChat {
 
-    private username: string;
+    private channel: string;
 
   constructor(username, channel, token) {
-    this.username = username;
+    this.channel = channel;
 
     const twitch: Twitch = new Twitch(username, token, channel);
     twitch.connect();
@@ -73,8 +73,12 @@ export class TwitchChat {
   }
 
   getUsers(cb) {
-    axios.get(`http://tmi.twitch.tv/group/user/${this.username}/chatters`)
-        .then(({ data }) => cb.apply(data));
+    axios({
+        method: 'get',
+        url: `https://cors-anywhere.herokuapp.com/http://tmi.twitch.tv/group/user/${this.channel}/chatters`,
+        headers: {'Origin': 'snake'}
+    })
+        .then(({ data }) => cb(Object.values(data.chatters.viewers)));
   }
 
 }
