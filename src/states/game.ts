@@ -7,6 +7,7 @@ import {Snake} from '../prefabs/snake';
 import {Treat} from '../prefabs/treat';
 import { ApiHandler } from '../api/ApiHandler';
 import {View} from '../api/View';
+import { TwitchChat } from '../twitch/TwitchChat';
 
 export class Game extends Phaser.State {
   private players: Snake[];
@@ -30,11 +31,6 @@ export class Game extends Phaser.State {
   private numPlayers: number = 0;
 
   public create(): void {
-    // Testing ApiHandler
-    this.h = new ApiHandler();
-    const players = this.h.addScripts();
-    this.numPlayers = players.length;
-    this.h.compileScripts();
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
@@ -48,7 +44,18 @@ export class Game extends Phaser.State {
     if (this.isDebugMode) {
       this.debugMode();
     }
-    this.addPlayers(players);
+  }
+
+  setupAPI(twitch: TwitchChat) {
+    // Testing ApiHandler
+    this.h = new ApiHandler();
+
+    twitch.getUsers((users) => {
+        const players = this.h.addScripts(users);
+        this.numPlayers = players.length;
+        this.h.compileScripts();
+        this.addPlayers(players);
+    });
   }
 
   setupHUD() {
@@ -56,7 +63,7 @@ export class Game extends Phaser.State {
         font: '16px Arial',
         fill: '#ff0044',
         wordWrap: false,
-        wordWrapWidth: this.cellSize*3,
+        wordWrapWidth: this.cellSize * 3,
         align: 'center',
         backgroundColor: '#ffff00'
     };
@@ -205,12 +212,12 @@ export class Game extends Phaser.State {
     this.actions.forEach(e => {
       let pos = s[e];
       if (this.treatAt(pos)) {
-        views.push(new View(e, "treat"));
+        views.push(new View(e, 'treat'));
       } else {
         // TODO: handle other types, obstacle, enemy, etc.
-        views.push(new View(e, "empty"));
+        views.push(new View(e, 'empty'));
       }
-    })
+    });
       // Identify
     return views;
   }

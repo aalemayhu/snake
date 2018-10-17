@@ -15,11 +15,17 @@ export class ApiHandler {
         console.log('Handler initialized');
     }
 
-    addScripts() {
+    addScripts(users: string[]): string[] {
         // TODO: Load all users in the chat, use default script for users who have not uploaded a script
-        players.push(new Player ('Example.snk', 'Mobilpadde'));
-        players.push(new Player ('smarty-pants.snk', 'Mobilpadde'));
-        players.push(new Player('interesting.snk', 'ccscanf'));
+        //
+        players = users.map((u) => {
+            if (u === 'ccscanf') {
+                return new Player('interesting.snk', u);
+            }
+
+            new Player('Example.snk', u);
+        });
+
         return players.map((s) => s.username);
     }
 
