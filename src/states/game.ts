@@ -67,7 +67,7 @@ export class Game extends Phaser.State {
   addPlayers() {
     for (let i = 0; i < this.numPlayers; i++) {
       // TODO: the API has to give us an id for the player.
-      let snake = this.newSnake(`snake-${i}`);
+      let snake = this.newSnake(`snake-${i}`, 'Mobilpadde');
       this.players.push(snake);
       snake.draw(this.grid);
     }
