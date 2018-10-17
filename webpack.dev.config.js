@@ -40,6 +40,7 @@ module.exports = {
   ],
   module: {
     loaders: [
+        { test: /\.snk?$/, loader: 'raw-loader', exclude: '/node_modules/' },
       { test: /\.ts?$/, loader: 'ts-loader', exclude: '/node_modules/' },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-arcade-physics\.js/, use: ['expose-loader?Phaser'] },

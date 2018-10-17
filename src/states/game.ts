@@ -25,11 +25,13 @@ export class Game extends Phaser.State {
   private expectedTreatCount = 13;
   private isDebugMode = true;
 
+  private numPlayers: number = 0;
+
   public create(): void {
     // Testing ApiHandler
     this.h = new ApiHandler();
-    this.h.AddScripts();
-    this.h.GetAllScripts();
+    this.numPlayers = this.h.addScripts();
+    this.h.compileScripts();
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
@@ -67,7 +69,7 @@ export class Game extends Phaser.State {
     }, this);
     this.createGrid();
     // For debugging add three snakes
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < this.numPlayers; i++) {
       let snake = this.newSnake(`snake-${i}`);
       this.players.push(snake);
       snake.draw(this.grid);
@@ -131,8 +133,6 @@ export class Game extends Phaser.State {
   }
 
   public update(): void {
-    this.h.RunScript();
-    // ----------------
     this.game.input.update();
     let tock = this.game.time.now - this.tick;
     // Limit the run loop to every x

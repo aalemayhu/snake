@@ -39,6 +39,6 @@ export namespace SnakeApi {
     }
 
     export interface Snake {
-        Run(): Action;
+        Next(): Action;
     }
 }

@@ -1,0 +1,29 @@
+// Basic script skeleton
+
+({
+    Next(SnakeApi: SnakeApi): Action {
+        return function(surroundings) {
+            const rnd = ~~(Math.random() * 4) + 1;
+            let action;
+
+            switch (rnd) {
+                case 1:
+                    action = SnakeApi.Move('up');
+                    break;
+                case 2:
+                    action = SnakeApi.Move('right');
+                    break;
+                case 3:
+                    action = SnakeApi.Move('left');
+                    break;
+                case 4:
+                    action = SnakeApi.Move('down');
+                    break;
+                default:
+                    break;
+            }
+
+            return action;
+        }
+    }
+});
