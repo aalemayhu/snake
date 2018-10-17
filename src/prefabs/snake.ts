@@ -141,7 +141,7 @@ export class Snake {
       'right': new Phaser.Point(h.x + this.EAST.x, h.y + this.EAST.y),
       'left': new Phaser.Point(h.x + this.WEST.x, h.y + this.WEST.y),
       'down': new Phaser.Point(h.x + this.SOUTH.x, h.y + this.SOUTH.y),
-    }
+    };
   }
 
   public getHeadPosition(): Phaser.Point {

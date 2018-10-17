@@ -3,7 +3,6 @@ import 'p2';
 import Phaser from 'phaser-ce';
 
 import {Config} from './config';
-import {TwitchChat} from './twitch/TwitchChat';
 import {Boot} from './states/boot';
 import {Preload} from './states/preload';
 import {Game} from './states/game';
@@ -18,8 +17,6 @@ class Template extends Phaser.Game {
         this.state.add('Game', Game, false);
 
         this.state.start('Boot');
-
-        const twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
     }
 }
 

@@ -1,4 +1,6 @@
 import { Twitch, Message, ChannelUserState } from 'twitch-wrapper-ts';
+import axios from 'axios';
+
 import { Scraper } from '../scraping/scraper';
 import { GameState } from '../GameState';
 
@@ -7,7 +9,11 @@ const scraper = new Scraper();
  // TwitchChat
 export class TwitchChat {
 
+    private username: string;
+
   constructor(username, channel, token) {
+    this.username = username;
+
     const twitch: Twitch = new Twitch(username, token, channel);
     twitch.connect();
     twitch.on('connected', () => twitch.send('Waiting for commands now!', channel));
@@ -64,6 +70,11 @@ export class TwitchChat {
         twitch.send('@' + messageSender + ' is in the team: ' + joinedTeam, messageChannel);
       }
     });
+  }
+
+  getUsers(cb) {
+    axios.get(`http://tmi.twitch.tv/group/user/${this.username}/chatters`)
+        .then(({ data }) => cb.apply(data));
   }
 
 }

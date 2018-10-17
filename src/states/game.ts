@@ -7,6 +7,7 @@ import {Snake} from '../prefabs/snake';
 import {Treat} from '../prefabs/treat';
 import { ApiHandler } from '../api/ApiHandler';
 import {View} from '../api/View';
+import { TwitchChat } from '../twitch/TwitchChat';
 
 export class Game extends Phaser.State {
   private players: Snake[];
@@ -28,13 +29,11 @@ export class Game extends Phaser.State {
   private isDebugMode = true;
 
   private numPlayers: number = 0;
+  private twitch: TwitchChat;
 
   public create(): void {
-    // Testing ApiHandler
-    this.h = new ApiHandler();
-    const players = this.h.addScripts();
-    this.numPlayers = players.length;
-    this.h.compileScripts();
+    this.twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
+    this.setupAPI(this.twitch);
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
@@ -48,17 +47,28 @@ export class Game extends Phaser.State {
     if (this.isDebugMode) {
       this.debugMode();
     }
-    this.addPlayers(players);
+  }
+
+  setupAPI(twitch: TwitchChat) {
+    // Testing ApiHandler
+    this.h = new ApiHandler();
+
+    twitch.getUsers((users) => {
+        const players = this.h.addScripts(users);
+        this.numPlayers = players.length;
+        this.h.compileScripts();
+        this.addPlayers(players);
+    });
   }
 
   setupHUD() {
     let style = {
-      font: '16px Arial',
-      fill: '#ff0044',
-      wordWrap: false,
-      wordWrapWidth: this.cellSize*3,
-      align: 'center',
-      backgroundColor: '#ffff00'
+        font: '16px Arial',
+        fill: '#ff0044',
+        wordWrap: false,
+        wordWrapWidth: this.cellSize * 3,
+        align: 'center',
+        backgroundColor: '#ffff00'
     };
 
     this.playerCountLabel = this.game.add.text(
@@ -209,11 +219,9 @@ export class Game extends Phaser.State {
       } else if (s[e].x >= this.cellX || s[e].y >= this.cellY) {
         views.push(new View(e, "wall"));
       } else {
-        // TODO: handle other types, obstacle, enemy, etc.
         views.push(new View(e, "empty"));
       }
-    })
-    // Identify
+    });
     return views;
   }
 

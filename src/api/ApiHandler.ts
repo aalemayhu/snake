@@ -11,36 +11,41 @@ let players: Player[] = [];
 let scripts: SnakeApi.Snake [] = new Array();
 
 export class ApiHandler {
-  constructor() {
-    console.log('Handler initialized');
-  }
+    constructor() {
+        console.log('Handler initialized');
+    }
 
-  addScripts() {
-    // TODO: Load all users in the chat, use default script for users who have not uploaded a script
-    players.push(new Player ('Example.snk', 'Mobilpadde'));
-    players.push(new Player ('smarty-pants.snk', 'Mobilpadde'));
-    players.push(new Player('interesting.snk', 'ccscanf'));
-    players.push(new Player('interesting.snk', 'fnipfbojdblk'));
-    return players.map((s) => s.username);
-  }
+    addScripts(users: string[]): string[] {
+        // TODO: Load all users in the chat, use default script for users who have not uploaded a script
+        //
+        players = users.map((u) => {
+            if (u === 'ccscanf') {
+                return new Player('interesting.snk', u);
+            }
 
-  compileScripts() {
-    players.forEach(element => {
-      if (element !== undefined) {
-        console.log(element + ' loaded');
-        const src = decode(require(`../Scripts/${element.script}`));
-        const res: string = ts.transpile(src);
-        const script: any = eval(res);
-        scripts.push(script);
-      }
-    });
-  }
+            new Player('Example.snk', u);
+        });
 
-  getNextAction(idx: number, views): Action[] {
-    const sc = scripts[idx];
-    const currentAction = sc.Next.call(sc, SnakeApi)(views);
-    console.log('Result:', currentAction);
+        return players.map((s) => s.username);
+    }
 
-    return currentAction;
-  }
+    compileScripts() {
+        players.forEach(element => {
+            if (element !== undefined) {
+                console.log(element + ' loaded');
+                const src = decode(require(`../Scripts/${element.script}`));
+                const res: string = ts.transpile(src);
+                const script: any = eval(res);
+                scripts.push(script);
+            }
+        });
+    }
+
+    getNextAction(idx: number, views): Action[] {
+        const sc = scripts[idx];
+        const currentAction = sc.Next.call(sc, SnakeApi)(views);
+        console.log('Result:', currentAction);
+
+        return currentAction;
+    }
 }
