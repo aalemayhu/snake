@@ -2,8 +2,14 @@
 
 ({
     Next(SnakeApi: SnakeApi): Action {
-        return function(surroundings) {
-            // 'up' -> Treat, 'down' -> Enemy
+        return function(views) {
+            const directions = ['up', 'down', 'right', 'left'];
+
+            const treatMatch = views.find(v => { return v == "treat"});
+            if (treatMatch) {
+              return treatMatch.direction;
+            }
+
             const rnd = ~~(Math.random() * 4) + 1;
             let action;
 

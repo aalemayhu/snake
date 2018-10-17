@@ -2,7 +2,7 @@
 
 ({
     Next(SnakeApi: SnakeApi): Action {
-        return function(surroundings) {
+        return function(views) {
             const rnd = ~~(Math.random() * 4) + 1;
             let action;
 

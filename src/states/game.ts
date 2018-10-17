@@ -189,7 +189,7 @@ export class Game extends Phaser.State {
       if (!snake.getVisible()) { continue; }
 
       // TODO: receive the action from the ApiHandler
-      const action = this.h.getNextAction(i, this.surroundings(snake));
+      const action = this.h.getNextAction(i, this.views(snake));
       const front = snake.getInFront();
       this.handle(action, snake);
       this.collect(snake);
@@ -197,10 +197,10 @@ export class Game extends Phaser.State {
     }
   }
 
-  surroundings(snake: Snake): View[] {
+  views(snake: Snake): View[] {
     let views = [];
-    // Get the surroundings
-    let s = snake.surroundings();
+    // Get the views
+    let s = snake.views();
     this.actions.forEach(e => {
       let pos = s[e];
       if (this.treatAt(pos)) {

@@ -34,9 +34,9 @@ export class ApiHandler {
         });
     }
 
-    getNextAction(idx: number, surroundings): Action[] {
+    getNextAction(idx: number, views): Action[] {
         const sc = scripts[idx];
-        const currentAction = sc.Next.call(sc, SnakeApi)(surroundings);
+        const currentAction = sc.Next.call(sc, SnakeApi)(views);
         console.log('Result:', currentAction);
 
         return currentAction;

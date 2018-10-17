@@ -134,7 +134,7 @@ export class Snake {
     }
   }
 
-  public surroundings(): Object {
+  public views(): Object {
     let h = this.getHeadPosition();
     return {
       'up': new Phaser.Point(h.x + this.NORTH.x, h.y + this.NORTH.y),
