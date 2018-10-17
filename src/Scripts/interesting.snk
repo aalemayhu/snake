@@ -1,36 +1,25 @@
-// Basic script skeleton
-
 ({
-    Next(SnakeApi: SnakeApi): Action {
-        return function(views) {
-            const directions = ['up', 'down', 'right', 'left'];
+  Next(SnakeApi: SnakeApi): Action {
+    return function(views) {
+      const directions = ['up', 'down', 'right', 'left'];
 
-            const treatMatch = views.find(v => { return v == "treat"});
-            if (treatMatch) {
-              return treatMatch.direction;
-            }
+      const treatMatch = views.find(v => { return v == "treat"});
+      if (treatMatch) {
+        return treatMatch.direction;
+      }
 
-            const rnd = ~~(Math.random() * 4) + 1;
-            let action;
+      let possibleActions = directions;
 
-            switch (rnd) {
-                case 1:
-                    action = SnakeApi.Move('up');
-                    break;
-                case 2:
-                    action = SnakeApi.Move('right');
-                    break;
-                case 3:
-                    action = SnakeApi.Move('right');
-                    break;
-                case 4:
-                    action = SnakeApi.Move('right');
-                    break;
-                default:
-                    break;
-            }
+      const wallMatch = views.findIndex(v => { return v === "wall" });
+      if (wallMatch !== -1) {
+        possibleActions.splice(wallMatch, 1);
+      }
+      // If the direction is at the border, slice it off from possibleActions.
 
-            return action;
-        }
+      const rnd = ~~(Math.random() * possibleActions.length);
+      let a = views.find(v => { return v.direction == possibleActions[rnd]; });
+      console.log('test', a, 'rnd');
+      return a;
     }
+  }
 });

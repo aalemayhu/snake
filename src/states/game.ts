@@ -53,12 +53,12 @@ export class Game extends Phaser.State {
 
   setupHUD() {
     let style = {
-        font: '16px Arial',
-        fill: '#ff0044',
-        wordWrap: false,
-        wordWrapWidth: this.cellSize*3,
-        align: 'center',
-        backgroundColor: '#ffff00'
+      font: '16px Arial',
+      fill: '#ff0044',
+      wordWrap: false,
+      wordWrapWidth: this.cellSize*3,
+      align: 'center',
+      backgroundColor: '#ffff00'
     };
 
     this.playerCountLabel = this.game.add.text(
@@ -124,8 +124,8 @@ export class Game extends Phaser.State {
 
   treatAt(position: Phaser.Point): boolean {
     return this.treats.find(function (e) {
-        return e.position.equals(position);
-      }) != undefined;
+      return e.position.equals(position);
+    }) != undefined;
   }
 
   collect(snake: Snake) {
@@ -206,12 +206,14 @@ export class Game extends Phaser.State {
       let pos = s[e];
       if (this.treatAt(pos)) {
         views.push(new View(e, "treat"));
+      } else if (s[e].x >= this.cellX || s[e].y >= this.cellY) {
+        views.push(new View(e, "wall"));
       } else {
         // TODO: handle other types, obstacle, enemy, etc.
         views.push(new View(e, "empty"));
       }
     })
-      // Identify
+    // Identify
     return views;
   }
 
@@ -223,6 +225,7 @@ export class Game extends Phaser.State {
       // console.log('heal is not implemented yet');
       break;
     default:
+      console.log(action);
       snake.move(action.direction);
     }
 
