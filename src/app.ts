@@ -18,7 +18,8 @@ class Template extends Phaser.Game {
         this.state.add('Game', Game, false);
 
         this.state.start('Boot');
-        let twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , 'byqcq486mbcznovxrjmh6z3y25hign');
+
+        const twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
     }
 }
 

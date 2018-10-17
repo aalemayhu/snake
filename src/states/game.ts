@@ -50,7 +50,7 @@ export class Game extends Phaser.State {
         let snakePosition = p.getHeadPosition();
         return snakePosition.x === x && snakePosition.y === y;
       }
-    })
+    });
     if (playerMatch) { return false; }
 
     let treatMatch = this.treats.find(t => {
@@ -68,7 +68,7 @@ export class Game extends Phaser.State {
     this.createGrid();
     // For debugging add three snakes
     for (let i = 0; i < 3; i++) {
-      let snake = this.newSnake(`snake-${i}`);
+      let snake = this.newSnake(`snake-${i}`, 'Mobilpadde');
       this.players.push(snake);
       snake.draw(this.grid);
     }
@@ -91,9 +91,9 @@ export class Game extends Phaser.State {
     this.treats.push(t);
   }
 
-  newSnake(id: string): Snake {
+  newSnake(id: string, aUrl: string): Snake {
     let pos = this.getRandomPosition();
-    let s = new Snake(id, this.game, pos.x, pos.y, this.cellSize);
+    let s = new Snake(id, this.game, pos.x, pos.y, this.cellSize, aUrl);
     return s;
   }
 
@@ -178,7 +178,8 @@ export class Game extends Phaser.State {
     default:
       snake.move(action);
     }
-    snake.draw(this.grid);
+
+    snake.draw(this.grid, this.game);
   }
 
   createGrid() {
