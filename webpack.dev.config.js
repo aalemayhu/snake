@@ -3,6 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TSLintPlugin = require('tslint-webpack-plugin')
+const Dotenv = require('dotenv-webpack');
 
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
 const phaser = path.join(phaserModule, 'build/custom/phaser-arcade-physics.js')
@@ -24,6 +25,7 @@ module.exports = {
     publicPath: '/'
   },
   plugins: [
+    new Dotenv({ path: './src/.env' }),
     new TSLintPlugin({
       files: ['./src/**/*.ts']
     }),
@@ -40,6 +42,7 @@ module.exports = {
   ],
   module: {
     loaders: [
+        { test: /\.snk?$/, loader: 'raw-loader', exclude: '/node_modules/' },
       { test: /\.ts?$/, loader: 'ts-loader', exclude: '/node_modules/' },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-arcade-physics\.js/, use: ['expose-loader?Phaser'] },

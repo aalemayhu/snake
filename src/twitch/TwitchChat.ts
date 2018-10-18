@@ -1,4 +1,6 @@
 import { Twitch, Message, ChannelUserState } from 'twitch-wrapper-ts';
+import axios from 'axios';
+
 import { Scraper } from '../scraping/scraper';
 import { GameState } from '../GameState';
 
@@ -7,7 +9,13 @@ const scraper = new Scraper();
  // TwitchChat
 export class TwitchChat {
 
+  private channel: string;
+  private subscribers = [];
+  private users: string[] = [];
+
   constructor(username, channel, token) {
+    this.channel = channel;
+
     const twitch: Twitch = new Twitch(username, token, channel);
     twitch.connect();
     twitch.on('connected', () => twitch.send('Waiting for commands now!', channel));
@@ -64,6 +72,32 @@ export class TwitchChat {
         twitch.send('@' + messageSender + ' is in the team: ' + joinedTeam, messageChannel);
       }
     });
+
+    setInterval(() => this.getUsers((viewers) => {
+        this.subscribers.forEach((s) => {
+            const curr = s.users();
+            const uniq = this.users
+                .concat(viewers)
+                .filter((v) => curr.indexOf(v) < 0);
+
+            s.addUsers(uniq);
+        });
+        
+        this.users = viewers;
+    }), 2500);
+  }
+
+  getUsers(cb) {
+    axios({
+        method: 'get',
+        url: `https://cors-anywhere.herokuapp.com/http://tmi.twitch.tv/group/user/${this.channel}/chatters`,
+        headers: {'Origin': 'snake'}
+    })
+        .then(({ data }) => cb(Object.values(data.chatters.viewers)));
+  }
+
+  subscribeToUsers(sub) {
+    this.subscribers.push(sub);
   }
 
 }

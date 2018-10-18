@@ -1,45 +1,52 @@
 import * as ts from 'typescript';
-import { readFileSync } from 'fs';
+import { decode } from 'utf8';
 
 import { SnakeApi } from './SnakeApi';
 import { Action } from './Action';
+import { Player } from './Player';
+import { View } from './View';
+import { Snake } from '../prefabs/snake';
 
-let scriptsPaths: string [] = new Array(1000);
-let scripts: SnakeApi.Snake [] = new Array(1000);
+const path = require('path');
 
 export class ApiHandler {
+    players: Player[] = [];
+    scripts: SnakeApi.Snake [] = new Array();
+
     constructor() {
         console.log('Handler initialized');
     }
 
-    AddScripts() {
-        // Get files in directory
-        scriptsPaths.push('\\src\\Scripts\\Example.ts'); // add file to array
-    }
-
-    GetAllScripts() {
-       /* scriptsPaths.forEach(element => {
-            if (element !== undefined) {
-                console.log(element + ' loaded');
-                const src = readFileSync(element, 'utf-8');
-                console.log('TEST');
-                const res = ts.transpile(src);
-                const script = eval(res);
-                scripts.push(script);
+    addScripts(users: string[]): string[] {
+        // TODO: Load all users in the chat, use default script for users who have not uploaded a script
+        users.forEach((u) => {
+            if (u === 'mobilpadde') {
+                this.players.push(new Player('smarty-pants.snk', u));
+            } else {
+                this.players.push(new Player('interesting.snk', u));
             }
-        });*/
+        });
+
+        return users.map((u) => u);
     }
 
-    RunScript(): Action[] {
-       let actions: Action [] = new Array(1000);
-       /* console.log(scripts[0]);
-            scripts.forEach(sc => {
-                if (sc !== undefined) {
-                    let currentAction = sc.Run();
-                    actions.push(currentAction);
-                    console.log('Result: ' + currentAction);
-                }
-            });*/
-        return actions;
+    compileScripts() {
+        this.players.forEach(element => {
+            console.log('compileScripts', element);
+            if (element !== undefined) {
+                console.log(`Loaded ${element.script} for ${element.username}`);
+                const src = decode(require(`../Scripts/${element.script}`));
+                const res: string = ts.transpile(src);
+                const script: any = eval(res);
+                this.scripts.push(script);
+            }
+        });
+    }
+
+    getNextAction(idx: number, snake: Snake, views: View[]): Action[] {
+        const sc = this.scripts[idx];
+        const currentAction = sc.Next.call(sc, snake, SnakeApi)(views);
+
+        return currentAction;
     }
 }
