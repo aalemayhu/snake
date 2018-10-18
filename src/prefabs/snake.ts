@@ -22,13 +22,20 @@ export class Snake {
   private WEST = new Phaser.Point(-1, 0);
   private moveDirection: Phaser.Point;
 
+  private headAngles = {
+    'right': 90,
+    'left': -90,
+    'up': 180,
+    'down': 0,
+  }
+
   constructor(
-        id: string,
-        game: Phaser.Game,
-        x: number,
-        y: number,
-        cellSize: number,
-        user: string,
+    id: string,
+    game: Phaser.Game,
+    x: number,
+    y: number,
+    cellSize: number,
+    user: string,
   ) {
     this.snakeBody = [];
     this.cellSize = cellSize;
@@ -51,20 +58,20 @@ export class Snake {
 
   fetchHead() {
     axios.get(this.avatarUrl + '?client_id=' + process.env.CLIENT_ID)
-        .then(({ data }) => {
-            this.game.load.image(`avatar-${this.username}`, data.logo);
-            this.game.load.onLoadComplete.add(() => {
-                this.head = this.game.make.sprite(0, 0, `avatar-${this.username}`);
+      .then(({ data }) => {
+        this.game.load.image(`avatar-${this.username}`, data.logo);
+        this.game.load.onLoadComplete.add(() => {
+          this.head = this.game.make.sprite(0, 0, `avatar-${this.username}`);
 
-                const w = this.head._frame.width;
-                const h = this.head._frame.height;
+          const w = this.head._frame.width;
+          const h = this.head._frame.height;
 
-                this.head.scale.setTo(this.cellSize / w, this.cellSize / h);
-                this.head.anchor.setTo(0.5, 0.5);
-                this.headLoaded = true;
-            }, this);
-            this.game.load.start();
-        });
+          this.head.scale.setTo(this.cellSize / w, this.cellSize / h);
+          this.head.anchor.setTo(0.5, 0.5);
+          this.headLoaded = true;
+        }, this);
+        this.game.load.start();
+      });
   }
 
   update() {
@@ -72,11 +79,11 @@ export class Snake {
 
   draw(graphics) {
     if (this.headLoaded) {
-        const s = this.getHeadPosition();
-        const halfCS = this.cellSize / 2;
+      const s = this.getHeadPosition();
+      const halfCS = this.cellSize / 2;
 
-        this.bmd.clear();
-        this.bmd.draw(this.head, s.x * this.cellSize + halfCS, s.y * this.cellSize + halfCS);
+      this.bmd.clear();
+      this.bmd.draw(this.head, s.x * this.cellSize + halfCS, s.y * this.cellSize + halfCS);
     }
 
     graphics.lineStyle(2, this.color, 1);
@@ -87,45 +94,63 @@ export class Snake {
     });
   }
 
-  read(direction) {
+  isValidMove(position: Phaser.Point): boolean {
+    let canMove = true;
+    this.snakeBody.forEach(s => {
+      if (position.equals(s)) {
+        canMove = false;
+      }
+    })
+    return canMove;
+  }
+
+  performMoveIfPossible(direction) {
+    const headPosition = this.getHeadPosition();
+    const newPosition = new Phaser.Point(
+      this.moveDirection.x + headPosition.x,
+      this.moveDirection.y + headPosition.y
+    );
+
+    if (!this.isValidMove(newPosition)) { return; }
+
+    if (newPosition.x >= this.cellX || newPosition.x <= 0 ||
+      newPosition.y >= this.cellY || newPosition.y <= 0) {
+      console.log('New position is outside, aborting');
+    } else if (this.snakeBody.length === 1) {
+      this.snakeBody[0] = newPosition;
+    } else {
+      this.snakeBody.splice(0, 1);
+      this.snakeBody.push(newPosition);
+    }
+
+    if (this.headLoaded) {
+      this.head.angle = this.headAngles[direction];
+    }
+  }
+
+  handle(direction) {
     switch (direction) {
     case 'right': {
       if (this.moveDirection === this.NORTH || this.moveDirection === this.SOUTH) {
         this.moveDirection = this.EAST;
-
-        if (this.headLoaded) {
-            this.head.angle = 90;
-        }
       }
       break;
     }
     case 'left': {
       if (this.moveDirection === this.NORTH || this.moveDirection === this.SOUTH) {
         this.moveDirection = this.WEST;
-
-        if (this.headLoaded) {
-            this.head.angle = -90;
-        }
       }
       break;
     }
     case 'up': {
       if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
         this.moveDirection = this.NORTH;
-
-        if (this.headLoaded) {
-            this.head.angle = 180;
-        }
       }
       break;
     }
     case 'down': {
       if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
         this.moveDirection = this.SOUTH;
-
-        if (this.headLoaded) {
-            this.head.angle = 0;
-        }
       }
       break;
     }
@@ -176,21 +201,7 @@ export class Snake {
   }
 
   public move(direction) {
-    this.read(direction);
-    const headPosition = this.getHeadPosition();
-    const newPosition = new Phaser.Point(
-      this.moveDirection.x + headPosition.x,
-      this.moveDirection.y + headPosition.y
-    );
-
-    if (newPosition.x >= this.cellX || newPosition.x <= 0 ||
-      newPosition.y >= this.cellY || newPosition.y <= 0) {
-      console.log('New position is outside, aborting');
-    } else if (this.snakeBody.length === 1) {
-      this.snakeBody[0] = newPosition;
-    } else {
-      this.snakeBody.splice(0, 1);
-      this.snakeBody.push(newPosition);
-    }
+    this.handle(direction);
+    this.performMoveIfPossible(direction);
   }
 }
