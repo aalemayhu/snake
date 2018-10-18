@@ -18,7 +18,7 @@ export class ApiHandler {
     }
 
     GetAllScripts() {
-        scriptsPaths.forEach(element => {
+       /* scriptsPaths.forEach(element => {
             if (element !== undefined) {
                 console.log(element + ' loaded');
                 const src = readFileSync(element, 'utf-8');
@@ -27,19 +27,19 @@ export class ApiHandler {
                 const script = eval(res);
                 scripts.push(script);
             }
-        });
+        });*/
     }
 
     RunScript(): Action[] {
-        let actions: Action [] = new Array(1000);
-        console.log(scripts[0]);
+       let actions: Action [] = new Array(1000);
+       /* console.log(scripts[0]);
             scripts.forEach(sc => {
                 if (sc !== undefined) {
                     let currentAction = sc.Run();
                     actions.push(currentAction);
                     console.log('Result: ' + currentAction);
                 }
-            });
+            });*/
         return actions;
     }
 }

@@ -1,0 +1,10 @@
+dist: trusty
+language: node_js
+node_js:
+  - "7"
+
+install:
+    - npm install
+    - bower install
+script:
+    - ember test --server

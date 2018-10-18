@@ -25,9 +25,9 @@ export class Game extends Phaser.State {
 
   public create(): void {
     // Testing ApiHandler
-    //this.h = new ApiHandler();
-    //this.h.AddScripts();
-    //this.h.GetAllScripts();
+    this.h = new ApiHandler();
+    this.h.AddScripts();
+    this.h.GetAllScripts();
     // ------------------
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -50,7 +50,7 @@ export class Game extends Phaser.State {
       if (i === 1) { snake.color = Phaser.Color.GREEN; }
       if (i === 2) { snake.color = Phaser.Color.AQUA; }
 
-      snake.draw(this.grid)
+      snake.draw(this.grid);
     }
 
     this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -74,7 +74,7 @@ export class Game extends Phaser.State {
 
   public update(): void {
     // Testing ApiHandler
-    //this.h.RunScript();
+    this.h.RunScript();
     // ------------------
 
     this.game.input.update();
@@ -89,7 +89,7 @@ export class Game extends Phaser.State {
       let index = Math.floor((Math.random() * this.actions.length) | 0);
       let action = this.actions[index];
       snake.run(action);
-      snake.draw(this.grid)
+      snake.draw(this.grid);
     }
   }
 
