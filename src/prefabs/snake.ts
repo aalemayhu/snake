@@ -2,7 +2,6 @@ import Phaser from 'phaser-ce';
 import axios from 'axios';
 
 export class Snake {
-  readonly id: string;
   public color: number;
 
   private snakeBody: Phaser.Point[];
