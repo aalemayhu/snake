@@ -59,11 +59,12 @@ module.exports = {
     ],
     module: {
         loaders: [
-            {test: /\.ts?$/, loader: 'ts-loader', exclude: '/node_modules/'},
-            {test: /pixi\.js/, use: ['expose-loader?PIXI']},
-            {test: /phaser-arcade-physics\.js/, use: ['expose-loader?Phaser']},
-            {test: /howler\.min\.js/, use: ['expose-loader?Howler']},
-            {test: /p2\.js$/, use: ['expose-loader?p2']}
+      { test: /\.snk?$/, loader: 'raw-loader', exclude: '/node_modules/' },
+      { test: /\.ts?$/, loader: 'ts-loader', exclude: '/node_modules/' },
+      { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
+      { test: /phaser-arcade-physics\.js/, use: ['expose-loader?Phaser'] },
+      { test: /howler\.min\.js/, use: ['expose-loader?Howler'] },
+      { test: /p2\.js$/, use: ['expose-loader?p2'] }
         ]
     },
     resolve: {
@@ -74,5 +75,10 @@ module.exports = {
             'p2': p2,
             'howler': howler
         }
-    }
+    },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 };
