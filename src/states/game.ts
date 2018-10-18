@@ -208,11 +208,10 @@ export class Game extends Phaser.State {
 
     // Run actions for players and draw them
     for (let i = 0; i < this.players.length; i++) {
-      let snake = this.players[i];
+      const snake = this.players[i];
       if (!snake.getVisible()) { continue; }
 
-      // TODO: receive the action from the ApiHandler
-      const action = this.h.getNextAction(i, this.views(snake));
+      const action = this.h.getNextAction(i, snake, this.views(snake));
       const front = snake.getInFront();
       this.handle(action, snake);
       this.collect(snake);
@@ -227,11 +226,11 @@ export class Game extends Phaser.State {
     this.actions.forEach(e => {
       let pos = s[e];
       if (this.treatAt(pos)) {
-        views.push(new View(e, "treat"));
+        views.push(new View(e, 'treat'));
       } else if (s[e].x >= this.cellX || s[e].y >= this.cellY) {
-        views.push(new View(e, "wall"));
+        views.push(new View(e, 'wall'));
       } else {
-        views.push(new View(e, "empty"));
+        views.push(new View(e, 'empty'));
       }
     });
     return views;
@@ -245,7 +244,6 @@ export class Game extends Phaser.State {
       // console.log('heal is not implemented yet');
       break;
     default:
-      console.log(action);
       snake.move(action.direction);
     }
 

@@ -31,7 +31,6 @@ export class Snake {
         user: string,
   ) {
     this.snakeBody = [];
-    this.id = id;
     this.cellSize = cellSize;
     this.color = Phaser.Color.getRandomColor(40, 100);
     this.snakeBody.push(new Phaser.Point(x, y));

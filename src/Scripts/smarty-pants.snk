@@ -1,29 +1,31 @@
-// Basic script skeleton
-
 ({
-    Next(SnakeApi: SnakeApi): Action {
-        return function(views) {
-            const rnd = ~~(Math.random() * 4) + 1;
-            let action;
+    Next(snake: Snake, snakeApi: SnakeApi): Action {
+    return function(views) {
+        const directions = ['up', 'down', 'right', 'left'];
 
-            switch (rnd) {
-                case 1:
-                    action = SnakeApi.Move('up');
-                    break;
-                case 2:
-                    action = SnakeApi.Move('right');
-                    break;
-                case 3:
-                    action = SnakeApi.Move('left');
-                    break;
-                case 4:
-                    action = SnakeApi.Move('down');
-                    break;
-                default:
-                    break;
-            }
-
-            return action;
+        const treatMatch = views.find(v => v.contains == 'treat');
+        if (treatMatch) {
+            return treatMatch;
         }
+
+        let possibleActions = [...directions];
+        const wallMatch = views.findIndex(v => v.contains === 'wall');
+        if (wallMatch !== -1) {
+            possibleActions.splice(wallMatch, 1);
+        }
+
+        const body = snake.getBody();
+        const sViews = snake.views();
+
+        const dirLeft = Object.entries(sViews)
+            .filter((e) => {
+                return body.filter((v) => v.toString() === e[1].toString()).length > 0;
+            })
+            .map((e) => e[0]);
+
+        possibleActions = possibleActions.filter((p) => dirLeft.indexOf(p) < 0);
+
+        const rnd = ~~(Math.random() * possibleActions.length);
+        return views.find(v => v.direction == possibleActions[rnd]);
     }
 });

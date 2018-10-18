@@ -1,5 +1,5 @@
 ({
-  Next(SnakeApi: SnakeApi): Action {
+  Next(snake: Player, SnakeApi: SnakeApi): Action {
     return function(views) {
       const directions = ['up', 'down', 'right', 'left'];
 

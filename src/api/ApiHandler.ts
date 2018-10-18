@@ -4,6 +4,8 @@ import { decode } from 'utf8';
 import { SnakeApi } from './SnakeApi';
 import { Action } from './Action';
 import { Player } from './Player';
+import { View } from './View';
+import { Snake } from '../prefabs/snake';
 
 const path = require('path');
 
@@ -18,7 +20,11 @@ export class ApiHandler {
     addScripts(users: string[]): string[] {
         // TODO: Load all users in the chat, use default script for users who have not uploaded a script
         users.forEach((u) => {
-            this.players.push(new Player('interesting.snk', u));
+            if (u === 'mobilpadde') {
+                this.players.push(new Player('smarty-pants.snk', u));
+            } else {
+                this.players.push(new Player('interesting.snk', u));
+            }
         });
 
         return users.map((u) => u);
@@ -37,10 +43,9 @@ export class ApiHandler {
         });
     }
 
-    getNextAction(idx: number, views): Action[] {
+    getNextAction(idx: number, snake: Snake, views: View[]): Action[] {
         const sc = this.scripts[idx];
-        const currentAction = sc.Next.call(sc, SnakeApi)(views);
-        console.log('Result:', currentAction);
+        const currentAction = sc.Next.call(sc, snake, SnakeApi)(views);
 
         return currentAction;
     }
