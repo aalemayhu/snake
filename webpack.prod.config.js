@@ -3,7 +3,6 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const JavaScriptObfuscator = require('webpack-obfuscator')
 
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
@@ -36,17 +35,6 @@ module.exports = {
       name: 'vendor',
       minChunks: function (module, count) {
         return module.resource && vendorPackages.test(module.resource) && count >= 1
-      }
-    }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        mangle: true,
-        drop_console: true,
-        minimize: true
-      },
-      output: {
-        comments: false,
-        beautify: false
       }
     }),
     new JavaScriptObfuscator({
