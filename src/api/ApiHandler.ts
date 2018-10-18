@@ -28,7 +28,7 @@ export class ApiHandler {
         this.players.forEach(element => {
             console.log('compileScripts', element);
             if (element !== undefined) {
-                console.log(element + ' loaded');
+                console.log(`Loaded ${element.script} for ${element.username}`);
                 const src = decode(require(`../Scripts/${element.script}`));
                 const res: string = ts.transpile(src);
                 const script: any = eval(res);

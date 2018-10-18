@@ -29,6 +29,7 @@ export class Game extends Phaser.State {
   private isDebugMode = true;
 
   private numPlayers: number = 0;
+  private playerNames: string[] = [];
   private twitch: TwitchChat;
 
   public create(): void {
@@ -54,11 +55,21 @@ export class Game extends Phaser.State {
     // Testing ApiHandler
     this.h = new ApiHandler();
 
-    twitch.getUsers((users) => {
-        const players = this.h.addScripts(users);
-        this.numPlayers = players.length;
-        this.h.compileScripts();
-        this.addPlayers(players);
+    const addUserFunc = (users) => {
+        if (users.length > 0) {
+            const newPlayers = this.h.addScripts(users);
+            this.playerNames.push(...newPlayers);
+            this.numPlayers = this.playerNames.length;
+            this.h.compileScripts();
+            this.addPlayers(newPlayers);
+        }
+    };
+
+    twitch.getUsers(addUserFunc);
+
+    twitch.subscribeToUsers({
+        addUsers: addUserFunc,
+        users: () => this.playerNames,
     });
   }
 
@@ -79,7 +90,7 @@ export class Game extends Phaser.State {
   addPlayers(players) {
     for (let i = 0; i < this.numPlayers; i++) {
       // TODO: the API has to give us an id for the player.
-      let snake = this.newSnake(`snake-${i}`, players[i]);
+      let snake = this.newSnake(`snake-${i}`, this.playerNames[i]);
       this.players.push(snake);
       snake.draw(this.grid);
     }
