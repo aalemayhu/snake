@@ -9,3 +9,7 @@ Survive and collect the most treats to get higher in the leaderboard.
 
 For all the details on how to write your SNAKE script, see the [API
 documentation](./API.md).
+
+## Contributing
+
+TODO: help potential contributors get started quicker
