@@ -8,7 +8,6 @@ import {Preload} from './states/preload';
 import {Game} from './states/game';
 
 class Template extends Phaser.Game {
-
     constructor() {
         super(Config.gameWidth, Config.gameHeight, Phaser.CANVAS, 'content', null);
 
