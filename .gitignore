@@ -1,7 +1,8 @@
 node_modules
 dist
+.cache
 
-yarn.lock
+yarn*
 *.swp
 
 .env
