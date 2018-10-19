@@ -1,4 +1,4 @@
-import 'pixi';
+import 'pixi.js';
 import 'p2';
 import Phaser from 'phaser-ce';
 
@@ -10,7 +10,7 @@ import {View} from '../api/View';
 import { TwitchChat } from '../twitch/TwitchChat';
 
 export class Game extends Phaser.State {
-  private players: Snake[];
+  private players: Snake[] = [];
   private Snake: Snake;
   private spaceKey: Phaser.Key;
   private tick: number;
@@ -24,7 +24,7 @@ export class Game extends Phaser.State {
   private cellSize = 32;
   private cellX: number;
   private cellY: number;
-  private treats: Treat[];
+  private treats: Treat[] = [];
   private expectedTreatCount = 13;
   private isDebugMode = true;
 

@@ -1,5 +1,6 @@
 import Phaser from 'phaser-ce';
 import axios from 'axios';
+import dotenv from 'dotenv';
 
 export class Snake {
   public color: number;
@@ -27,7 +28,7 @@ export class Snake {
     'left': -90,
     'up': 180,
     'down': 0,
-  }
+  };
 
   constructor(
     id: string,

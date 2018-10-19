@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const JavaScriptObfuscator = require('webpack-obfuscator')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
 const phaser = path.join(phaserModule, 'build/custom/phaser-arcade-physics.js')
@@ -24,6 +25,11 @@ module.exports = {
     path: path.resolve('./dist'),
     publicPath: '/'
   },
+  optimization: {
+    minimizer: [
+        new UglifyJsPlugin(),
+    ]
+  },
   plugins: [
     new CopyWebpackPlugin([
       {
@@ -31,12 +37,12 @@ module.exports = {
         to: './assets'
       }
     ]),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module, count) {
-        return module.resource && vendorPackages.test(module.resource) && count >= 1
-      }
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+      // name: 'vendor',
+      // minChunks: function (module, count) {
+        // return module.resource && vendorPackages.test(module.resource) && count >= 1
+      // }
+    // }),
     new JavaScriptObfuscator({
       rotateUnicodeArray: true
     }, ['vendor.bundle.js']),
@@ -46,7 +52,7 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       { test: /\.snk?$/, loader: 'raw-loader', exclude: '/node_modules/' },
       { test: /\.ts?$/, loader: 'ts-loader', exclude: '/node_modules/' },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },

@@ -1,5 +1,6 @@
 import * as ts from 'typescript';
 import { decode } from 'utf8';
+import axios from 'axios';
 
 import { SnakeApi } from './SnakeApi';
 import { Action } from './Action';
@@ -35,10 +36,13 @@ export class ApiHandler {
             console.log('compileScripts', element);
             if (element !== undefined) {
                 console.log(`Loaded ${element.script} for ${element.username}`);
-                const src = decode(require(`../Scripts/${element.script}`));
-                const res: string = ts.transpile(src);
-                const script: any = eval(res);
-                this.scripts.push(script);
+                axios.get(`/Scripts/${element.script}`)
+                    .then(({ data }) => {
+                        const src = decode(data);
+                        const res: string = ts.transpile(src);
+                        const script: any = eval(res);
+                        this.scripts.push(script);
+                    });
             }
         });
     }

@@ -1,7 +1,7 @@
 install_deps:
 	npm install .
 install_build_deps:
-	npm install -g rimraf webpack webpack-cli
+	npm install -D
 start:
 	npm start
 build:
