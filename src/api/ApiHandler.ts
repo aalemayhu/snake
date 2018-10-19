@@ -35,7 +35,8 @@ export class ApiHandler {
             console.log('compileScripts', element);
             if (element !== undefined) {
                 console.log(`Loaded ${element.script} for ${element.username}`);
-                const src = decode(require(`../Scripts/${element.script}`));
+                // TODO: use a defined configuration variable for the location of user scripts
+                const src = decode(require(`/tmp/Snake-Scripts/${element.script}`));
                 const res: string = ts.transpile(src);
                 const script: any = eval(res);
                 this.scripts.push(script);
