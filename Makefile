@@ -1,5 +1,5 @@
 ELECTRON_DIR ?=$(shell pwd)/electron
-ELECTRON_GAME_DIR ?=${ELECTRON_DIR}/src/game
+ELECTRON_GAME_DIR ?=${ELECTRON_DIR}/src
 GAME_DIST_DIR ?=$(shell pwd)/dist
 
 run: build copy_game

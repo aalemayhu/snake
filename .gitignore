@@ -5,3 +5,10 @@ yarn.lock
 *.swp
 
 .env
+
+# Ignore generated game code
+electron/src/0.bundle.js
+electron/src/1.bundle.js
+electron/src/app.bundle.js
+electron/src/assets/
+electron/src/vendor.bundle.js
