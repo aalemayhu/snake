@@ -82,7 +82,7 @@ export class TwitchChat {
 
             s.addUsers(uniq);
         });
-        
+
         this.users = viewers;
     }), 2500);
   }
@@ -90,7 +90,7 @@ export class TwitchChat {
   getUsers(cb) {
     axios({
         method: 'get',
-        url: `https://cors-anywhere.herokuapp.com/http://tmi.twitch.tv/group/user/${this.channel}/chatters`,
+        url: `https://tmi.twitch.tv/group/user/${this.channel}/chatters`,
         headers: {'Origin': 'snake'}
     })
         .then(({ data }) => cb(Object.values(data.chatters.viewers)));
