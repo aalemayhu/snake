@@ -6,3 +6,5 @@ yarn*
 *.swp
 
 .env
+
+.cache
