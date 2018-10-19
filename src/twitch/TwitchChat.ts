@@ -82,7 +82,7 @@ export class TwitchChat {
 
             s.addUsers(uniq);
         });
-        
+
         this.users = viewers;
     }), 2500);
   }

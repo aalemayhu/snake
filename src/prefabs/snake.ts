@@ -101,7 +101,7 @@ export class Snake {
       if (position.equals(s)) {
         canMove = false;
       }
-    })
+    });
     return canMove;
   }
 

@@ -9,7 +9,7 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "ava-ts --timeout=60s -w __tests__/*.test.ts",
     "parcel:maps": " cp -r src/Scripts dist/ && cp -r assets dist/ && parcel index.html --no-hmr",
-    "parcel": "parcel build index.html --no-source-maps && cp -r {src/Scripts,assets} dist/"
+    "parcel": "parcel build index.html --no-source-maps && cp -r assets dist/ && cp -r src/Scripts dist/"
   },
   "repository": {
     "type": "git",
@@ -76,7 +76,7 @@
     "http": "^0.0.0",
     "net": "^1.0.2",
     "node-ts": "^2.1.2",
-    "phaser-ce": "^2.11.1",
+    "phaser-ce": "^2.9.4",
     "query-string": "^6.2.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
