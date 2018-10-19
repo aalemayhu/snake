@@ -70,7 +70,7 @@ export class Snake {
           this.head.scale.setTo(this.cellSize / w, this.cellSize / h);
           this.head.anchor.setTo(0.5, 0.5);
           this.headLoaded = true;
-        }, this);
+        });
         this.game.load.start();
       });
   }
