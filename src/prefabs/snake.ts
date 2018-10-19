@@ -57,7 +57,8 @@ export class Snake {
   }
 
   fetchHead() {
-    axios.get(this.avatarUrl + '?client_id=' + process.env.CLIENT_ID)
+    // TODO: make the client_id configurable
+    axios.get(this.avatarUrl + '?client_id=' + 'itet5zjq7dlg8ywx4v470rihamhmbr')
       .then(({ data }) => {
         this.game.load.image(`avatar-${this.username}`, data.logo);
         this.game.load.onLoadComplete.add(() => {
