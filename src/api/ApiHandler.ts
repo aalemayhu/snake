@@ -7,8 +7,6 @@ import { Player } from './Player';
 import { View } from './View';
 import { Snake } from '../prefabs/snake';
 
-const path = require('path');
-
 export class ApiHandler {
     players: Player[] = [];
     scripts: SnakeApi.Snake [] = new Array();
@@ -30,13 +28,22 @@ export class ApiHandler {
         return users.map((u) => u);
     }
 
+    // Workaround so the code works in CI and electron
+    getSrc(script): string {
+        try {
+            return decode(require(`/tmp/Snake-Scripts/${script}`));
+        } catch (e) {
+            return decode(require(`../Scripts/${script}`));
+        }
+    }
+
     compileScripts() {
         this.players.forEach(element => {
             console.log('compileScripts', element);
             if (element !== undefined) {
-                console.log(`Loaded ${element.script} for ${element.username}`);
                 // TODO: use a defined configuration variable for the location of user scripts
-                const src = decode(require(`/tmp/Snake-Scripts/${element.script}`));
+                console.log(`Loaded ${element.script} for ${element.username}`);
+                const src = this.getSrc(element.script);
                 const res: string = ts.transpile(src);
                 const script: any = eval(res);
                 this.scripts.push(script);
