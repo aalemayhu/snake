@@ -1,5 +1,5 @@
-import 'pixi.js';
-import 'p2';
+import 'phaser-ce/build/custom/pixi';
+import 'phaser-ce/build/custom/p2';
 import Phaser from 'phaser-ce';
 import { Sound } from '../helpers/sound';
 

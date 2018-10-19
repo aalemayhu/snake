@@ -8,7 +8,7 @@
     "lint": "tslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "test": "ava-ts --timeout=60s -w __tests__/*.test.ts",
-    "parcel:maps": "parcel index.html --no-hmr && cp -r assets dist/ && cp -r src/Scripts dist",
+    "parcel:maps": " cp -r src/Scripts dist/ && cp -r assets dist/ && parcel index.html --no-hmr",
     "parcel": "parcel build index.html --no-source-maps && cp -r {src/Scripts,assets} dist/"
   },
   "repository": {
@@ -76,10 +76,7 @@
     "http": "^0.0.0",
     "net": "^1.0.2",
     "node-ts": "^2.1.2",
-    "p2": "^0.7.1",
     "phaser-ce": "^2.11.1",
-    "pixi": "^0.3.1",
-    "pixi.js": "^4.8.2",
     "query-string": "^6.2.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
