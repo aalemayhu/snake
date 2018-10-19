@@ -7,7 +7,7 @@
     "build": "rimraf ./dist && webpack --config webpack.prod.config.js --progress",
     "lint": "tslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
-    "test": "ava-ts --timeout=60s -w __tests__/*.test.ts"
+    "test": "ava-ts --timeout=60s __tests__/*.test.ts"
   },
   "repository": {
     "type": "git",
