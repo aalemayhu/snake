@@ -29,21 +29,30 @@ module.exports = {
     new TSLintPlugin({
       files: ['./src/**/*.ts']
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module, count) {
-        return module.resource && vendorPackages.test(module.resource) && count >= 1
-      }
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+      // name: 'vendor',
+      // minChunks: function (module, count) {
+        // return module.resource && vendorPackages.test(module.resource) && count >= 1
+      // }
+    // }),
     new HtmlWebpackPlugin({
       template: './index.html',
       inject: 'body'
     })
   ],
   module: {
-    loaders: [
+    rules: [
       { test: /\.snk?$/, loader: 'raw-loader', exclude: '/node_modules/' },
-      { test: /\.ts?$/, loader: 'ts-loader', exclude: '/node_modules/' },
+      {
+          test: /\.ts?$/,
+          use: [
+              // 'thread-loader',
+              // 'ts-loader'
+              'awesome-typescript-loader'
+          ],
+          include: path.resolve('src'),
+          exclude: '/node_modules/'
+      },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-arcade-physics\.js/, use: ['expose-loader?Phaser'] },
       { test: /howler\.min\.js/, use: ['expose-loader?Howler'] },
