@@ -13,9 +13,9 @@ copy_game:
 	cp -r ${GAME_DIST_DIR}/assets ${ELECTRON_GAME_DIR}/assets
 
 install_deps:
-	npm install .
+	npm install
 install_build_deps:
-	npm install -g rimraf webpack webpack-cli
+	npm install -D
 start:
 	npm start
 build: # TODO: game build should ignore electron
@@ -27,3 +27,8 @@ lint-fix:
 
 test:
 	npm run test
+
+CI:
+	make install_build_deps
+	make test
+	make build

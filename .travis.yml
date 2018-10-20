@@ -3,8 +3,4 @@ node_js:
   - "8.12.0"
 
 install:
-    - npm install
-    - make install_build_deps
-    - make build
-
-script: echo "npm test temporarily disabled"
+    make CI
