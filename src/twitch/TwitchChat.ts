@@ -90,8 +90,7 @@ export class TwitchChat {
   getUsers(cb) {
     axios({
         method: 'get',
-        url: `https://tmi.twitch.tv/group/user/${this.channel}/chatters`,
-        headers: {'Origin': 'snake'}
+        url: `https://tmi.twitch.tv/group/user/${this.channel}/chatters`
     })
         .then(({ data }) => cb(Object.values(data.chatters.viewers)));
   }
