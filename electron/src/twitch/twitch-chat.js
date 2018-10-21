@@ -90,7 +90,6 @@ class TwitchChat {
     }
   }
 
-
   getUsers(cb) {
     axios({
       method: 'get',

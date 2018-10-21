@@ -1,5 +1,39 @@
 const { TwitchChat } = require('../twitch/twitch-chat.js');
+const { ApiHandler } = require('../api/api_handler.js');
+const { Snake } = require('../api/snake.js');
+
 const Phaser = require('phaser');
+
+
+const playerNames = [];
+
+function isCellAvailable(x, y) {
+  const playerMatch = this.players.find(function (p) {
+    if (p.getVisible()) {
+      let snakePosition = p.getHeadPosition();
+      return snakePosition.x === x && snakePosition.y === y;
+    }
+  });
+  if (playerMatch) { return false; }
+
+  const treatMatch = this.treats.find(t => {
+    return t.position.x === x && t.position.y === y;
+  });
+  if (treatMatch) { return false; }
+  return true;
+}
+
+function getRandomPosition(game, cellX, cellY) {
+  let x = game.rnd.integerInRange(0, cellX);
+  let y = game.rnd.integerInRange(0, cellY);
+  while (!isCellAvailable(x, y)) {
+    x = game.rnd.integerInRange(0, cellX);
+    y = game.rnd.integerInRange(0, cellY);
+        // TODO: give up after trying x times
+  }
+  return new Phaser.Point(x, y);
+}
+
 
 class GameView {
   constructor(height, width) {
@@ -20,14 +54,40 @@ class GameView {
         create: this.create,
       },
     };
-
     this.game = new Phaser.Game(this.config);
   }
 
+
   create() {
     this.twitch = new TwitchChat('nyasaki_bot', 'ccscanf', '');
-    // this.setupAPI(this.twitch);
+    // Testing ApiHandler
+    this.h = new ApiHandler();
 
+    const addUserFunc = (users) => {
+      if (users.length > 0) {
+        const newPlayers = this.h.addScripts(users);
+        console.log('newPlayers=', newPlayers);
+        playerNames.push(...newPlayers);
+        this.h.compileScripts();
+
+
+        for (let i = 0; i < playerNames.length; i += 1) {
+          // TODO: the API has to give us an id for the player.
+          const pos = getRandomPosition();
+          const snake = new Snake(`snake-${i}`, this.game, pos.x, pos.y, this.cellSize, playerNames[i]);
+          this.players.push(snake);
+          snake.draw(this.grid);
+        }
+        this.playerCountLabel.text = `Player count: ${playerNames.length}`;
+      }
+    };
+
+    this.twitch.getUsers(addUserFunc);
+
+    this.twitch.subscribeToUsers({
+      addUsers: addUserFunc,
+      users: () => playerNames,
+    });
     // ------------------
     // TODO: fix below so game is not paused when the window is unfocused
     // this.game.stage.disableVisibilityChange = true;
