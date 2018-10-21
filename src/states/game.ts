@@ -88,6 +88,7 @@ export class Game extends Phaser.State {
   }
 
   addPlayers(players) {
+    this.players = [];
     for (let i = 0; i < this.numPlayers; i++) {
       // TODO: the API has to give us an id for the player.
       let snake = this.newSnake(`snake-${i}`, this.playerNames[i]);
