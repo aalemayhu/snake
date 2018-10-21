@@ -1,3 +1,4 @@
+const { TwitchChat } = require('../twitch/twitch-chat.js');
 const Phaser = require('phaser');
 
 class GameView {
@@ -24,7 +25,7 @@ class GameView {
   }
 
   create() {
-    // this.twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
+    this.twitch = new TwitchChat('nyasaki_bot', 'ccscanf', '');
     // this.setupAPI(this.twitch);
 
     // ------------------
