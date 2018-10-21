@@ -92,7 +92,11 @@ export class TwitchChat {
         method: 'get',
         url: `https://tmi.twitch.tv/group/user/${this.channel}/chatters`
     })
-        .then(({ data }) => cb(Object.values(data.chatters.viewers)));
+        .then(({ data }) => {
+          let users = data.chatters.viewers;
+          users.push(...data.chatters.moderators);
+          cb(users)
+        });
   }
 
   subscribeToUsers(sub) {
