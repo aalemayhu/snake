@@ -2,7 +2,7 @@
     "name": "snake",
     "productName": "snake",
     "version": "1.0.0",
-    "description": "My Electron application description",
+    "description": "[S]uper [N]ot [A]wesome [K]nockout [E]agle - SNAKE",
     "main": "src/index.js",
     "scripts": {
         "start": "electron-forge start",
