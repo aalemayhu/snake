@@ -2,7 +2,6 @@ import 'pixi';
 import 'p2';
 import Phaser from 'phaser-ce';
 
-import {Sound} from '../helpers/sound';
 import {Snake} from '../prefabs/snake';
 import {Treat} from '../prefabs/treat';
 import { ApiHandler } from '../api/ApiHandler';
@@ -32,24 +31,6 @@ export class Game extends Phaser.State {
   private playerNames: string[] = [];
   private twitch: TwitchChat;
 
-  public create(): void {
-    this.twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
-    this.setupAPI(this.twitch);
-
-    // ------------------
-    this.game.stage.disableVisibilityChange = true;
-    this.grid = this.game.add.graphics(0, 0);
-    this.setupHUD();
-    this.cellX = (this.game.width / this.cellSize) - 1;
-    this.cellY = (this.game.height / this.cellSize) - 1;
-    this.tick = this.game.time.now;
-    this.players = [];
-    this.treats = [];
-
-    if (this.isDebugMode) {
-      this.debugMode();
-    }
-  }
 
   setupAPI(twitch: TwitchChat) {
     // Testing ApiHandler
@@ -71,20 +52,6 @@ export class Game extends Phaser.State {
         addUsers: addUserFunc,
         users: () => this.playerNames,
     });
-  }
-
-  setupHUD() {
-    let style = {
-        font: '16px Arial',
-        fill: '#ff0044',
-        wordWrap: false,
-        wordWrapWidth: this.cellSize * 3,
-        align: 'center',
-        backgroundColor: '#ffff00'
-    };
-
-    this.playerCountLabel = this.game.add.text(
-      0, 0, 'Player count: 0', style);
   }
 
   addPlayers(players) {
@@ -111,14 +78,6 @@ export class Game extends Phaser.State {
     });
     if (treatMatch) { return false; }
     return true;
-  }
-
-  debugMode() {
-    this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.spaceKey.onDown.add(() => {
-      Sound.play();
-    }, this);
-    this.createGrid();
   }
 
   getRandomPosition(): Phaser.Point {
@@ -248,29 +207,5 @@ export class Game extends Phaser.State {
     }
 
     snake.draw(this.grid, this.game);
-  }
-
-  createGrid() {
-    let graphics = this.game.add.graphics(0, 0);
-    let style = { font: '8px Arial', fill: '#ff0044', wordWrap: true,
-      wordWrapWidth: this.cellSize, align: 'center', backgroundColor: '#ffff00' };
-    // set a fill and line style
-    graphics.beginFill(0xFF3300);
-    graphics.lineStyle(10, 0xffd900, 1);
-
-    // set a fill and line style again
-    graphics.lineStyle(10, 0xFF0000, 0.8);
-    graphics.beginFill(0xFF700B, 1);
-
-    // draw a rectangle
-    graphics.lineStyle(2, 0x0000FF, 1);
-
-    for (let i = 0; i < this.game.width / this.cellSize; i++) {
-      for (let j = 0; j < this.game.height / this.cellSize; j++) {
-        // graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
-        // let t = `[${i * this.cellSize}x${j * this.cellSize}]`
-        // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
-      }
-    }
   }
 }

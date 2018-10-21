@@ -1,3 +1,5 @@
-const { GameView } = require('./views/game.js')
+const { GameView } = require('./views/game.js');
 
-let gameView = new GameView(800, 800);
+const gameView = new GameView(800, 800);
+
+console.log('Game up using', gameView.config);
