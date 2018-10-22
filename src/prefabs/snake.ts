@@ -11,7 +11,7 @@ export class Snake {
   private avatarUrl: string;
   private head;
   private headLoaded: boolean = false;
-  private username: string;
+  public username: string;
   private game: Phaser.Game;
   private bmd: Phaser.BitmapData;
 

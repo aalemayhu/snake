@@ -46,9 +46,11 @@
         }
     },
     "dependencies": {
+        "body-parser": "^1.18.3",
         "electron-compile": "^6.4.3",
         "express": "^4.16.4",
-        "jquery": "^3.3.1"
+        "jquery": "^3.3.1",
+        "vm2": "^3.6.4"
     },
     "devDependencies": {
         "babel-plugin-transform-async-to-generator": "^6.24.1",

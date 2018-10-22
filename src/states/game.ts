@@ -211,12 +211,12 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.players.length; i++) {
       const snake = this.players[i];
       if (!snake.getVisible()) { continue; }
-
-      const action = this.h.getNextAction(i, snake, this.views(snake));
-      const front = snake.getInFront();
-      this.handle(action, snake);
-      this.collect(snake);
-      this.attack(snake, front);
+      this.h.getNextAction(i, snake, this.views(snake), (action) => {        
+        const front = snake.getInFront();
+        this.handle(action, snake);
+        this.collect(snake);
+        this.attack(snake, front);
+      });
     }
   }
 

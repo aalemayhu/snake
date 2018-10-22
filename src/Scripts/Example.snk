@@ -1,29 +1,24 @@
 // Basic script skeleton
+module.exports = function Next(views) {
+    const rnd = ~~(Math.random() * 4) + 1;
+    let action;
 
-({
-    Next(snake: Player, SnakeApi: SnakeApi): Action {
-        return function(views) {
-            const rnd = ~~(Math.random() * 4) + 1;
-            let action;
-
-            switch (rnd) {
-                case 1:
-                    action = SnakeApi.Move('up');
-                    break;
-                case 2:
-                    action = SnakeApi.Move('right');
-                    break;
-                case 3:
-                    action = SnakeApi.Move('right');
-                    break;
-                case 4:
-                    action = SnakeApi.Move('right');
-                    break;
-                default:
-                    break;
-            }
-
-            return action;
-        }
+    switch (rnd) {
+    case 1:
+      action = 'up';
+      break;
+    case 2:
+      action = 'right';
+      break;
+    case 3:
+      action = 'right';
+      break;
+    case 4:
+      action = 'right';
+      break;
+    default:
+      break;
     }
-});
+
+    return action;
+};
