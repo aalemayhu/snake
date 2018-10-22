@@ -46,6 +46,7 @@
         }
     },
     "dependencies": {
+        "axios": "^0.18.0",
         "body-parser": "^1.18.3",
         "electron-compile": "^6.4.3",
         "express": "^4.16.4",

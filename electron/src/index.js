@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { ipcMain, app, BrowserWindow } from 'electron';
 
+const axios = require('axios');
 require('./api/server.js');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -55,3 +56,18 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+// Game HUD events
+
+ipcMain.on('update-game', (event, state) => {
+  global.gameState = state;
+  axios.post('http://localhost:3000/set-state', {
+    gameState: state,
+  }).then(() => {
+    console.log('done');
+  }).catch((error) => {
+    if (error) {
+      console.log('got error -> ', error);
+    }
+  });
+});

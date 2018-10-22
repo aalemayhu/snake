@@ -8,6 +8,7 @@ import {Treat} from '../prefabs/treat';
 import { ApiHandler } from '../api/ApiHandler';
 import {View} from '../api/View';
 import { TwitchChat } from '../twitch/TwitchChat';
+import axios from 'axios';
 
 export class Game extends Phaser.State {
   private players: Snake[];
@@ -31,6 +32,7 @@ export class Game extends Phaser.State {
   private numPlayers: number = 0;
   private playerNames: string[] = [];
   private twitch: TwitchChat;
+  private isPaused = false;
 
   public create(): void {
     this.twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
@@ -49,6 +51,17 @@ export class Game extends Phaser.State {
     if (this.isDebugMode) {
       this.debugMode();
     }
+
+
+
+    setInterval(() => {
+      axios.get('http://localhost:3000/get-state')
+        .then(({ data }) => {
+          this.isPaused = data.gameState !== 'Pause';
+        }).catch(e => {
+          console.log(e);
+        });
+    }, 1500);
   }
 
   setupAPI(twitch: TwitchChat) {
@@ -190,6 +203,8 @@ export class Game extends Phaser.State {
     // Limit the run loop to every x
     if (tock < this.loopTick) { return; }
     this.tick = this.game.time.now;
+
+    if (this.isPaused) { return; }
 
     this.grid.clear();
     // Make sure we have enough treats on screen
