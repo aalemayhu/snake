@@ -1,4 +1,4 @@
-module.exports = function Next(views) {
+module.exports = function Next(views, sViews, body) {
     const directions = ['up', 'down', 'right', 'left'];
 
     const treatMatch = views.find(v => { return v == "treat"});

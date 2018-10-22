@@ -41,7 +41,7 @@ export class ApiHandler {
       // response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
     }).catch(error => {
       if (error) {
-        console.log('got error -> ', error);
+        console.log('Error during compile -> ', error);
       }
     });
   }
@@ -49,9 +49,11 @@ export class ApiHandler {
   getNextAction(idx: number, snake: Snake, views: View[], cb) {
     axios.post('http://localhost:3000/next-action', {
       username: snake.username,
-      views: views
+      views: views,
+      sViews: snake.views(),
+      body: snake.getBody()
     }).then(({ data }) => {
-      cb(data.action);
+      cb(data);
     }).catch(error => {
       if (error) {
         console.log('got error -> ', error);

@@ -26,12 +26,12 @@ class CompileEvaluate {
     }
   }
 
-  getNextAction(username, views) {
+  getNextAction(username, views, sViews, body) {
     const script = this.payload[username];
     console.log('Running script for ', username);
     const NextInSandbox = this.vm.run(script);
-    const currentAction = NextInSandbox(views);
-    return { action: currentAction };
+    const currentAction = NextInSandbox(views, sViews, body);
+    return currentAction;
   }
 }
 

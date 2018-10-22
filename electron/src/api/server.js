@@ -16,7 +16,10 @@ app.get('/', (req, res) => res.send('Hello World!'));
 
 app.post('/next-action', (req, res) => {
   console.log('next-action', req.body);
-  res.json(compiler.getNextAction(req.body.username, req.body.views));
+  const p = req.body;
+  let c = compiler.getNextAction(p.username, p.views, p.sViews, p.body);
+  console.log('returning ->', c);
+  res.json(c);
 });
 
 app.post('/compile-script', (req, res) => {

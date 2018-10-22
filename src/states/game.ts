@@ -211,7 +211,10 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.players.length; i++) {
       const snake = this.players[i];
       if (!snake.getVisible()) { continue; }
-      this.h.getNextAction(i, snake, this.views(snake), (action) => {        
+
+      // TODO: We need to batch up requests, instead of making single HTTP requests
+      this.h.getNextAction(i, snake, this.views(snake), (action) => {
+        console.log(`${snake.username}`);
         const front = snake.getInFront();
         this.handle(action, snake);
         this.collect(snake);
@@ -238,16 +241,7 @@ export class Game extends Phaser.State {
   }
 
   handle(action, snake) {
-    // console.log('handle(', action, `${snake.id}, ...)`);
-    switch (action) {
-    case 'heal':
-      // TODO: implement this
-      // console.log('heal is not implemented yet');
-      break;
-    default:
-      snake.move(action.direction);
-    }
-
+    snake.move(action.direction);
     snake.draw(this.grid, this.game);
   }
 

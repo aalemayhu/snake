@@ -1,4 +1,4 @@
-module.exports = function Next(views) {
+module.exports = function Next(views, sViews, body) {
     const directions = ['up', 'down', 'right', 'left'];
 
     const treatMatch = views.find(v => v.contains == 'treat');
@@ -11,17 +11,14 @@ module.exports = function Next(views) {
     if (wallMatch !== -1) {
       possibleActions.splice(wallMatch, 1);
     }
+    
+    const dirLeft = Object.entries(sViews)
+      .filter((e) => {
+        return body.filter((v) => v.toString() === e[1].toString()).length > 0;
+      })
+      .map((e) => e[0]);
 
-    // const body = snake.getBody();
-    // const sViews = snake.views();
-    //
-    // const dirLeft = Object.entries(sViews)
-    //   .filter((e) => {
-    //     return body.filter((v) => v.toString() === e[1].toString()).length > 0;
-    //   })
-    //   .map((e) => e[0]);
-
-    // possibleActions = possibleActions.filter((p) => dirLeft.indexOf(p) < 0);
+    possibleActions = possibleActions.filter((p) => dirLeft.indexOf(p) < 0);
 
     const rnd = ~~(Math.random() * possibleActions.length);
     return views.find(v => v.direction == possibleActions[rnd]);
