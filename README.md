@@ -12,7 +12,7 @@ documentation](./API.md).
 
 ## Submitting your script
 
-**We currently only support files upload to GitHub Gist.**
+**We currently only support files uploaded to GitHub Gist.**
 
 Run the `!upload` command in the chat, like below
 
@@ -28,4 +28,5 @@ Run the `!upload` command in the chat, like below
 
 ## Contributing
 
-TODO: help potential contributors get started quicker
+Interested in helping out? Feel free to send a pull request or show your
+interest in one of the [issues](https://github.com/scanf/snake/issues).
