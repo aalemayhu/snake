@@ -10,6 +10,22 @@ Survive and collect the most treats to get higher in the leaderboard.
 For all the details on how to write your SNAKE script, see the [API
 documentation](./API.md).
 
+## Submitting your script
+
+**We currently only support files upload to GitHub Gist.**
+
+Run the `!upload` command in the chat, like below
+
+```
+!upload https://gist.githubusercontent.com/${gist-path}
+```
+
+## Joining a team
+
+```
+!join team-name
+```
+
 ## Contributing
 
 TODO: help potential contributors get started quicker
