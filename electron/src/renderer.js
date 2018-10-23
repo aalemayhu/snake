@@ -12,3 +12,8 @@ stateButton.click(() => {
   }
   ipcRenderer.send('update-game', stateButton.text())
 })
+
+$('body').css('background', 'gray');
+
+$('#game-container').css('width', '60%');
+$('#game-container').css('height', '60%');
