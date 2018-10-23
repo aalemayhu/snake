@@ -2,13 +2,13 @@
 
 You can control a snake on screen on the [ccscanf][0] channel.  By default
 viewers get a snake running the `interesting.snk` file. The default script is
-not optimized. If you want get a ahead on the leaderboard, you need to write
-your own.
+not optimized. To get more points on the leaderboard, write your improved
+version.
 
 ## Writing your first SNAKE agent
 
 The game runs user submitted scripts in a VM. Your script needs to handle the
-`Next` action call. `Next` should return a view action to be performed in the
+`Next` function call. `Next` should return a view action to be performed in the
 update loop for the game.
 
 The `Next` function receives three arguments `views`, `sViews`, and `body`.
