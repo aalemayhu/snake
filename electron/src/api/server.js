@@ -38,8 +38,8 @@ app.post('/compile-script', (req, res) => {
 
 app.post('/new-script', (req, res) => {
   const p = req.body;
-  compiler.downloadScript(p.username, p.script, () => {
-    res.json('OK');
+  compiler.downloadScript(p.username, p.script, (verdict) => {
+    res.json(verdict);
   });
 });
 

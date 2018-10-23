@@ -28,12 +28,11 @@ export class TwitchChat {
         axios.post('http://localhost:3000/new-script', {
           username: messageSender,
           script: linkToSource.trim()
-        }).then(() => {
-          twitch.send('@' + messageSender + ' file checked and loaded', messageChannel);
+        }).then(({ data }) => {
+          twitch.send(data.verdict, messageChannel);
         }).catch((error) => {
           if (error) {
-            console.log('Source error -> ', error);
-            twitch.send('@' + messageSender + ' could not download file', messageChannel);
+            twitch.send(`@${messageSender} could not download file`, messageChannel);
           }
         });
       }
@@ -50,6 +49,10 @@ export class TwitchChat {
       if (messageContent.startsWith('!team')) {
         let joinedTeam = GameState.GetTeamOfPlayer(messageSender.toLowerCase());
         twitch.send('@' + messageSender + ' is in the team: ' + joinedTeam, messageChannel);
+      }
+
+      if (messageContent.startsWith('!docs')) {
+        twitch.send(`@${messageSender} see https://github.com/scanf/snake/blob/master/API.md`, messageChannel);
       }
     });
 
