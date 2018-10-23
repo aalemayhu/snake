@@ -116,7 +116,7 @@ export class Snake {
 
     if (newPosition.x >= this.cellX || newPosition.x <= 0 ||
       newPosition.y >= this.cellY || newPosition.y <= 0) {
-      console.log('New position is outside, aborting');
+      // console.log('New position is outside, aborting');
     } else if (this.snakeBody.length === 1) {
       this.snakeBody[0] = newPosition;
     } else {

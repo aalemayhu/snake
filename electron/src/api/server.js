@@ -36,4 +36,11 @@ app.post('/compile-script', (req, res) => {
   res.json('OK');
 });
 
+app.post('/new-script', (req, res) => {
+  const p = req.body;
+  compiler.downloadScript(p.username, p.script, () => {
+    res.json('OK');
+  });
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
