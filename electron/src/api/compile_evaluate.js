@@ -33,16 +33,18 @@ class CompileEvaluate {
   getNextAction(username, views, sViews, body) {
     const script = this.payload[username];
     // console.log('Running script for ', username);
-    const NextInSandbox = this.vm.run(script);
-    const currentAction = NextInSandbox(views, sViews, body);
-    return currentAction;
+    try {
+      const NextInSandbox = this.vm.run(script);
+      return NextInSandbox(views, sViews, body);
+    } catch (e) {
+      console.log('bad user script', e);
+      return { direction: 'invalid', contains: 'empty' };
+    }
   }
 
   downloadScript(username, script, cb) {
-    console.log(`downloadScript(${username}, ${script}, ...)`);
     const scriptPath = `${scriptDirectory}/${username}.snk`;
     const url = script.startsWith('http') ? script : `https://${script}`;
-    // TODO: perform a final validation
     request(url).pipe(fs.createWriteStream(scriptPath));
     this.payload[username] = this.getSrc(scriptPath);
     cb('done');
