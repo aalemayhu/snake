@@ -63,7 +63,6 @@ export class Snake {
         this.game.load.image(`avatar-${this.username}`, data.logo);
         this.game.load.onLoadComplete.add(() => {
           this.head = this.game.make.sprite(0, 0, `avatar-${this.username}`);
-
           const w = this.head._frame.width;
           const h = this.head._frame.height;
 
@@ -89,9 +88,11 @@ export class Snake {
 
     graphics.lineStyle(5, this.color, 1);
     this.snakeBody.map(e => {
-      graphics.drawRoundedRect(e.x * this.cellSize, e.y * this.cellSize,
-        this.cellSize, this.cellSize, 6
-      );
+      if (!e.equals(this.getHeadPosition()) || !this.headLoaded) {
+        graphics.drawRoundedRect(e.x * this.cellSize, e.y * this.cellSize,
+          this.cellSize, this.cellSize, 6
+        );
+      }
     });
   }
 
