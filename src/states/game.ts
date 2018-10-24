@@ -20,7 +20,8 @@ export class Game extends Phaser.State {
   private h: ApiHandler;
 
   private grid: Phaser.Graphics;
-  private playerCountLabel: Phaser.Text;
+  private topPlayers: Phaser.Text[];
+  private topTeams: Phaser.Text[];
 
   private cellSize = 32;
   private cellX: number;
@@ -38,11 +39,11 @@ export class Game extends Phaser.State {
 
   public create(): void {
     axios.get('http://localhost:3000/get-config')
-      .then(({ data }) => {
+    .then(({ data }) => {
       this.setupGame(data);
-      }).catch(e => {
-        console.log(e);
-      });
+    }).catch(e => {
+      console.log(e);
+    });
   }
 
   setupGame(config) {
@@ -53,7 +54,7 @@ export class Game extends Phaser.State {
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
-    this.setupHUD();
+    this.setupLeaderBoard();
     this.cellX = (this.game.width / this.cellSize) - 1;
     this.cellY = (this.game.height / this.cellSize) - 1;
     this.tick = this.game.time.now;
@@ -61,18 +62,18 @@ export class Game extends Phaser.State {
     this.treats = [];
 
     if (this.isDebugMode) {
-    this.debugMode();
+      this.debugMode();
     }
 
 
 
     setInterval(() => {
-    axios.get('http://localhost:3000/get-state')
-      .then(({ data }) => {
-        this.isPaused = data.gameState !== 'Pause';
-      }).catch(e => {
-        console.log(e);
-      });
+      axios.get('http://localhost:3000/get-state')
+        .then(({ data }) => {
+          this.isPaused = data.gameState !== 'Pause';
+        }).catch(e => {
+          console.log(e);
+        });
     }, 1500);
 
     // Tell the game it can start updating stuff on screen
@@ -84,35 +85,21 @@ export class Game extends Phaser.State {
     this.h = new ApiHandler();
 
     const addUserFunc = (users) => {
-        if (users.length > 0) {
-            const newPlayers = this.h.addScripts(users);
-            this.playerNames.push(...newPlayers);
-            this.numPlayers = this.playerNames.length;
-            this.h.compileScripts();
-            this.addPlayers(newPlayers);
-        }
+      if (users.length > 0) {
+        const newPlayers = this.h.addScripts(users);
+        this.playerNames.push(...newPlayers);
+        this.numPlayers = this.playerNames.length;
+        this.h.compileScripts();
+        this.addPlayers(newPlayers);
+      }
     };
 
     twitch.getUsers(addUserFunc);
 
     twitch.subscribeToUsers({
-        addUsers: addUserFunc,
-        users: () => this.playerNames,
+      addUsers: addUserFunc,
+      users: () => this.playerNames,
     });
-  }
-
-  setupHUD() {
-    let style = {
-        font: '16px Arial',
-        fill: '#ff0044',
-        wordWrap: false,
-        wordWrapWidth: this.cellSize * 3,
-        align: 'center',
-        backgroundColor: '#ffff00'
-    };
-
-    this.playerCountLabel = this.game.add.text(
-      0, 0, 'Player count: 0', style);
   }
 
   addPlayers(players) {
@@ -122,12 +109,10 @@ export class Game extends Phaser.State {
     })
     this.players = [];
     for (let i = 0; i < this.numPlayers; i++) {
-      // TODO: the API has to give us an id for the player.
       let snake = this.newSnake(`snake-${i}`, this.playerNames[i]);
       this.players.push(snake);
       snake.draw(this.grid);
     }
-    this.playerCountLabel.text = `Player count: ${this.numPlayers}`;
     this.isReady = true;
   }
 
@@ -199,7 +184,7 @@ export class Game extends Phaser.State {
   attack(snake: Snake, position: Phaser.Point) {
     // Perform sanity check
     if (snake.getHeadPosition().equals(position)) {
-      console.log('aborting attack position is same as head');
+      // console.log('aborting attack position is same as head');
       return;
     }
     // Find the snake which matches the position
@@ -249,12 +234,22 @@ export class Game extends Phaser.State {
 
       // TODO: We need to batch up requests, instead of making single HTTP requests
       this.h.getNextAction(i, snake, this.views(snake), (action) => {
-        console.log(`${snake.username}`);
+        // console.log(`${snake.username}`);
         const front = snake.getInFront();
         this.handle(action, snake);
         this.collect(snake);
         this.attack(snake, front);
       });
+    }
+
+    // TODO: reduce the overhead caused by sorting
+    this.players = this.players
+    .sort((a, b) => a.username < b.username ? 1 : -1)
+    .sort((a, b) => a.getBody().length < b.getBody().length ? 1 : -1);
+
+    for (let i = 0; i < 3; i++) {
+      let snake = this.players[i];
+      this.topPlayers[i].text = `${snake.username} - ${snake.getBody().length}`
     }
   }
 
@@ -301,6 +296,18 @@ export class Game extends Phaser.State {
         // let t = `[${i * this.cellSize}x${j * this.cellSize}]`
         // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
       }
+    }
+  }
+
+  setupLeaderBoard() {
+    let headerStyle = { font: '16px Arial', fill: '#ff0044', align: 'center', backgroundColor: 'blue' }
+    this.game.add.text(0, 0, 'Top players', headerStyle);
+    this.topPlayers = [];
+    // private topTeams: Phaser.Text[];
+    let style = { font: '14px Arial', fill: '#ff0044', align: 'left' };
+    for (let i = 0; i < 3; i += 1) {
+      let t = `player ${i}`;
+      this.topPlayers.push(this.game.add.text(0, (i+1) * this.cellSize, t, style));
     }
   }
 }
