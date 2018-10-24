@@ -13,10 +13,10 @@ stateButton.click(() => {
   ipcRenderer.send('update-game', stateButton.text());
 });
 
-$('body').css('background', 'gray');
+$('body').css('background', '#34ace0');
 
-$('#game-container').css('width', '80%');
-$('#game-container').css('height', '80%');
+$('#game-container').css('width', '70%');
+$('#game-container').css('height', '70%');
 
 // View changes from the main process
 // TODO: figure out why this is not being invoked

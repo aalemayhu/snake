@@ -8,7 +8,7 @@ export class Snake {
   private cellSize: number;
   private cellX: number;
   private cellY: number;
-  private startX = 4;
+  private startX = 6;
   private avatarUrl: string;
   private head;
   private headLoaded: boolean = false;

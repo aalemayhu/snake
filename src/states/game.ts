@@ -26,7 +26,7 @@ export class Game extends Phaser.State {
   private cellSize = 32;
   private cellX: number;
   private cellY: number;
-  private startX = 4;
+  private startX = 6;
   private treats: Treat[];
   private expectedTreatCount = 13;
   private isDebugMode = true;
@@ -37,6 +37,8 @@ export class Game extends Phaser.State {
   private isPaused = false;
   private isReady = false;
   private config = {};
+
+  readonly LEADERBOARD_PLAYER_COUNT = 7;
 
   public create(): void {
     axios.get('http://localhost:3000/get-config')
@@ -248,9 +250,9 @@ export class Game extends Phaser.State {
     .sort((a, b) => a.username < b.username ? 1 : -1)
     .sort((a, b) => a.getBody().length < b.getBody().length ? 1 : -1);
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i++) {
       let snake = this.players[i];
-      this.topPlayers[i].text = `${snake.username} - ${snake.getBody().length}`
+      this.topPlayers[i].text = ` ${snake.username} - ${snake.getBody().length}`
     }
   }
 
@@ -301,14 +303,23 @@ export class Game extends Phaser.State {
   }
 
   setupLeaderBoard() {
-    let headerStyle = { font: '16px Arial', fill: '#ff0044', align: 'center', backgroundColor: 'blue' }
-    this.game.add.text(0, 0, 'Top players', headerStyle);
+    let headerStyle = {
+        font: 'Arial Black',
+        fill: 'white',
+        align: 'center',
+    }
+    let header = this.game.add.text(0, 0, ' Top players', headerStyle);
+    header.fontSize = 25;
+    header.fontWeight = 'bold';
+
+    // Players
     this.topPlayers = [];
     // private topTeams: Phaser.Text[];
-    let style = { font: '14px Arial', fill: '#ff0044', align: 'left' };
-    for (let i = 0; i < 3; i += 1) {
-      let t = `player ${i}`;
-      this.topPlayers.push(this.game.add.text(0, (i+1) * this.cellSize, t, style));
+    let style = { font: '14px Arial', fill: 'white', align: 'center' };
+    for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i += 1) {
+      let t = ` player ${i}`;
+      let text = this.game.add.text(this.cellSize * 2, (i+1) * this.cellSize, t, style);
+      this.topPlayers.push(text);
     }
   }
 }

@@ -6,7 +6,7 @@ export class Boot extends Phaser.State {
   public create(): void {
     // set up input max pointers
     this.input.maxPointers = 1;
-    this.game.stage.backgroundColor = '000000';
+    this.game.stage.backgroundColor = '34ace0';
     // set up stage disable visibility change
     // this.stage.disableVisibilityChange = true;
     // Set up the scaling method used by the ScaleManager
