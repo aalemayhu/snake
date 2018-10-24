@@ -66,16 +66,6 @@ export class Game extends Phaser.State {
       this.debugMode();
     }
     this.setupLeaderBoard();
-
-    setInterval(() => {
-      axios.get('http://localhost:3000/get-state')
-        .then(({ data }) => {
-          this.isPaused = data.gameState !== 'Pause';
-        }).catch(e => {
-          console.log(e);
-        });
-    }, 1500);
-
     // Tell the game it can start updating stuff on screen
     this.isReady = true;
   }
@@ -139,7 +129,7 @@ export class Game extends Phaser.State {
   debugMode() {
     this.spaceKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.spaceKey.onDown.add(() => {
-      Sound.play();
+      this.isPaused = !this.isPaused;
     }, this);
     // this.createGrid();
   }
@@ -258,7 +248,9 @@ export class Game extends Phaser.State {
         continue;
       }
       let snake = this.players[i];
-      this.topPlayers[i].text = ` ${snake.username} - ${snake.getBody().length}`
+      let t = this.topPlayers[i];
+      t.text = ` ${snake.username} - ${snake.getBody().length}`
+      this.game.world.bringToTop(t);
     }
   }
 
@@ -316,6 +308,7 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i += 1) {
       let t = ` player ${i}`;
       let text = this.game.add.text(this.cellSize / 4, i * this.cellSize, t, style);
+      text.alpha = 0.5;
       text.fontSize = 100;
       this.topPlayers.push(text);
     }

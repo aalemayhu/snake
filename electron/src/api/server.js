@@ -21,10 +21,6 @@ app.post('/set-state', (req, res) => {
   res.send('OK');
 });
 
-app.get('/get-state', (req, res) => {
-  res.json(config);
-});
-
 app.post('/set-config', (req, res) => {
   config = req.body;
   res.send('OK');
