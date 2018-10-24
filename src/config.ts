@@ -1,4 +1,4 @@
 export class Config {
-    static gameWidth: number = 800;
-    static gameHeight: number = 480;
+    static gameWidth: number = 1920 * 2;
+    static gameHeight: number = 1080 * 2;
 }

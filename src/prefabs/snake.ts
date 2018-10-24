@@ -80,15 +80,15 @@ export class Snake {
   }
 
   draw(graphics) {
+    const halfCS = this.cellSize / 2;
     if (this.headLoaded) {
       const s = this.getHeadPosition();
-      const halfCS = this.cellSize / 2;
 
       this.bmd.clear();
       this.bmd.draw(this.head, s.x * this.cellSize + halfCS, s.y * this.cellSize + halfCS);
     }
 
-    graphics.lineStyle(2, this.color, 1);
+    graphics.lineStyle(5, this.color, 1);
     this.snakeBody.map(e => {
       graphics.drawRoundedRect(e.x * this.cellSize, e.y * this.cellSize,
         this.cellSize, this.cellSize, 6

@@ -23,7 +23,7 @@ export class Game extends Phaser.State {
   private topPlayers: Phaser.Text[];
   private topTeams: Phaser.Text[];
 
-  private cellSize = 32;
+  private cellSize = 128;
   private cellX: number;
   private cellY: number;
   private startX = 6;
@@ -315,10 +315,11 @@ export class Game extends Phaser.State {
     // Players
     this.topPlayers = [];
     // private topTeams: Phaser.Text[];
-    let style = { font: '14px Arial', fill: 'white', align: 'center' };
+    let style = { font: 'Arial Black', fill: 'white', align: 'center' };
     for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i += 1) {
       let t = ` player ${i}`;
       let text = this.game.add.text(this.cellSize / 2, (i+1) * this.cellSize, t, style);
+      text.fontSize = 25;
       this.topPlayers.push(text);
     }
   }
