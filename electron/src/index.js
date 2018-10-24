@@ -59,6 +59,7 @@ app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    fsCache.saveAll(global.config);
     app.quit();
   }
 });
@@ -77,7 +78,7 @@ app.on('activate', () => {
 // Game HUD events
 
 ipcMain.on('update-game', (event, state) => {
-  global.gameState = state;
+  global.config.gameState = state;
   axios.post('http://localhost:3000/set-state', {
     gameState: state,
   }).then(() => {

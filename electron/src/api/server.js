@@ -5,24 +5,23 @@ const { CompileEvaluate } = require('./compile_evaluate.js');
 const app = express();
 const port = 3000;
 
-let gameState = 'Pause';
-let config = {};
+let config = { };
 const compiler = new CompileEvaluate([]);
 
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.post('/set-state', (req, res) => {
-  gameState = req.body.gameState;
+  config.gameState = req.body.gameState;
   res.send('OK');
 });
 
 app.get('/get-state', (req, res) => {
-  res.json({ gameState });
+  res.json(config);
 });
 
 app.post('/set-config', (req, res) => {

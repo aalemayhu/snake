@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const snakeCacheDirectory = path.join(app.getPath('home'), 'snake-game-cache');
-const snakeConfigFile = path.join(snakeCacheDirectory, 'data.json');
+const secretFile = path.join(snakeCacheDirectory, 'secret.json');
 
 function createCacheDirectory() {
   if (fs.existsSync(snakeCacheDirectory) === false) {
@@ -13,8 +13,9 @@ function createCacheDirectory() {
 
 const fsCache = {
   config() {
-    const data = this.readAll(`${snakeCacheDirectory}/secret.json`);
+    const data = this.readAll(secretFile);
     if (data) {
+      if (!data.gameState) { data.gameState = 'Pause'; }
       return data;
     }
     return {
@@ -22,12 +23,6 @@ const fsCache = {
       channel: 'please-fill-out',
       clientId: 'please-fill-out',
     };
-  },
-  save(name, value) {
-    createCacheDirectory();
-    const newData = this.readAll(snakeConfigFile);
-    newData[name] = value;
-    fs.writeFileSync(snakeConfigFile, JSON.stringify(newData, null, 2));
   },
   readAll(file) {
     let data = {};
@@ -42,10 +37,12 @@ const fsCache = {
       } catch (e) {
         data = {};
       }
-    } catch (err) {
-      console.log('Error in Cache:', err);
-    }
+    } catch (err) { /* ignored err */ }
     return data;
+  },
+  saveAll(data) {
+    createCacheDirectory();
+    fs.writeFileSync(secretFile, JSON.stringify(data, null, 2));
   },
 };
 
