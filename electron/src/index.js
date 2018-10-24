@@ -12,9 +12,9 @@ let mainWindow;
 
 function loadConfig() {
   global.config = fsCache.config();
-  mainWindow.webContents.send('config-loaded', global.config);
   axios.post('http://localhost:3000/set-config', global.config).then(() => {
-    console.log('done');
+    console.log('Sending ipc call to renderer', global.config.botName);
+    mainWindow.webContents.send('config-loaded', global.config);
   }).catch((error) => {
     if (error) {
       console.log('got error -> ', error);
@@ -23,7 +23,6 @@ function loadConfig() {
 }
 
 const createWindow = () => {
-  loadConfig();
   // Create the browser window.
   // TODO: make the window stuff configurable and persisted
   mainWindow = new BrowserWindow({
@@ -46,6 +45,8 @@ const createWindow = () => {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  loadConfig();
 };
 
 // This method will be called when Electron has finished

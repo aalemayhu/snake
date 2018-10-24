@@ -1,4 +1,4 @@
-const { remote, ipcRenderer } = require('electron');
+const { ipcRenderer } = require('electron');
 const $ = require('jQuery');
 
 const stateButton = $('#game-state-button');
@@ -19,9 +19,10 @@ $('#game-container').css('width', '80%');
 $('#game-container').css('height', '80%');
 
 // View changes from the main process
-
+// TODO: figure out why this is not being invoked
 ipcRenderer.on('config-loaded', (event, config) => {
-  $('#bot-name').val(config.botName);
-  $('#channel-name').val(config.channel);
-  $('#bot-token').val(config.token);
+  console.log('config-loaded');
+  $('#bot-name').text(config.botName);
+  $('#channel-name').text(config.channel);
+  $('#bot-token').text(config.token);
 });
