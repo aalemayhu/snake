@@ -26,6 +26,7 @@ export class Game extends Phaser.State {
   private cellSize = 32;
   private cellX: number;
   private cellY: number;
+  private startX = 4;
   private treats: Treat[];
   private expectedTreatCount = 13;
   private isDebugMode = true;
@@ -137,14 +138,14 @@ export class Game extends Phaser.State {
     this.spaceKey.onDown.add(() => {
       Sound.play();
     }, this);
-    this.createGrid();
+    // this.createGrid();
   }
 
   getRandomPosition(): Phaser.Point {
-    let x = this.game.rnd.integerInRange(0, this.cellX);
+    let x = this.game.rnd.integerInRange(this.startX, this.cellX);
     let y = this.game.rnd.integerInRange(0, this.cellY);
     while (!this.isCellAvailable(x, y)) {
-      x = this.game.rnd.integerInRange(0, this.cellX);
+      x = this.game.rnd.integerInRange(this.startX, this.cellX);
       y = this.game.rnd.integerInRange(0, this.cellY);
       // TODO: give up after trying x times
     }
@@ -292,7 +293,7 @@ export class Game extends Phaser.State {
 
     for (let i = 0; i < this.game.width / this.cellSize; i++) {
       for (let j = 0; j < this.game.height / this.cellSize; j++) {
-        // graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
+        graphics.drawRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
         // let t = `[${i * this.cellSize}x${j * this.cellSize}]`
         // this.game.add.text(i * this.cellSize, j * this.cellSize, t, style);
       }
