@@ -186,7 +186,13 @@ export class Snake {
   }
 
   public addBody(pos: Phaser.Point) {
-    this.snakeBody.push(pos);
+    if (!this.getVisible()) {
+      this.headLoaded = false;
+      this.snakeBody.push(pos);
+      this.fetchHead();
+    } else {
+      this.snakeBody.push(pos);
+    }
   }
 
   public removeBody(pos: Phaser.Point) {
