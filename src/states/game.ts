@@ -249,6 +249,10 @@ export class Game extends Phaser.State {
     .sort((a, b) => a.getBody().length < b.getBody().length ? 1 : -1);
 
     for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i++) {
+      if (i >= this.players.length) {
+        this.topPlayers[i].text = '';
+        continue;
+      }
       let snake = this.players[i];
       this.topPlayers[i].text = ` ${snake.username} - ${snake.getBody().length}`
     }
