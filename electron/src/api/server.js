@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { CompileEvaluate } = require('./compile_evaluate.js');
+const { fsCache } = require('../util/electron-caches.js');
 
 const app = express();
 const port = 3000;
@@ -46,7 +47,13 @@ app.post('/compile-script', (req, res) => {
 
 app.post('/new-script', (req, res) => {
   const p = req.body;
-  compiler.downloadScript(p.username, p.script, (verdict) => {
+  if (!p.script.startsWith('gist.githubusercontent.com') === -1) {
+    res.json({ verdict: 'Script rejected, use a gist raw link (no http prefix)' });
+    return;
+  }
+  // Let the compiler know that we are loading a new script for the user
+  compiler.payload[p.username] = 'empty';
+  fsCache.downloadScript(p.username, p.script, (verdict) => {
     res.json(verdict);
   });
 });

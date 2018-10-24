@@ -1,10 +1,5 @@
 const { NodeVM } = require('vm2');
-const fs = require('fs');
-const request = require('request');
-
-// TODO: move all of the filesystem stuff out of here.
-// TODO: make this confi'/tmp/Snake-Scripts/'I
-const scriptDirectory = '/tmp/Snake-Scripts';
+const { fsCache } = require('../util/electron-caches.js');
 
 class CompileEvaluate {
   constructor(payload) {
@@ -18,26 +13,21 @@ class CompileEvaluate {
     });
   }
 
-  // Workaround so the code works in CI and electron
-  getSrc(script) {
-    const path = `${scriptDirectory}/${script}`;
-    return fs.readFileSync(path, 'utf-8');
-  }
-
   compileScripts(payload) {
     for (const key in payload) {
-      const userScript = `${scriptDirectory}/${key}.snk`;
-      if (fs.existsSync(userScript)) {
-        this.payload[key] = this.getSrc(`${key}.snk`);
+      const userScript = `${key}.snk`;
+      if (fsCache.scriptExists(userScript)) {
+        this.payload[key] = fsCache.getSrc(userScript);
       } else {
-        this.payload[key] = this.getSrc(payload[key]);
+        this.payload[key] = fsCache.getSrc(payload[key]);
       }
     }
   }
 
   getNextAction(username, views, sViews, body) {
+    // Hot reload the missing script
     if (this.payload[username] === 'empty') {
-      this.payload[username] = this.getSrc(`${username}.snk`);
+      this.payload[username] = fsCache.getSrc(`${username}.snk`);
     }
     const script = this.payload[username];
     try {
@@ -48,18 +38,6 @@ class CompileEvaluate {
       console.log('bad user script', e);
       return { direction: 'invalid', contains: 'empty' };
     }
-  }
-
-  downloadScript(username, script, cb) {
-    if (!script.startsWith('gist.githubusercontent.com') === -1) {
-      cb({ verdict: 'Script rejected, use a gist raw link (no http prefix)' });
-      return;
-    }
-    const scriptPath = `${scriptDirectory}/${username}.snk`;
-    const url = script.startsWith('http') ? script : `https://${script}`;
-    request(url).pipe(fs.createWriteStream(scriptPath));
-    this.payload[username] = 'empty';
-    cb({ verdict: `@${username} script accepted!` });
   }
 }
 

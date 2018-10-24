@@ -1,9 +1,11 @@
 const { app } = require('electron');
 const fs = require('fs');
 const path = require('path');
+const request = require('request');
 
 const snakeCacheDirectory = path.join(app.getPath('home'), 'snake-game-cache');
 const secretFile = path.join(snakeCacheDirectory, 'secret.json');
+const scriptDirectory = '/tmp/Snake-Scripts';
 
 function createCacheDirectory() {
   if (fs.existsSync(snakeCacheDirectory) === false) {
@@ -12,6 +14,20 @@ function createCacheDirectory() {
 }
 
 const fsCache = {
+  downloadScript(username, script, cb) {
+    const scriptPath = path.join(scriptDirectory, `${username}.snk`);
+    const url = script.startsWith('http') ? script : `https://${script}`;
+    request(url).pipe(fs.createWriteStream(scriptPath));
+    cb({ verdict: `@${username} script accepted!` });
+  },
+  scriptExists(name) {
+    const userScript = path.join(scriptDirectory, name);
+    return fs.existsSync(userScript);
+  },
+  getSrc(script) {
+    const f = path.join(scriptDirectory, script);
+    return fs.readFileSync(f, 'utf-8');
+  },
   config() {
     const data = this.readAll(secretFile);
     if (data) {
