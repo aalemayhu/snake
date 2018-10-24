@@ -116,6 +116,10 @@ export class Game extends Phaser.State {
   }
 
   addPlayers(players) {
+    this.isReady = false;
+    this.players.forEach(p => {
+      p.destroy();
+    })
     this.players = [];
     for (let i = 0; i < this.numPlayers; i++) {
       // TODO: the API has to give us an id for the player.
@@ -124,6 +128,7 @@ export class Game extends Phaser.State {
       snake.draw(this.grid);
     }
     this.playerCountLabel.text = `Player count: ${this.numPlayers}`;
+    this.isReady = true;
   }
 
   isCellAvailable(x, y): boolean {

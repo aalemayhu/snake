@@ -205,4 +205,9 @@ export class Snake {
     this.handle(direction);
     this.performMoveIfPossible(direction);
   }
+
+  public destroy() {
+    this.bmd.destroy();
+    this.head.destroy();
+  }
 }
