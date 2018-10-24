@@ -57,9 +57,8 @@ export class Game extends Phaser.State {
     // ------------------
     this.game.stage.disableVisibilityChange = true;
     this.grid = this.game.add.graphics(0, 0);
-    this.setupLeaderBoard();
-    this.cellX = (this.game.width / this.cellSize) - 1;
-    this.cellY = (this.game.height / this.cellSize) - 1;
+    this.cellX = Math.floor((this.game.width / this.cellSize) - 1);
+    this.cellY = Math.floor((this.game.height / this.cellSize) - 1);
     this.tick = this.game.time.now;
     this.players = [];
     this.treats = [];
@@ -67,8 +66,7 @@ export class Game extends Phaser.State {
     if (this.isDebugMode) {
       this.debugMode();
     }
-
-
+    this.setupLeaderBoard();
 
     setInterval(() => {
       axios.get('http://localhost:3000/get-state')
