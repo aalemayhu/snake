@@ -116,7 +116,7 @@ export class Snake {
     if (!this.isValidMove(newPosition)) { return; }
 
     if (newPosition.x >= this.cellX || newPosition.x <= this.startX ||
-      newPosition.y >= this.cellY || newPosition.y <= 0) {
+      newPosition.y >= this.cellY - 1 || newPosition.y <= 0) {
       // console.log('New position is outside, aborting');
     } else if (this.snakeBody.length === 1) {
       this.snakeBody[0] = newPosition;
