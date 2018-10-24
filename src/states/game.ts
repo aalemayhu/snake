@@ -98,14 +98,14 @@ export class Game extends Phaser.State {
 
   addPlayers(players) {
     this.isReady = false;
-    this.players.forEach(p => {
-      p.destroy();
-    })
-    this.players = [];
     for (let i = 0; i < this.numPlayers; i++) {
-      let snake = this.newSnake(`snake-${i}`, this.playerNames[i]);
+      let username = this.playerNames[i];
+      if (this.players.find(p => p.username === username)) {
+        // Skipping players in screen
+        continue;
+      }
+      let snake = this.newSnake(username);
       this.players.push(snake);
-      snake.draw(this.grid);
     }
     this.isReady = true;
   }
@@ -151,9 +151,9 @@ export class Game extends Phaser.State {
     this.treats.push(t);
   }
 
-  newSnake(id: string, aUrl: string): Snake {
+  newSnake(aUrl: string): Snake {
     let pos = this.getRandomPosition();
-    let s = new Snake(id, this.game, pos.x, pos.y, this.cellSize, aUrl);
+    let s = new Snake(this.game, pos.x, pos.y, this.cellSize, aUrl);
     return s;
   }
 

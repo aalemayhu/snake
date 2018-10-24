@@ -30,7 +30,6 @@ export class Snake {
   }
 
   constructor(
-    id: string,
     game: Phaser.Game,
     x: number,
     y: number,
