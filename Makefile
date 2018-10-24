@@ -20,7 +20,7 @@ install_deps:
 install_build_deps:
 	npm install -D
 start:
-	npm start
+	${MAKE} run
 build: # TODO: game build should ignore electron
 	npm run build
 lint:
