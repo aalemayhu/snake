@@ -10,7 +10,7 @@ import {Game} from './states/game';
 class Template extends Phaser.Game {
 
     constructor() {
-        super(Config.gameWidth, Config.gameHeight, Phaser.CANVAS, 'game-container', null);
+        super(Config.gameWidth, Config.gameHeight, Phaser.CANVAS, 'content', null);
 
         this.state.add('Boot', Boot, false);
         this.state.add('Preload', Preload, false);

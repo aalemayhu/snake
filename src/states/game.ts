@@ -26,7 +26,6 @@ export class Game extends Phaser.State {
   private cellSize = 128;
   private cellX: number;
   private cellY: number;
-  private startX = 6;
   private treats: Treat[];
   private expectedTreatCount = 13;
   private isDebugMode = true;
@@ -79,6 +78,10 @@ export class Game extends Phaser.State {
 
     // Tell the game it can start updating stuff on screen
     this.isReady = true;
+  }
+
+  pressedPauseButton() {
+    console.log('button pressed');
   }
 
   setupAPI(twitch: TwitchChat) {
@@ -142,10 +145,10 @@ export class Game extends Phaser.State {
   }
 
   getRandomPosition(): Phaser.Point {
-    let x = this.game.rnd.integerInRange(this.startX, this.cellX);
+    let x = this.game.rnd.integerInRange(0, this.cellX);
     let y = this.game.rnd.integerInRange(0, this.cellY);
     while (!this.isCellAvailable(x, y)) {
-      x = this.game.rnd.integerInRange(this.startX, this.cellX);
+      x = this.game.rnd.integerInRange(0, this.cellX);
       y = this.game.rnd.integerInRange(0, this.cellY);
       // TODO: give up after trying x times
     }
@@ -244,6 +247,7 @@ export class Game extends Phaser.State {
     }
 
     // TODO: reduce the overhead caused by sorting
+    console.log('right before sort?', this.players);
     this.players = this.players
     .sort((a, b) => a.username < b.username ? 1 : -1)
     .sort((a, b) => a.getBody().length < b.getBody().length ? 1 : -1);
@@ -305,23 +309,14 @@ export class Game extends Phaser.State {
   }
 
   setupLeaderBoard() {
-    let headerStyle = {
-        font: 'Arial Black',
-        fill: 'white',
-        align: 'center',
-    }
-    let header = this.game.add.text(0, 0, ' Top players', headerStyle);
-    header.fontSize = 25;
-    header.fontWeight = 'bold';
-
-    // Players
+    // Initialize the top players array
     this.topPlayers = [];
     // private topTeams: Phaser.Text[];
     let style = { font: 'Arial Black', fill: 'white', align: 'center' };
     for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i += 1) {
       let t = ` player ${i}`;
-      let text = this.game.add.text(this.cellSize / 2, (i+1) * this.cellSize, t, style);
-      text.fontSize = 25;
+      let text = this.game.add.text(this.cellSize / 4, i * this.cellSize, t, style);
+      text.fontSize = 100;
       this.topPlayers.push(text);
     }
   }

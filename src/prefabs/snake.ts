@@ -8,7 +8,6 @@ export class Snake {
   private cellSize: number;
   private cellX: number;
   private cellY: number;
-  private startX = 6;
   private avatarUrl: string;
   private head;
   private headLoaded: boolean = false;
@@ -115,7 +114,7 @@ export class Snake {
 
     if (!this.isValidMove(newPosition)) { return; }
 
-    if (newPosition.x >= this.cellX || newPosition.x <= this.startX ||
+    if (newPosition.x >= this.cellX || newPosition.x <= 0 ||
       newPosition.y >= this.cellY - 1 || newPosition.y <= 0) {
       // console.log('New position is outside, aborting');
     } else if (this.snakeBody.length === 1) {

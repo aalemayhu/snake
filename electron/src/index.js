@@ -26,6 +26,8 @@ const createWindow = () => {
   // Create the browser window.
   // TODO: make the window stuff configurable and persisted
   mainWindow = new BrowserWindow({
+    titleBarStyle: 'hidden',
+    backgroundColor: '#34ace0',
     x: 0,
     y: 0,
     width: 1920,
@@ -36,7 +38,7 @@ const createWindow = () => {
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
