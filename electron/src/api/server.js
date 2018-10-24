@@ -1,4 +1,3 @@
-import { remote } from 'electron';
 const express = require('express');
 const bodyParser = require('body-parser');
 const { CompileEvaluate } = require('./compile_evaluate.js');
@@ -7,6 +6,7 @@ const app = express();
 const port = 3000;
 
 let gameState = 'Pause';
+let config = {};
 const compiler = new CompileEvaluate([]);
 
 app.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -23,6 +23,15 @@ app.post('/set-state', (req, res) => {
 
 app.get('/get-state', (req, res) => {
   res.json({ gameState });
+});
+
+app.post('/set-config', (req, res) => {
+  config = req.body;
+  res.send('OK');
+});
+
+app.get('/get-config', (req, res) => {
+  res.json(config);
 });
 
 app.post('/next-action', (req, res) => {

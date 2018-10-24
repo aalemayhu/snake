@@ -33,10 +33,22 @@ export class Game extends Phaser.State {
   private playerNames: string[] = [];
   private twitch: TwitchChat;
   private isPaused = false;
+  private isReady = false;
+  private config = {};
 
   public create(): void {
-    this.twitch = new TwitchChat ('nyasaki_bot', 'ccscanf' , process.env.CLIENT_ID);
+    axios.get('http://localhost:3000/get-config')
+      .then(({ data }) => {
+      this.setupGame(data);
+      }).catch(e => {
+        console.log(e);
+      });
+  }
+
+  setupGame(config) {
+    this.twitch = new TwitchChat (config.botName, config.channel, config.token);
     this.setupAPI(this.twitch);
+    this.config = config;
 
     // ------------------
     this.game.stage.disableVisibilityChange = true;
@@ -49,19 +61,22 @@ export class Game extends Phaser.State {
     this.treats = [];
 
     if (this.isDebugMode) {
-      this.debugMode();
+    this.debugMode();
     }
 
 
 
     setInterval(() => {
-      axios.get('http://localhost:3000/get-state')
-        .then(({ data }) => {
-          this.isPaused = data.gameState !== 'Pause';
-        }).catch(e => {
-          console.log(e);
-        });
+    axios.get('http://localhost:3000/get-state')
+      .then(({ data }) => {
+        this.isPaused = data.gameState !== 'Pause';
+      }).catch(e => {
+        console.log(e);
+      });
     }, 1500);
+
+    // Tell the game it can start updating stuff on screen
+    this.isReady = true;
   }
 
   setupAPI(twitch: TwitchChat) {
@@ -204,7 +219,7 @@ export class Game extends Phaser.State {
     if (tock < this.loopTick) { return; }
     this.tick = this.game.time.now;
 
-    if (this.isPaused) { return; }
+    if (this.isPaused || !this.isReady) { return; }
 
     this.grid.clear();
     // Make sure we have enough treats on screen

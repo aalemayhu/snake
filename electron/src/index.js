@@ -1,5 +1,7 @@
 import { ipcMain, app, BrowserWindow } from 'electron';
 
+const { fsCache } = require('./util/electron-caches.js');
+
 const axios = require('axios');
 require('./api/server.js');
 
@@ -7,7 +9,21 @@ require('./api/server.js');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+
+function loadConfig() {
+  global.config = fsCache.config();
+  mainWindow.webContents.send('config-loaded', global.config);
+  axios.post('http://localhost:3000/set-config', global.config).then(() => {
+    console.log('done');
+  }).catch((error) => {
+    if (error) {
+      console.log('got error -> ', error);
+    }
+  });
+}
+
 const createWindow = () => {
+  loadConfig();
   // Create the browser window.
   // TODO: make the window stuff configurable and persisted
   mainWindow = new BrowserWindow({
