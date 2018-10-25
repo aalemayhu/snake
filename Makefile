@@ -3,9 +3,6 @@ ELECTRON_GAME_DIR ?=${ELECTRON_DIR}/src
 GAME_DIST_DIR ?=$(shell pwd)/dist
 
 run: build copy_game
-	# Temporary location for our example scripts
-	mkdir -pv /tmp/Snake-Scripts/
-	cp -r src/Scripts/* /tmp/Snake-Scripts/
 	npm run start --prefix ${ELECTRON_DIR}
 
 run-electron:

@@ -35,7 +35,7 @@ class CompileEvaluate {
       const v = NextInSandbox(views, sViews, body);
       return v;
     } catch (e) {
-      console.log('bad user script', e);
+      console.log(`bad user script, ${username}`, e);
       return { direction: 'invalid', contains: 'empty' };
     }
   }
