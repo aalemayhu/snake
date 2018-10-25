@@ -95,7 +95,7 @@ export class Snake {
 
     graphics.lineStyle(5, this.color, 1);
     this.snakeBody.map(e => {
-      if (!e.equals(this.getHeadPosition()) || !this.headLoaded) {
+      if (!e.equals(this.getHeadPosition()) || !this.headLoaded || this.username === 'ccscanf') {
         graphics.drawRoundedRect(e.x * this.cellSize, e.y * this.cellSize,
           this.cellSize, this.cellSize, 6
         );
