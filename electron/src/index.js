@@ -28,6 +28,7 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     frame: false,
     backgroundColor: '#34ace0',
+    backgroundThrottling: false,
     x: 0,
     y: 0,
     width: 294,
