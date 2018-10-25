@@ -9,6 +9,7 @@ export class TwitchChat {
   private channel: string;
   private subscribers = [];
   private users: string[] = [];
+  public colors = {};
 
   constructor(username, channel, token) {
     this.channel = channel;
@@ -21,6 +22,7 @@ export class TwitchChat {
       let messageContent = message.content.toLowerCase().trim();
       let messageChannel = message.channel;
       let messageSender = message.displayName;
+      this.colors[messageSender] = message.color;
 
       // Watching for !upload
       if (messageContent.startsWith('!upload')) {

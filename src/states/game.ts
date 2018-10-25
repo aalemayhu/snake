@@ -274,6 +274,9 @@ export class Game extends Phaser.State {
   }
 
   handle(action, snake) {
+    // Make sure we get the latest colour from the chat
+    let color = this.twitch.colors[snake.username];
+    if (color) { snake.color = +color.replace('#', '0x'); }
     snake.move(action.direction);
     snake.draw(this.grid, this.game);
   }
