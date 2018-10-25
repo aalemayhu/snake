@@ -231,20 +231,18 @@ export class Game extends Phaser.State {
     // Run actions for players and draw them
     for (let i = 0; i < this.players.length; i++) {
       const snake = this.players[i];
-      if (!snake.getVisible()) { continue; }
-
       // TODO: We need to batch up requests, instead of making single HTTP requests
       this.h.getNextAction(i, snake, this.views(snake), (action) => {
-        // console.log(`${snake.username}`);
-        const front = snake.getInFront();
-        this.handle(action, snake);
-        this.collect(snake);
-        this.attack(snake, front);
+        if (snake.getVisible()) {
+          const front = snake.getInFront();
+          this.handle(action, snake);
+          this.collect(snake);
+          this.attack(snake, front);
+        }
       });
     }
 
     // TODO: reduce the overhead caused by sorting
-    console.log('right before sort?', this.players);
     this.players = this.players
     .sort((a, b) => a.username < b.username ? 1 : -1)
     .sort((a, b) => a.getBody().length < b.getBody().length ? 1 : -1);
