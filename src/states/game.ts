@@ -148,7 +148,7 @@ export class Game extends Phaser.State {
   }
 
   newSnake(aUrl: string): Snake {
-    let pos = this.getRandomPosition(0, 0);
+    let pos = this.getRandomPosition(0, 4);
     let s = new Snake(this.game, pos.x, pos.y, this.cellSize, aUrl);
     return s;
   }
@@ -215,7 +215,7 @@ export class Game extends Phaser.State {
 
     // Respawn dead players
     this.players.filter(e => { return !e.getVisible(); }).forEach(p => {
-      p.addBody(this.getRandomPosition(0, 0));
+      p.addBody(this.getRandomPosition(0, 4));
     });
 
     // Draw the treats
