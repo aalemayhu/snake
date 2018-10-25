@@ -11,6 +11,11 @@ run: build copy_game
 run-electron:
 	npm run start --prefix ${ELECTRON_DIR}
 
+prepare-electron-refresh:
+	${MAKE} build
+	${MAKE} copy_game
+	@echo "Now you can hit refresh in electron app"
+
 copy_game:
 	cp  ${GAME_DIST_DIR}/*.js ${ELECTRON_GAME_DIR}/
 	cp -r ${GAME_DIST_DIR}/assets ${ELECTRON_GAME_DIR}/assets
