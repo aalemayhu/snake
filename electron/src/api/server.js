@@ -33,6 +33,7 @@ app.get('/get-config', (req, res) => {
 app.post('/next-action', (req, res) => {
   const p = req.body;
   const c = compiler.getNextAction(p.username, p.views, p.sViews, p.body);
+  console.log('next-action -> ', p.username, c);
   res.json(c);
 });
 

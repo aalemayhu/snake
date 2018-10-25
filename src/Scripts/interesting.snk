@@ -3,6 +3,10 @@ module.exports = function Next(views, sViews, body) {
     if (treatMatch) {
       return treatMatch.direction;
     }
-    let v = views.map(v => v.contains !== "player" && v.contains !== "wall");
+    let v = views.map(e => {
+        if (e.contains !== "player" && e.contains !== "wall") {
+            return e;
+        }
+    });
     return v[~~(Math.random() * v.length)];
 };

@@ -43,9 +43,7 @@ export class Game extends Phaser.State {
     axios.get('http://localhost:3000/get-config')
     .then(({ data }) => {
       this.setupGame(data);
-    }).catch(e => {
-      console.log(e);
-    });
+    }).catch(e => console.log(e));
   }
 
   preload() {
@@ -229,10 +227,13 @@ export class Game extends Phaser.State {
       // TODO: We need to batch up requests, instead of making single HTTP requests
       this.h.getNextAction(i, snake, this.views(snake), (action) => {
         if (snake.getVisible()) {
-          const front = snake.getInFront();
-          this.handle(action, snake);
-          this.collect(snake);
-          this.attack(snake, front);
+          if (action.direction !== 'invalid') {
+            const front = snake.getInFront();
+            this.handle(action, snake);
+            this.collect(snake);
+            this.attack(snake, front);
+          }
+          snake.draw(this.grid);
         }
       });
     }
@@ -278,7 +279,6 @@ export class Game extends Phaser.State {
     let color = this.twitch.colors[snake.username];
     if (color) { snake.color = +color.replace('#', '0x'); }
     snake.move(action.direction);
-    snake.draw(this.grid, this.game);
   }
 
   createGrid() {

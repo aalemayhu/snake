@@ -9,7 +9,7 @@ export class Snake {
   private cellX: number;
   private cellY: number;
   private avatarUrl: string;
-  private head;
+  private head: Phaser.Sprite;
   private headLoaded: boolean = false;
   public username: string;
   private game: Phaser.Game;
@@ -69,12 +69,12 @@ export class Snake {
           this.setupHead();
           }, this);
         this.game.load.start();
-      });
+      }).catch(error => console.log('fetch error ', error));
   }
 
   setupHead() {
-    const w = this.head._frame.width;
-    const h = this.head._frame.height;
+    const w = this.head.width;
+    const h = this.head.height;
 
     this.head.scale.setTo(this.cellSize / w, this.cellSize / h);
     this.head.anchor.setTo(0.5, 0.5);

@@ -15,11 +15,7 @@ function loadConfig() {
   axios.post('http://localhost:3000/set-config', global.config).then(() => {
     console.log('Sending ipc call to renderer', global.config.botName);
     mainWindow.webContents.send('config-loaded', global.config);
-  }).catch((error) => {
-    if (error) {
-      console.log('got error -> ', error);
-    }
-  });
+  }).catch(error => console.log('got error -> ', error))
 }
 
 const createWindow = () => {
@@ -86,9 +82,5 @@ ipcMain.on('update-game', (event, state) => {
     gameState: state,
   }).then(() => {
     console.log('done');
-  }).catch((error) => {
-    if (error) {
-      console.log('got error -> ', error);
-    }
-  });
+  }).catch(error => console.log('got error -> ', error));
 });

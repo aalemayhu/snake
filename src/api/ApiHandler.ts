@@ -17,15 +17,15 @@ export class ApiHandler {
   }
 
   addScripts(users: string[]): string[] {
-    // TODO: Load all users in the chat, use default script for users who have not uploaded a script
     users.forEach((u) => {
       if (u === 'mobilpadde') {
         this.players.push(new Player('smarty-pants.snk', u));
-      } else {
+      } else if (u === 'ccscanf') {
         this.players.push(new Player('interesting.snk', u));
+      } else {
+        this.players.push(new Player('default.snk', u));
       }
     });
-
     return users.map((u) => u);
   }
 

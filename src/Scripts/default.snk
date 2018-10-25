@@ -1,0 +1,3 @@
+module.exports = function Next(views, sViews, body) {
+    return { direction: 'invalid', contains: 'player' };
+};
