@@ -169,8 +169,7 @@ export class Game extends Phaser.State {
   }
 
   attack(snake: Snake, position: Phaser.Point) {
-    // Perform sanity check
-    if (snake.getHeadPosition().equals(position)) {
+    if (snake.getBody().find(s2 => s2.equals(position))) {
       // console.log('aborting attack position is same as head');
       return;
     }
