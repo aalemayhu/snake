@@ -37,7 +37,7 @@ export class Game extends Phaser.State {
   private isReady = false;
   private config = {};
 
-  readonly LEADERBOARD_PLAYER_COUNT = 7;
+  readonly LEADERBOARD_PLAYER_COUNT = 3;
 
   public create(): void {
     axios.get('http://localhost:3000/get-config')
