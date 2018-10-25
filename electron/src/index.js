@@ -26,12 +26,12 @@ const createWindow = () => {
   // Create the browser window.
   // TODO: make the window stuff configurable and persisted
   mainWindow = new BrowserWindow({
-    titleBarStyle: 'hidden',
+    frame: false,
     backgroundColor: '#34ace0',
     x: 0,
     y: 0,
-    width: 1920,
-    height: 1080,
+    width: 294,
+    height: 182,
   });
 
   // and load the index.html of the app.
