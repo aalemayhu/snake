@@ -48,6 +48,13 @@ export class Game extends Phaser.State {
     });
   }
 
+  preload() {
+    this.game.load.image('down', 'https://alemayhu.com/download/down.png');
+    this.game.load.image('up', 'https://alemayhu.com/download/up.png');
+    this.game.load.image('left', 'https://alemayhu.com/download/left.png');
+    this.game.load.image('right', 'https://alemayhu.com/download/right.png');
+  }
+
   setupGame(config) {
     this.twitch = new TwitchChat (config.botName, config.channel, config.token);
     this.setupAPI(this.twitch);

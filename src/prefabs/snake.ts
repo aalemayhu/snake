@@ -56,21 +56,29 @@ export class Snake {
   }
 
   fetchHead() {
+    if (this.username === 'ccscanf') {
+      this.head = this.game.make.sprite(0, 0, 'right');
+      return;
+    }
     // TODO: make the client_id configurable
     axios.get(this.avatarUrl + '?client_id=' + 'itet5zjq7dlg8ywx4v470rihamhmbr')
       .then(({ data }) => {
         this.game.load.image(`avatar-${this.username}`, data.logo);
         this.game.load.onLoadComplete.add(() => {
           this.head = this.game.make.sprite(0, 0, `avatar-${this.username}`);
-          const w = this.head._frame.width;
-          const h = this.head._frame.height;
-
-          this.head.scale.setTo(this.cellSize / w, this.cellSize / h);
-          this.head.anchor.setTo(0.5, 0.5);
-          this.headLoaded = true;
-        }, this);
+          this.setupHead();
+          }, this);
         this.game.load.start();
       });
+  }
+
+  setupHead() {
+    const w = this.head._frame.width;
+    const h = this.head._frame.height;
+
+    this.head.scale.setTo(this.cellSize / w, this.cellSize / h);
+    this.head.anchor.setTo(0.5, 0.5);
+    this.headLoaded = true;
   }
 
   update() {
@@ -210,6 +218,10 @@ export class Snake {
   public move(direction) {
     this.handle(direction);
     this.performMoveIfPossible(direction);
+    if (this.username === 'ccscanf') {
+      this.head = this.game.make.sprite(0, 0, direction);
+      this.setupHead();
+    }
   }
 
   public destroy() {
