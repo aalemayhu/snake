@@ -16,7 +16,7 @@ export class Game extends Phaser.State {
   private spaceKey: Phaser.Key;
   private tick: number;
   private loopTick = 1000;
-  private actions = ['right', 'left', 'up', 'down'];
+  private actions = ['forward', 'right', 'left'];
   private h: ApiHandler;
 
   private grid: Phaser.Graphics;
@@ -44,13 +44,6 @@ export class Game extends Phaser.State {
     .then(({ data }) => {
       this.setupGame(data);
     }).catch(e => console.log(e));
-  }
-
-  preload() {
-    this.game.load.image('down', 'https://alemayhu.com/download/down.png');
-    this.game.load.image('up', 'https://alemayhu.com/download/up.png');
-    this.game.load.image('left', 'https://alemayhu.com/download/left.png');
-    this.game.load.image('right', 'https://alemayhu.com/download/right.png');
   }
 
   setupGame(config) {

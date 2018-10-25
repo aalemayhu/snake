@@ -21,7 +21,7 @@ You can use the below script as a starting point for your snake agent.
 
 ```javascript
 module.exports = function Next(views, sViews, body) {
-    const directions = ['up', 'down', 'right', 'left'];
+    const directions = ['forward', 'right', 'left'];
 
     const treatMatch = views.find(v => { return v == "treat"});
     if (treatMatch) {

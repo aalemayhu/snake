@@ -25,8 +25,8 @@ export class Snake {
   private headAngles = {
     'right': 90,
     'left': -90,
-    'up': 180,
-    'down': 0,
+    // 'up': 180,
+    // 'down': 0,
   }
 
   constructor(
@@ -56,10 +56,6 @@ export class Snake {
   }
 
   fetchHead() {
-    if (this.username === 'ccscanf') {
-      this.head = this.game.make.sprite(0, 0, 'right');
-      return;
-    }
     // TODO: make the client_id configurable
     axios.get(this.avatarUrl + '?client_id=' + 'itet5zjq7dlg8ywx4v470rihamhmbr')
       .then(({ data }) => {
@@ -95,7 +91,7 @@ export class Snake {
 
     graphics.lineStyle(5, this.color, 1);
     this.snakeBody.map(e => {
-      if (!e.equals(this.getHeadPosition()) || !this.headLoaded || this.username === 'ccscanf') {
+      if (!e.equals(this.getHeadPosition()) || !this.headLoaded) {
         graphics.drawRoundedRect(e.x * this.cellSize, e.y * this.cellSize,
           this.cellSize, this.cellSize, 6
         );
@@ -142,25 +138,25 @@ export class Snake {
     case 'right': {
       if (this.moveDirection === this.NORTH || this.moveDirection === this.SOUTH) {
         this.moveDirection = this.EAST;
+      } else if (this.moveDirection === this.EAST) {
+        this.moveDirection = this.SOUTH;
+      } else if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
+        this.moveDirection = this.NORTH;
       }
       break;
     }
     case 'left': {
       if (this.moveDirection === this.NORTH || this.moveDirection === this.SOUTH) {
         this.moveDirection = this.WEST;
-      }
-      break;
-    }
-    case 'up': {
-      if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
-        this.moveDirection = this.NORTH;
-      }
-      break;
-    }
-    case 'down': {
-      if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
+      } else if (this.moveDirection == this.EAST) {
         this.moveDirection = this.SOUTH;
-      }
+      } else if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
+          this.moveDirection = this.SOUTH;
+        }
+      break;
+    }
+    case 'forward': {
+      // Nothing todo should move by default
       break;
     }
     }
@@ -169,10 +165,10 @@ export class Snake {
   public views(): Object {
     let h = this.getHeadPosition();
     return {
-      'up': new Phaser.Point(h.x + this.NORTH.x, h.y + this.NORTH.y),
+      // TODO: is this correct? Do we need to dynamically get right and left?
+      'forward': new Phaser.Point(h.x + this.moveDirection.x, h.y + this.moveDirection.y),
       'right': new Phaser.Point(h.x + this.EAST.x, h.y + this.EAST.y),
       'left': new Phaser.Point(h.x + this.WEST.x, h.y + this.WEST.y),
-      'down': new Phaser.Point(h.x + this.SOUTH.x, h.y + this.SOUTH.y),
     };
   }
 
@@ -217,11 +213,7 @@ export class Snake {
 
   public move(direction) {
     this.handle(direction);
-    this.performMoveIfPossible(direction);
-    if (this.username === 'ccscanf') {
-      this.head = this.game.make.sprite(0, 0, direction);
-      this.setupHead();
-    }
+    this.performMoveIfPossible(direction);    
   }
 
   public destroy() {
