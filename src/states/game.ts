@@ -311,8 +311,7 @@ export class Game extends Phaser.State {
     // private topTeams: Phaser.Text[];
     let style = { font: 'Arial Black', fill: 'white', align: 'center' };
     for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i += 1) {
-      let t = ` player ${i}`;
-      let text = this.game.add.text(this.cellSize / 4, i * this.cellSize, t, style);
+      let text = this.game.add.text(this.cellSize / 4, i * this.cellSize, '', style);
       text.alpha = 0.5;
       text.fontSize = 100;
       this.topPlayers.push(text);
