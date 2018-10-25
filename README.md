@@ -20,12 +20,6 @@ Run the `!upload` command in the chat, like below
 !upload https://gist.githubusercontent.com/${gist-path}
 ```
 
-## Joining a team
-
-```
-!join team-name
-```
-
 ## Contributing
 
 Interested in helping out? Feel free to send a pull request or show your
