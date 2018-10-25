@@ -3,7 +3,7 @@ export class View {
 
     // up, down, left, right
     readonly direction: string;
-    // empty, snake, treat
+    // empty, snake, treat, player
     readonly contains: string;
 
     constructor(direction: string, contains: string) {

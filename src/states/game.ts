@@ -118,19 +118,8 @@ export class Game extends Phaser.State {
   }
 
   isCellAvailable(x, y): boolean {
-    let playerMatch = this.players.find(p => {
-      if (p.getVisible()) {
-        let snakePosition = p.getHeadPosition();
-        return snakePosition.x === x && snakePosition.y === y;
-      }
-    });
-    if (playerMatch) { return false; }
-
-    let treatMatch = this.treats.find(t => {
-      return t.position.x === x && t.position.y === y;
-    });
-    if (treatMatch) { return false; }
-    return true;
+    const location = new Phaser.Point(x, y);
+    return !this.playerAt(location) && !this.treatAt(location);
   }
 
   debugMode() {
@@ -168,6 +157,12 @@ export class Game extends Phaser.State {
     return this.treats.find(function (e) {
       return e.position.equals(position);
     }) != undefined;
+  }
+
+  playerAt(position: Phaser.Point): boolean {
+    let p = this.players.find(p => p.getVisible());
+    if (!p) { return false; }
+    return p.getHeadPosition().equals(position)
   }
 
   collect(snake: Snake) {
@@ -267,6 +262,8 @@ export class Game extends Phaser.State {
       let pos = s[e];
       if (this.treatAt(pos)) {
         views.push(new View(e, 'treat'));
+      } else if (this.playerAt(pos)) {
+        views.push(new View(e, 'player'));
       } else if (s[e].x >= this.cellX || s[e].y >= this.cellY - 1) {
         views.push(new View(e, 'wall'));
       } else {
