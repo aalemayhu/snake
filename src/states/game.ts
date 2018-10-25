@@ -141,25 +141,25 @@ export class Game extends Phaser.State {
     // this.createGrid();
   }
 
-  getRandomPosition(): Phaser.Point {
-    let x = this.game.rnd.integerInRange(0, this.cellX);
-    let y = this.game.rnd.integerInRange(0, this.cellY);
+  getRandomPosition(startX, startY): Phaser.Point {
+    let x = this.game.rnd.integerInRange(startX, this.cellX);
+    let y = this.game.rnd.integerInRange(startY, this.cellY);
     while (!this.isCellAvailable(x, y)) {
-      x = this.game.rnd.integerInRange(0, this.cellX);
-      y = this.game.rnd.integerInRange(0, this.cellY);
+      x = this.game.rnd.integerInRange(startX, this.cellX);
+      y = this.game.rnd.integerInRange(startY, this.cellY);
       // TODO: give up after trying x times
     }
     return new Phaser.Point(x, y);
   }
 
   spawnTreat() {
-    let pos = this.getRandomPosition();
+    let pos = this.getRandomPosition(2, 4);
     let t = new Treat(0x3cb043, this.game, pos.x, pos.y, this.cellSize);
     this.treats.push(t);
   }
 
   newSnake(aUrl: string): Snake {
-    let pos = this.getRandomPosition();
+    let pos = this.getRandomPosition(0, 0);
     let s = new Snake(this.game, pos.x, pos.y, this.cellSize, aUrl);
     return s;
   }
@@ -220,7 +220,7 @@ export class Game extends Phaser.State {
 
     // Respawn dead players
     this.players.filter(e => { return !e.getVisible(); }).forEach(p => {
-      p.addBody(this.getRandomPosition());
+      p.addBody(this.getRandomPosition(0, 0));
     });
 
     // Draw the treats
