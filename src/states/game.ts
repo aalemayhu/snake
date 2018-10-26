@@ -26,7 +26,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 13;
+  private expectedTreatCount = 3;
   private isDebugMode = true;
 
   private numPlayers: number = 0;
