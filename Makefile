@@ -8,7 +8,7 @@ run: build copy_game
 run-electron:
 	npm run start --prefix ${ELECTRON_DIR}
 
-prepare-electron-refresh:
+prepare-%:
 	${MAKE} build
 	${MAKE} copy_game
 	@echo "Now you can hit refresh in electron app"

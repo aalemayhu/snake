@@ -12,6 +12,9 @@ export class ApiHandler {
   players: Player[] = [];
   scripts: SnakeApi.Snake [] = new Array();
 
+
+  // TODO: move all localhost requests into this file
+
   constructor() {
     console.log('Handler initialized');
   }
@@ -20,10 +23,8 @@ export class ApiHandler {
     users.forEach((u) => {
       if (u === 'mobilpadde') {
         this.players.push(new Player('smarty-pants.snk', u));
-      } else if (u === 'ccscanf') {
-        this.players.push(new Player('interesting.snk', u));
       } else {
-        this.players.push(new Player('default.snk', u));
+        this.players.push(new Player('interesting.snk', u));
       }
     });
     return users.map((u) => u);

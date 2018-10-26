@@ -100,13 +100,7 @@ export class Snake {
   }
 
   isValidMove(position: Phaser.Point): boolean {
-    let canMove = true;
-    this.snakeBody.forEach(s => {
-      if (position.equals(s)) {
-        canMove = false;
-      }
-    })
-    return canMove;
+    return this.snakeBody.find(s => position.equals(s)) === undefined;
   }
 
   performMoveIfPossible(direction) {
@@ -118,8 +112,8 @@ export class Snake {
 
     if (!this.isValidMove(newPosition)) { return; }
 
-    if (newPosition.x >= this.cellX || newPosition.x <= 0 ||
-      newPosition.y >= this.cellY - 1 || newPosition.y <= 4) {
+    if (newPosition.x >= this.cellX || newPosition.x < 0 ||
+      newPosition.y >= this.cellY || newPosition.y < 0) {
       // console.log('New position is outside, aborting');
     } else if (this.snakeBody.length === 1) {
       this.snakeBody[0] = newPosition;
@@ -213,7 +207,7 @@ export class Snake {
 
   public move(direction) {
     this.handle(direction);
-    this.performMoveIfPossible(direction);    
+    this.performMoveIfPossible(direction);
   }
 
   public destroy() {
