@@ -1,5 +1,5 @@
 import { Twitch, Message, ChannelUserState } from 'twitch-wrapper-ts';
-import axios from 'axios';
+import { ApiHandler } from '../api/ApiHandler';
 
 import { GameState } from '../GameState';
 
@@ -27,12 +27,9 @@ export class TwitchChat {
       // Watching for !upload
       if (messageContent.startsWith('!upload')) {
         let linkToSource = messageContent.replace('!upload' , ''); // Removing the !upload so we get the gist link
-        axios.post('http://localhost:3000/new-script', {
-          username: messageSender,
-          script: linkToSource.trim()
-        }).then(({ data }) => {
+        ApiHandler.newScript(messageSender, linkToSource.trim(), (data) => {
           twitch.send(data.verdict, messageChannel);
-        }).catch((error) => {
+        }, (error) => {
           if (error) {
             twitch.send(`@${messageSender} could not download file`, messageChannel);
           }
@@ -75,15 +72,11 @@ export class TwitchChat {
   }
 
   getUsers(cb) {
-    axios({
-        method: 'get',
-        url: `https://tmi.twitch.tv/group/user/${this.channel}/chatters`
-    })
-        .then(({ data }) => {
-          let users = data.chatters.viewers;
-          users.push(...data.chatters.moderators);
-          cb(users)
-        });
+    ApiHandler.getChatters(this.channel, (data) => {
+      let users = data.chatters.viewers;
+      users.push(...data.chatters.moderators);
+      cb(users)
+    });
   }
 
   subscribeToUsers(sub) {

@@ -1,5 +1,5 @@
 import Phaser from 'phaser-ce';
-import axios from 'axios';
+import { ApiHandler } from '../api/ApiHandler';
 
 export class Snake {
   public color: number;
@@ -56,16 +56,14 @@ export class Snake {
   }
 
   fetchHead() {
-    // TODO: make the client_id configurable
-    axios.get(this.avatarUrl + '?client_id=' + 'itet5zjq7dlg8ywx4v470rihamhmbr')
-      .then(({ data }) => {
+    ApiHandler.getAvatarData(this.avatarUrl, (data) => {
         this.game.load.image(`avatar-${this.username}`, data.logo);
         this.game.load.onLoadComplete.add(() => {
           this.head = this.game.make.sprite(0, 0, `avatar-${this.username}`);
           this.setupHead();
           }, this);
         this.game.load.start();
-      }).catch(error => console.log('fetch error ', error));
+    })
   }
 
   setupHead() {

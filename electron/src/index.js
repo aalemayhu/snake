@@ -15,7 +15,7 @@ function loadConfig() {
   axios.post('http://localhost:3000/set-config', global.config).then(() => {
     console.log('Sending ipc call to renderer', global.config.botName);
     mainWindow.webContents.send('config-loaded', global.config);
-  }).catch(error => console.log('got error -> ', error))
+  }).catch(error => console.log('got error -> ', error));
 }
 
 const createWindow = () => {
@@ -73,14 +73,3 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-
-// Game HUD events
-
-ipcMain.on('update-game', (event, state) => {
-  global.config.gameState = state;
-  axios.post('http://localhost:3000/set-state', {
-    gameState: state,
-  }).then(() => {
-    console.log('done');
-  }).catch(error => console.log('got error -> ', error));
-});

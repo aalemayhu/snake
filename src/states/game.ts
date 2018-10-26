@@ -8,7 +8,6 @@ import {Treat} from '../prefabs/treat';
 import { ApiHandler } from '../api/ApiHandler';
 import {View} from '../api/View';
 import { TwitchChat } from '../twitch/TwitchChat';
-import axios from 'axios';
 
 export class Game extends Phaser.State {
   private players: Snake[];
@@ -40,10 +39,9 @@ export class Game extends Phaser.State {
   readonly LEADERBOARD_PLAYER_COUNT = 3;
 
   public create(): void {
-    axios.get('http://localhost:3000/get-config')
-    .then(({ data }) => {
+    ApiHandler.getConfig((data) => {
       this.setupGame(data);
-    }).catch(e => console.log(e));
+    })
   }
 
   setupGame(config) {

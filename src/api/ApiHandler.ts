@@ -12,8 +12,9 @@ export class ApiHandler {
   players: Player[] = [];
   scripts: SnakeApi.Snake [] = new Array();
 
-
-  // TODO: move all localhost requests into this file
+  static baseURL = 'http://localhost:3000';
+  // TODO: make the client_id configurable
+  static clientID = 'itet5zjq7dlg8ywx4v470rihamhmbr';
 
   constructor() {
     console.log('Handler initialized');
@@ -36,7 +37,7 @@ export class ApiHandler {
       payload[element.username] = element.script;
     });
 
-    axios.post('http://localhost:3000/compile-script', {
+    axios.post(`${ApiHandler.baseURL}/compile-script`, {
       payload: payload
     }).then(response => {
       // response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
@@ -48,7 +49,7 @@ export class ApiHandler {
   }
 
   getNextAction(idx: number, snake: Snake, views: View[], cb) {
-    axios.post('http://localhost:3000/next-action', {
+    axios.post(`${ApiHandler.baseURL}/next-action`, {
       username: snake.username,
       views: views,
       sViews: snake.views(),
@@ -60,5 +61,32 @@ export class ApiHandler {
         console.log('got error -> ', error);
       }
     });
+  }
+
+  static newScript(messageSender, linkToSource, cb, err) {
+    axios.post(`${ApiHandler.baseURL}/new-script`, {
+      username: messageSender,
+      script: linkToSource
+    }).then(({ data }) => cb(data)).catch((error) => err(error));
+  }
+
+  static getChatters(channel, cb) {
+    axios({
+        method: 'get',
+        url: `https://tmi.twitch.tv/group/user/${channel}/chatters`
+    }).then(({ data }) => cb(data))
+    .catch((error) => console.log('getChatters', error));
+  }
+
+  static getConfig(cb) {
+    axios.get(`${ApiHandler.baseURL}/get-config`)
+    .then(({ data }) => cb(data))
+    .catch(e => console.log(e));
+  }
+
+  static getAvatarData(url, cb) {
+    axios.get(`${url}?client_id=${ApiHandler.clientID}`)
+      .then(({ data }) => cb(data))
+      .catch(error => console.log('fetch error ', error));
   }
 }
