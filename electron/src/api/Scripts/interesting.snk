@@ -1,14 +1,14 @@
 module.exports = function Next(views, body) {
     const directions = ['forward', 'right', 'left'];
 
-    const treatMatch = views.find(v => { return v == "treat"});
+    const treatMatch = views.find(v => { return v.contains == "treat"});
     if (treatMatch) {
       return treatMatch.direction;
     }
 
     let possibleActions = directions;
 
-    const wallMatch = views.findIndex(v => { return v === "wall" });
+    const wallMatch = views.findIndex(v => { return v.contains === "wall" });
     if (wallMatch !== -1) {
       possibleActions.splice(wallMatch, 1);
     }

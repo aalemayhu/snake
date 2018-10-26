@@ -52,7 +52,6 @@ export class ApiHandler {
     axios.post(`${ApiHandler.baseURL}/next-action`, {
       username: snake.username,
       views: views,
-      sViews: snake.views(),
       body: snake.getBody()
     }).then(({ data }) => {
       cb(data);

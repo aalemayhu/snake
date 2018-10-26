@@ -16,8 +16,8 @@ export class Snake {
   private bmd: Phaser.BitmapData;
 
   // The four cardinal directions
-  private NORTH = new Phaser.Point(0, 1);
-  private SOUTH = new Phaser.Point(0, -1);
+  private NORTH = new Phaser.Point(0, -1);
+  private SOUTH = new Phaser.Point(0, 1);
   private EAST = new Phaser.Point(1, 0);
   private WEST = new Phaser.Point(-1, 0);
   private moveDirection: Phaser.Point;
@@ -125,26 +125,38 @@ export class Snake {
     }
   }
 
+  left(): Phaser.Point {
+    switch(this.moveDirection) {
+      case this.SOUTH: { return this.EAST; }
+      case this.NORTH: { return this.WEST; }
+      case this.EAST: { return this.NORTH; }
+      case this.WEST: { return this.SOUTH; }
+      default:
+      console.log('returning undefined for left!');
+      return undefined;
+    }
+  }
+
+  right(): Phaser.Point {
+    switch(this.moveDirection) {
+      case this.SOUTH: { return this.WEST; }
+      case this.NORTH: { return this.EAST; }
+      case this.EAST: { return this.SOUTH; }
+      case this.WEST: { return this.NORTH; }
+      default:
+        console.log('returning undefined for right!');
+        return undefined;
+    }
+  }
+
   handle(direction) {
     switch (direction) {
     case 'right': {
-      if (this.moveDirection === this.NORTH || this.moveDirection === this.SOUTH) {
-        this.moveDirection = this.EAST;
-      } else if (this.moveDirection === this.EAST) {
-        this.moveDirection = this.SOUTH;
-      } else if (this.moveDirection === this.WEST) {
-        this.moveDirection = this.NORTH;
-      }
+      this.moveDirection = this.right();
       break;
     }
     case 'left': {
-      if (this.moveDirection === this.NORTH || this.moveDirection === this.SOUTH) {
-        this.moveDirection = this.WEST;
-      } else if (this.moveDirection == this.EAST) {
-        this.moveDirection = this.SOUTH;
-      } else if (this.moveDirection === this.WEST) {
-          this.moveDirection = this.SOUTH;
-        }
+      this.moveDirection = this.left();
       break;
     }
     case 'forward': {
@@ -156,11 +168,13 @@ export class Snake {
 
   public views(): Object {
     let h = this.getHeadPosition();
+    let l = this.left();
+    const r = this.right();
     return {
       // TODO: is this correct? Do we need to dynamically get right and left?
       'forward': new Phaser.Point(h.x + this.moveDirection.x, h.y + this.moveDirection.y),
-      'right': new Phaser.Point(h.x + this.EAST.x, h.y + this.EAST.y),
-      'left': new Phaser.Point(h.x + this.WEST.x, h.y + this.WEST.y),
+      'right': new Phaser.Point(h.x + r.x, h.y + r.y),
+      'left': new Phaser.Point(h.x + l.x, h.y + l.y),
     };
   }
 

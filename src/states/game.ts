@@ -102,7 +102,7 @@ export class Game extends Phaser.State {
       }
       let snake = this.newSnake(username);
       if (snake) {
-        this.twitch.wrapper.send(`${username} joined snake game`, this.config['channel']);
+        // this.twitch.wrapper.send(`${username} joined snake game`, this.config['channel']);
         this.players.push(snake);
       }
     }
@@ -146,7 +146,7 @@ export class Game extends Phaser.State {
   }
 
   newSnake(aUrl: string): Snake | undefined {
-    let pos = this.getRandomPosition(0, 3, this.cellX, 4);
+    let pos = this.getRandomPosition(0, 0, this.cellX, this.cellY);
     if (!pos) { return undefined; }
     let s = new Snake(this.game, pos.x, pos.y, this.cellSize, aUrl);
     return s;
@@ -213,7 +213,7 @@ export class Game extends Phaser.State {
 
     // Respawn dead players
     this.players.filter(e => { return !e.getVisible(); }).forEach(p => {
-      const pos = this.getRandomPosition(0, 3, this.cellX, 4);
+      const pos = this.getRandomPosition(0, 0, this.cellX, this.cellY);
       if (pos) {
         p.addBody(pos);
       }
