@@ -140,7 +140,7 @@ export class Snake {
         this.moveDirection = this.EAST;
       } else if (this.moveDirection === this.EAST) {
         this.moveDirection = this.SOUTH;
-      } else if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
+      } else if (this.moveDirection === this.WEST) {
         this.moveDirection = this.NORTH;
       }
       break;
@@ -150,7 +150,7 @@ export class Snake {
         this.moveDirection = this.WEST;
       } else if (this.moveDirection == this.EAST) {
         this.moveDirection = this.SOUTH;
-      } else if (this.moveDirection === this.EAST || this.moveDirection === this.WEST) {
+      } else if (this.moveDirection === this.WEST) {
           this.moveDirection = this.SOUTH;
         }
       break;
