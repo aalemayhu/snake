@@ -150,6 +150,7 @@ export class Snake {
   }
 
   handle(direction) {
+    console.log('handle()', direction, ' -> ', this.moveDirection);
     switch (direction) {
     case 'right': {
       this.moveDirection = this.right();
@@ -161,17 +162,17 @@ export class Snake {
     }
     case 'forward': {
       // Nothing todo should move by default
+      console.log(direction, ' -> ', this.moveDirection);
       break;
     }
     }
   }
 
-  public views(): Object {
+  public viewCoordinates(): Object {
     let h = this.getHeadPosition();
     let l = this.left();
     const r = this.right();
     return {
-      // TODO: is this correct? Do we need to dynamically get right and left?
       'forward': new Phaser.Point(h.x + this.moveDirection.x, h.y + this.moveDirection.y),
       'right': new Phaser.Point(h.x + r.x, h.y + r.y),
       'left': new Phaser.Point(h.x + l.x, h.y + l.y),

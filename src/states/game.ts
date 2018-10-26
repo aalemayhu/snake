@@ -259,20 +259,16 @@ export class Game extends Phaser.State {
   }
 
   views(snake: Snake): View[] {
-    let views = [];
-    // Get the views
-    let s = snake.views();
-    this.actions.forEach(e => {
+    const s = snake.viewCoordinates();
+    return this.actions.map(e => {
       let pos = s[e];
       if (this.treatAt(pos)) {
-        views.push(new View(e, 'treat'));
+        return new View(e, 'treat');
       } else if (s[e].x >= this.cellX || s[e].y >= this.cellY - 1) {
-        views.push(new View(e, 'wall'));
-      } else {
-        views.push(new View(e, 'empty'));
+        return new View(e, 'wall');
       }
-    });
-    return views;
+      return new View(e, 'empty');
+    })
   }
 
   handle(direction, snake) {
