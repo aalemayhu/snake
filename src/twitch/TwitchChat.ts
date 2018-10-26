@@ -11,10 +11,13 @@ export class TwitchChat {
   private users: string[] = [];
   public colors = {};
 
+  public wrapper: Twitch;
+
   constructor(username, channel, token) {
     this.channel = channel;
 
-    const twitch: Twitch = new Twitch(username, token, channel);
+    this.wrapper = new Twitch(username, token, channel);
+    const twitch = this.wrapper;
     twitch.on('connected', () => twitch.send('Waiting for commands now!', channel));
 
     // OnMessage function
