@@ -26,7 +26,7 @@ export class Game extends Phaser.State {
   private cellX: number;
   private cellY: number;
   private treats: Treat[];
-  private expectedTreatCount = 3;
+  private expectedTreatCount = 9;
   private isDebugMode = true;
 
   private numPlayers: number = 0;
@@ -228,11 +228,11 @@ export class Game extends Phaser.State {
     for (let i = 0; i < this.players.length; i++) {
       const snake = this.players[i];
       // TODO: We need to batch up requests, instead of making single HTTP requests
-      this.h.getNextAction(i, snake, this.views(snake), (action) => {
+      this.h.getNextAction(i, snake, this.views(snake), (direction) => {
         if (snake.getVisible()) {
-          if (action.direction !== 'invalid') {
+          if (direction !== 'invalid') {
             const front = snake.getInFront();
-            this.handle(action, snake);
+            this.handle(direction, snake);
             this.collect(snake);
             this.attack(snake, front);
           }
@@ -275,11 +275,11 @@ export class Game extends Phaser.State {
     return views;
   }
 
-  handle(action, snake) {
+  handle(direction, snake) {
     // Make sure we get the latest colour from the chat
     let color = this.twitch.colors[snake.username];
     if (color) { snake.color = +color.replace('#', '0x'); }
-    snake.move(action.direction);
+    snake.move(direction);
   }
 
   createGrid() {
