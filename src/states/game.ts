@@ -101,7 +101,10 @@ export class Game extends Phaser.State {
         continue;
       }
       let snake = this.newSnake(username);
-      this.players.push(snake);
+      if (snake) {
+        this.twitch.wrapper.send(`${username} joined snake game`, this.config['channel']);
+        this.players.push(snake);
+      }
     }
     this.isReady = true;
   }
@@ -119,25 +122,32 @@ export class Game extends Phaser.State {
     // this.createGrid();
   }
 
-  getRandomPosition(startX, startY, ceilingX, ceilingY): Phaser.Point {
+  getRandomPosition(startX, startY, ceilingX, ceilingY): Phaser.Point | undefined {
     let x = this.game.rnd.integerInRange(startX, ceilingX);
     let y = this.game.rnd.integerInRange(startY, ceilingY);
-    while (!this.isCellAvailable(x, y)) {
-      x = this.game.rnd.integerInRange(startX, ceilingX);
-      y = this.game.rnd.integerInRange(startY, ceilingX);
-      // TODO: give up after trying x times
+    let available = this.isCellAvailable(x, y);
+
+    if (!available) {
+      for (let i = 0; i < 3; i += 1) {
+          x = this.game.rnd.integerInRange(startX, ceilingX);
+          y = this.game.rnd.integerInRange(startY, ceilingX);
+          available = this.isCellAvailable(x, y);
+          if (available) { break; }
+      }
     }
-    return new Phaser.Point(x, y);
+    return available ? new Phaser.Point(x, y) : undefined;
   }
 
   spawnTreat() {
     let pos = this.getRandomPosition(2, 4, this.cellX, this.cellY);
+    if (!pos) { return; }
     let t = new Treat(0x3cb043, this.game, pos.x, pos.y, this.cellSize);
     this.treats.push(t);
   }
 
-  newSnake(aUrl: string): Snake {
+  newSnake(aUrl: string): Snake | undefined {
     let pos = this.getRandomPosition(0, 3, this.cellX, 4);
+    if (!pos) { return undefined; }
     let s = new Snake(this.game, pos.x, pos.y, this.cellSize, aUrl);
     return s;
   }
@@ -203,7 +213,10 @@ export class Game extends Phaser.State {
 
     // Respawn dead players
     this.players.filter(e => { return !e.getVisible(); }).forEach(p => {
-      p.addBody(this.getRandomPosition(0, 3, this.cellX, 4));
+      const pos = this.getRandomPosition(0, 3, this.cellX, 4);
+      if (pos) {
+        p.addBody(pos);
+      }
     });
 
     // Draw the treats
