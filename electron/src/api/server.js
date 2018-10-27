@@ -46,7 +46,7 @@ app.post('/compile-script', (req, res) => {
 
 app.post('/new-script', (req, res) => {
   const p = req.body;
-  if (!p.script.startsWith('gist.githubusercontent.com') === -1) {
+  if (!p.script.startsWith('gist.githubusercontent.com')) {
     res.json({ verdict: 'Script rejected, use a gist raw link (no http prefix)' });
     return;
   }
