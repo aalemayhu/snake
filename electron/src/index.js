@@ -1,4 +1,4 @@
-import { ipcMain, app, BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 
 const { fsCache } = require('./util/electron-caches.js');
 

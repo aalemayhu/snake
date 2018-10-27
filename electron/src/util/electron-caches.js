@@ -30,6 +30,7 @@ const fsCache = {
   downloadScript(username, script, cb) {
     const scriptPath = path.join(scriptDirectory, `${username}.snk`);
     const url = script.startsWith('http') ? script : `https://${script}`;
+    // TODO: only accept: Content-Type: text/plain; charset=utf-8
     request(url).pipe(fs.createWriteStream(scriptPath));
     cb({ verdict: `@${username} script accepted!` });
   },
