@@ -28,8 +28,8 @@ export class TwitchChat {
       this.colors[messageSender] = message.color;
 
       // Watching for !upload
-      if (messageContent.startsWith('!upload')) {
-        let linkToSource = messageContent.replace('!upload' , ''); // Removing the !upload so we get the gist link
+      if (messageContent.startsWith('!snake-upload')) {
+        let linkToSource = messageContent.replace('!snake-upload' , ''); // Removing the !upload so we get the gist link
         ApiHandler.newScript(messageSender, linkToSource.trim(), (data) => {
           twitch.send(data.verdict, messageChannel);
         }, (error) => {
@@ -53,7 +53,7 @@ export class TwitchChat {
         twitch.send('@' + messageSender + ' is in the team: ' + joinedTeam, messageChannel);
       }
 
-      if (messageContent.startsWith('!docs')) {
+      if (messageContent.startsWith('!snake-docs')) {
         twitch.send(`@${messageSender} see https://github.com/scanf/snake/blob/master/API.md`, messageChannel);
       }
     });
