@@ -8,7 +8,7 @@ const port = 3000;
 
 let config = { };
 const compiler = new CompileEvaluate([]);
-
+const supportedFiles = ['.ts', '.snk', '.js', '.txt']
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -46,8 +46,11 @@ app.post('/compile-script', (req, res) => {
 
 app.post('/new-script', (req, res) => {
   const p = req.body;
-  if (!p.script.startsWith('gist.githubusercontent.com')) {
-    res.json({ verdict: 'Script rejected, use a gist raw link (no http prefix)' });
+  const fileMatch = supportedFiles.includes(p.script.slice(p.script.lastIndexOf('.')));
+  if (!p.script.startsWith('gist.githubusercontent.com') || !fileMatch) {
+    const v = `Script rejected, use a gist raw link (no http prefix)
+      file has to end in either ${supportedFiles}`;
+    res.json({ verdict: v });
     return;
   }
   // Let the compiler know that we are loading a new script for the user
