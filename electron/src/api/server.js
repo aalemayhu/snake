@@ -55,9 +55,11 @@ app.post('/new-script', (req, res) => {
     res.json({ verdict: v });
     return;
   }
-  // Let the compiler know that we are loading a new script for the user
-  compiler.payload[p.username] = 'empty';
   fsCache.downloadScript(p.username, p.script, (verdict) => {
+    if (!verdict.verdict.includes('rejected')) {
+      // Let the compiler know that we are loading a new script for the user
+      compiler.payload[p.username] = 'empty';
+    }
     res.json(verdict);
   });
 });

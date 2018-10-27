@@ -28,11 +28,30 @@ function createCacheDirectory() {
 
 const fsCache = {
   downloadScript(username, script, cb) {
-    const scriptPath = path.join(scriptDirectory, `${username}.snk`);
     const url = script.startsWith('http') ? script : `https://${script}`;
-    // TODO: only accept: Content-Type: text/plain; charset=utf-8
-    request(url).pipe(fs.createWriteStream(scriptPath));
-    cb({ verdict: `@${username} script accepted!` });
+    const scriptPath = path.join(scriptDirectory, `${username}.snk`);
+
+    request.get(url).on('response', (response) => {
+      let error;
+      if (response.statusCode === 200) {
+        const contentType = response.headers['content-type'];
+        if (contentType !== 'text/plain') {
+          error = `bad contentType ${contentType}`;
+        } else {
+          // TODO: also check the file size
+          response.on('data', (data) => {
+            fs.writeFileSync(scriptPath, data);
+            cb({ verdict: `@${username} script (data.length: ${data.length}) accepted!` });
+          });
+        }
+      } else {
+        error = `bad response code ${response.statusCode} from ${url}`;
+      }
+
+      if (error) {
+        cb({ verdict: `@${username} script rejected due to ${error}!` });
+      }
+    });
   },
   scriptExists(name) {
     const userScript = path.join(scriptDirectory, name);
