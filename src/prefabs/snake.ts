@@ -14,6 +14,7 @@ export class Snake {
   public username: string;
   private game: Phaser.Game;
   private bmd: Phaser.BitmapData;
+  public score = 0;
 
   // The four cardinal directions
   private NORTH = new Phaser.Point(0, -1);
@@ -38,7 +39,7 @@ export class Snake {
   ) {
     this.snakeBody = [];
     this.cellSize = cellSize;
-    this.color = Phaser.Color.GRAY;
+    this.color = Phaser.Color.getRandomColor();
     this.snakeBody.push(new Phaser.Point(x, y));
     this.cellX = game.width / this.cellSize;
     this.cellY = game.height / this.cellSize;
@@ -201,6 +202,7 @@ export class Snake {
       this.headLoaded = false;
       this.snakeBody.push(pos);
       this.fetchHead();
+      this.head.alpha = 1;
     } else {
       this.snakeBody.push(pos);
     }
@@ -212,6 +214,9 @@ export class Snake {
     });
     if (index < 0) { return; }
     this.snakeBody.splice(index, 1);
+    if (!this.getVisible()) {
+      this.head.alpha = 0;
+    }
   }
 
   public getBody(): Phaser.Point[] {

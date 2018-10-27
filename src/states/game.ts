@@ -37,6 +37,7 @@ export class Game extends Phaser.State {
   private config = {};
 
   readonly LEADERBOARD_PLAYER_COUNT = 3;
+  readonly MAX_SNAKE_SIZE = 3;
 
   public create(): void {
     ApiHandler.getConfig((data) => {
@@ -165,13 +166,17 @@ export class Game extends Phaser.State {
   }
 
   collect(snake: Snake) {
-    snake.getBody().forEach(s => {
+    const body = snake.getBody();
+    body.forEach(s => {
       let index = this.treats.findIndex(function (e) {
         return e.position.equals(s);
       });
       if (index >= 0) {
         this.treats.splice(index, 1);
-        snake.addBody(s);
+        if (body.length < this.MAX_SNAKE_SIZE) {
+          snake.addBody(s);
+        }
+        snake.score += 1;
       }
     });
   }
@@ -213,7 +218,7 @@ export class Game extends Phaser.State {
 
     // Respawn dead players
     this.players.filter(e => { return !e.getVisible(); }).forEach(p => {
-      const pos = this.getRandomPosition(0, 0, this.cellX, this.cellY);
+      const pos = this.getRandomPosition(0, 0, this.cellX, 3);
       if (pos) {
         p.addBody(pos);
       }
@@ -244,7 +249,7 @@ export class Game extends Phaser.State {
     // TODO: reduce the overhead caused by sorting
     this.players = this.players
     .sort((a, b) => a.username < b.username ? 1 : -1)
-    .sort((a, b) => a.getBody().length < b.getBody().length ? 1 : -1);
+    .sort((a, b) => a.score < b.score ? 1 : -1);
 
     for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i++) {
       if (i >= this.players.length) {
@@ -253,7 +258,7 @@ export class Game extends Phaser.State {
       }
       let snake = this.players[i];
       let t = this.topPlayers[i];
-      t.text = ` ${snake.username} - ${snake.getBody().length}`
+      t.text = ` ${snake.username} - ${snake.score}`
       this.game.world.bringToTop(t);
     }
   }
