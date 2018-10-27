@@ -130,7 +130,7 @@ export class Game extends Phaser.State {
     if (!available) {
       for (let i = 0; i < 3; i += 1) {
           x = this.game.rnd.integerInRange(startX, ceilingX);
-          y = this.game.rnd.integerInRange(startY, ceilingX);
+          y = this.game.rnd.integerInRange(startY, ceilingY);
           available = this.isCellAvailable(x, y);
           if (available) { break; }
       }
