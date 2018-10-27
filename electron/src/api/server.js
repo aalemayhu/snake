@@ -8,7 +8,7 @@ const port = 3000;
 
 let config = { };
 const compiler = new CompileEvaluate([]);
-const supportedFiles = ['.ts', '.snk', '.js', '.txt']
+const supportedFiles = ['.ts', '.snk', '.js', '.txt'];
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -45,9 +45,11 @@ app.post('/compile-script', (req, res) => {
 });
 
 app.post('/new-script', (req, res) => {
+  const regex = /(?:https?:\/\/)?(gist\.githubusercontent.*(\.(snk)|(txt)|(js)|(ts)))/gi;
   const p = req.body;
-  const fileMatch = supportedFiles.includes(p.script.slice(p.script.lastIndexOf('.')));
-  if (!p.script.startsWith('gist.githubusercontent.com') || !fileMatch) {
+
+  const matches = p.script.match(regex);
+  if (!matches || matches.length <= 0) {
     const v = `Script rejected, use a gist raw link (no http prefix)
       file has to end in either ${supportedFiles}`;
     res.json({ verdict: v });
