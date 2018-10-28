@@ -41,6 +41,14 @@ export class ApiHandler {
     }).then(response => {}).catch(error => {});
   }
 
+  getBatchAction(payload, cb) {
+    axios.post(`${ApiHandler.baseURL}/next-action-batch`, {
+      payload: payload,
+    }).then(({ data }) => {
+      cb(data);
+    }).catch(error => {});
+  }
+
   getNextAction(idx: number, snake: Snake, views: View[], cb) {
     axios.post(`${ApiHandler.baseURL}/next-action`, {
       username: snake.username,

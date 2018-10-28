@@ -36,7 +36,7 @@ class CompileEvaluate {
       return v;
     } catch (e) {
       console.log(`bad user script, ${username}`, e);
-      return { direction: 'invalid', contains: 'empty' };
+      return 'invalid';
     }
   }
 }

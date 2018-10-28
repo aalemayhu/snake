@@ -233,22 +233,25 @@ export class Game extends Phaser.State {
       }
     });
 
-    // Run actions for players and draw them
-    for (let i = 0; i < this.players.length; i++) {
-      const snake = this.players[i];
-      // TODO: We need to batch up requests, instead of making single HTTP requests
-      this.h.getNextAction(i, snake, this.views(snake), (direction) => {
-        if (snake.getVisible()) {
-          if (direction !== 'invalid') {
+    // TODO: can this race with the addNewPlayers code?
+    const payload = this.players.map((p) => {
+      return {'username': p.username, 'views': this.views(p), 'body': p.getBody()}
+    });
+
+    this.h.getBatchAction(payload, (directions) => {
+      directions.forEach(a => {
+        let snake = this.players.find(p => p.username == a.username);
+        if (snake && snake.getVisible()) {
+          if (a.action !== 'invalid') {
             const front = snake.getInFront();
-            this.handle(direction, snake);
+            this.handle(a.action, snake);
             this.collect(snake);
             this.attack(snake, front);
           }
           snake.draw(this.grid);
         }
       });
-    }
+    })
   }
 
   updateLeaderBoard(){

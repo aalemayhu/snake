@@ -39,6 +39,15 @@ app.post('/next-action', (req, res) => {
   res.json(c);
 });
 
+app.post('/next-action-batch', (req, res) => {
+  const actions = req.body.payload
+    .map(p => ({
+      username: p.username,
+      action: compiler.getNextAction(p.username, p.views, p.sViews, p.body)
+    }));
+  res.json(actions);
+});
+
 app.post('/compile-script', (req, res) => {
   compiler.compileScripts(req.body.payload);
   res.json('OK');
