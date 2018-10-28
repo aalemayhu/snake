@@ -58,12 +58,12 @@ export class Snake {
 
   fetchHead() {
     ApiHandler.getAvatarData(this.avatarUrl, (data) => {
-        this.game.load.image(`avatar-${this.username}`, data.logo);
-        this.game.load.onLoadComplete.add(() => {
-          this.head = this.game.make.sprite(0, 0, `avatar-${this.username}`);
-          this.setupHead();
-          }, this);
-        this.game.load.start();
+      this.game.load.image(`avatar-${this.username}`, data.logo);
+      this.game.load.onLoadComplete.add(() => {
+        this.head = this.game.make.sprite(0, 0, `avatar-${this.username}`);
+        this.setupHead();
+      }, this);
+      this.game.load.start();
     })
   }
 
@@ -127,23 +127,23 @@ export class Snake {
 
   left(): Phaser.Point {
     switch(this.moveDirection) {
-      case this.SOUTH: { return this.EAST; }
-      case this.NORTH: { return this.WEST; }
-      case this.EAST: { return this.NORTH; }
-      case this.WEST: { return this.SOUTH; }
-      default:
+    case this.SOUTH: { return this.EAST; }
+    case this.NORTH: { return this.WEST; }
+    case this.EAST: { return this.NORTH; }
+    case this.WEST: { return this.SOUTH; }
+    default:
       return undefined;
     }
   }
 
   right(): Phaser.Point {
     switch(this.moveDirection) {
-      case this.SOUTH: { return this.WEST; }
-      case this.NORTH: { return this.EAST; }
-      case this.EAST: { return this.SOUTH; }
-      case this.WEST: { return this.NORTH; }
-      default:
-        return undefined;
+    case this.SOUTH: { return this.WEST; }
+    case this.NORTH: { return this.EAST; }
+    case this.EAST: { return this.SOUTH; }
+    case this.WEST: { return this.NORTH; }
+    default:
+      return undefined;
     }
   }
 
@@ -158,7 +158,6 @@ export class Snake {
       break;
     }
     case 'forward': {
-      // Nothing todo should move by default
       break;
     }
     }

@@ -126,10 +126,10 @@ export class Game extends Phaser.State {
 
     if (!available) {
       for (let i = 0; i < 3; i += 1) {
-          x = this.game.rnd.integerInRange(startX, ceilingX);
-          y = this.game.rnd.integerInRange(startY, ceilingY);
-          available = this.isCellAvailable(x, y);
-          if (available) { break; }
+        x = this.game.rnd.integerInRange(startX, ceilingX);
+        y = this.game.rnd.integerInRange(startY, ceilingY);
+        available = this.isCellAvailable(x, y);
+        if (available) { break; }
       }
     }
     return available ? new Phaser.Point(x, y) : undefined;
@@ -206,22 +206,31 @@ export class Game extends Phaser.State {
     if (this.isPaused || !this.isReady) { return; }
 
     this.grid.clear();
+
+    this.updateTreats();
+    this.updatePlayers();
+    this.updateLeaderBoard();
+  }
+
+  updateTreats() {
     // Make sure we have enough treats on screen
     for ( ; this.treats.length < this.expectedTreatCount; ) {
       this.spawnTreat();
     }
 
+    // Draw the treats
+    this.treats.forEach(t => {
+      t.draw(this.grid);
+    });
+  }
+
+  updatePlayers() {
     // Respawn dead players
     this.players.filter(e => { return !e.getVisible(); }).forEach(p => {
       const pos = this.getRandomPosition(0, 0, this.cellX, 3);
       if (pos) {
         p.addBody(pos);
       }
-    });
-
-    // Draw the treats
-    this.treats.forEach(t => {
-      t.draw(this.grid);
     });
 
     // Run actions for players and draw them
@@ -240,11 +249,13 @@ export class Game extends Phaser.State {
         }
       });
     }
+  }
 
+  updateLeaderBoard(){
     // TODO: reduce the overhead caused by sorting
     this.players = this.players
-    .sort((a, b) => a.username < b.username ? 1 : -1)
-    .sort((a, b) => a.score < b.score ? 1 : -1);
+      .sort((a, b) => a.username < b.username ? 1 : -1)
+      .sort((a, b) => a.score < b.score ? 1 : -1);
 
     for (let i = 0; i < this.LEADERBOARD_PLAYER_COUNT; i++) {
       if (i >= this.players.length) {
