@@ -113,7 +113,6 @@ export class Snake {
 
     if (newPosition.x >= this.cellX || newPosition.x < 0 ||
       newPosition.y >= this.cellY - 1 || newPosition.y < 0) {
-      // console.log('New position is outside, aborting');
     } else if (this.snakeBody.length === 1) {
       this.snakeBody[0] = newPosition;
     } else {
@@ -133,7 +132,6 @@ export class Snake {
       case this.EAST: { return this.NORTH; }
       case this.WEST: { return this.SOUTH; }
       default:
-      console.log('returning undefined for left!');
       return undefined;
     }
   }
@@ -145,13 +143,11 @@ export class Snake {
       case this.EAST: { return this.SOUTH; }
       case this.WEST: { return this.NORTH; }
       default:
-        console.log('returning undefined for right!');
         return undefined;
     }
   }
 
   handle(direction) {
-    console.log('handle()', direction, ' -> ', this.moveDirection);
     switch (direction) {
     case 'right': {
       this.moveDirection = this.right();
@@ -163,7 +159,6 @@ export class Snake {
     }
     case 'forward': {
       // Nothing todo should move by default
-      console.log(direction, ' -> ', this.moveDirection);
       break;
     }
     }

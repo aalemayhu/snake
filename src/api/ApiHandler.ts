@@ -17,7 +17,6 @@ export class ApiHandler {
   static clientID = 'itet5zjq7dlg8ywx4v470rihamhmbr';
 
   constructor() {
-    console.log('Handler initialized');
   }
 
   addScripts(users: string[]): string[] {
@@ -39,13 +38,7 @@ export class ApiHandler {
 
     axios.post(`${ApiHandler.baseURL}/compile-script`, {
       payload: payload
-    }).then(response => {
-      // response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-    }).catch(error => {
-      if (error) {
-        console.log('Error during compile -> ', error);
-      }
-    });
+    }).then(response => {}).catch(error => {});
   }
 
   getNextAction(idx: number, snake: Snake, views: View[], cb) {
@@ -55,11 +48,7 @@ export class ApiHandler {
       body: snake.getBody()
     }).then(({ data }) => {
       cb(data);
-    }).catch(error => {
-      if (error) {
-        console.log('got error -> ', error);
-      }
-    });
+    }).catch(error => {});
   }
 
   static newScript(messageSender, linkToSource, cb, err) {
@@ -74,18 +63,18 @@ export class ApiHandler {
         method: 'get',
         url: `https://tmi.twitch.tv/group/user/${channel}/chatters`
     }).then(({ data }) => cb(data))
-    .catch((error) => console.log('getChatters', error));
+    .catch((error) => {});
   }
 
   static getConfig(cb) {
     axios.get(`${ApiHandler.baseURL}/get-config`)
     .then(({ data }) => cb(data))
-    .catch(e => console.log(e));
+    .catch(e => {});
   }
 
   static getAvatarData(url, cb) {
     axios.get(`${url}?client_id=${ApiHandler.clientID}`)
       .then(({ data }) => cb(data))
-      .catch(error => console.log('fetch error ', error));
+      .catch(error => {});
   }
 }

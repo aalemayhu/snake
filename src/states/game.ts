@@ -67,10 +67,6 @@ export class Game extends Phaser.State {
     this.isReady = true;
   }
 
-  pressedPauseButton() {
-    console.log('button pressed');
-  }
-
   setupAPI(twitch: TwitchChat) {
     // Testing ApiHandler
     this.h = new ApiHandler();
@@ -183,7 +179,6 @@ export class Game extends Phaser.State {
 
   attack(snake: Snake, position: Phaser.Point) {
     if (snake.getBody().find(s2 => s2.equals(position))) {
-      // console.log('aborting attack position is same as head');
       return;
     }
     // Find the snake which matches the position

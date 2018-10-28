@@ -42,7 +42,6 @@ export namespace GameState {
                 }
             }
         });
-        console.log('-------------------------------------------');
         return team;
     }
 }
