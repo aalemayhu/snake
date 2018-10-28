@@ -65,12 +65,14 @@ const fsCache = {
     const data = this.readAll(secretFile);
     if (data) {
       if (!data.gameState) { data.gameState = 'Pause'; }
+      if (!data.windowState) { data.windowState = {}; }
       return data;
     }
     return {
       botName: 'please-fill-out',
       channel: 'please-fill-out',
       clientId: 'please-fill-out',
+      windowState: { },
     };
   },
   readAll(file) {
